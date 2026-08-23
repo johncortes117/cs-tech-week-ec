@@ -106,11 +106,15 @@ export function Scramble({
     }, step)
   }, [text, step, settle, reduce])
 
+  /* One boolean, so the effect re-runs when the trigger resolves
+     and not every time `inView` settles afterwards — each extra
+     call would restart the decrypt from zero. */
+  const armed = trigger === 'mount' || (trigger === 'view' && inView)
+
   React.useEffect(() => {
-    if (trigger === 'mount') run()
-    else if (trigger === 'view' && inView) run()
+    if (armed) run()
     return () => window.clearInterval(timer.current)
-  }, [inView, trigger, run])
+  }, [armed, run])
 
   return (
     <Tag
