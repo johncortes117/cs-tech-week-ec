@@ -58,7 +58,12 @@ export function Scramble({
   step = 38,
   /** how many steps each letter takes to settle */
   settle = 3,
-  /** 'view' resolves on entering the viewport; 'hover' on cursor over */
+  /**
+   * 'view' resolves on entering the viewport, 'hover' on cursor
+   * over, 'mount' straight away — the last one is for text that is
+   * already above the fold, where an observer that never fires
+   * would leave the line blank.
+   */
   trigger = 'view',
   as: Tag = 'span',
 }: {
@@ -66,7 +71,7 @@ export function Scramble({
   className?: string
   step?: number
   settle?: number
-  trigger?: 'view' | 'hover'
+  trigger?: 'view' | 'hover' | 'mount'
   as?: 'span' | 'div'
 }) {
   const reduce = useReducedMotion()
@@ -102,7 +107,8 @@ export function Scramble({
   }, [text, step, settle, reduce])
 
   React.useEffect(() => {
-    if (trigger === 'view' && inView) run()
+    if (trigger === 'mount') run()
+    else if (trigger === 'view' && inView) run()
     return () => window.clearInterval(timer.current)
   }, [inView, trigger, run])
 

@@ -441,66 +441,15 @@ export function PixelatedCanvas({
       for (const s of samples) paint(s.x, s.y, s.color)
     }
 
-    /* The undistorted logo, rendered once into its own bitmap.
-       Only the dots near the pointer ever move, so every frame can
-       blit this and then repaint just the affected box — instead of
-       clearing the whole canvas and redrawing every dot. */
-    let still: HTMLCanvasElement | null = null
+    /* Every frame clears and repaints the whole grid.
 
-    const buildStill = () => {
-      const c = document.createElement('canvas')
-      c.width = canvas.width
-      c.height = canvas.height
-      const sctx = c.getContext('2d')
-      if (!sctx) return
-      sctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      let prev = ''
-      for (const s of samples) {
-        if (s.color !== prev) {
-          sctx.fillStyle = s.color
-          prev = s.color
-        }
-        if (shape === 'circle') {
-          sctx.beginPath()
-          sctx.arc(s.x, s.y, dot / 2, 0, Math.PI * 2)
-          sctx.fill()
-        } else {
-          sctx.fillRect(s.x - dot / 2, s.y - dot / 2, dot, dot)
-        }
-      }
-      still = c
-    }
-
-    /* Distance at which a dot still moves by ~a third of a pixel.
-       influence = exp(-d^2 / 2σ²); solve for the movement budget. */
-    const sigmaBase = Math.max(1, distortionRadius * 0.5)
-    const budget = 0.33 / Math.max(1, distortionStrength + jitterStrength)
-    const reach =
-      sigmaBase * Math.sqrt(Math.max(0, -2 * Math.log(Math.min(0.9, budget)))) +
-      distortionStrength +
-      jitterStrength +
-      dot
-
-    let baseDrawn = false
-    let prevBox = { l: 0, t: 0, r: 0, b: 0 }
-
-    /** Clears a rectangle, honouring an opaque background. */
-    const wipe = (x: number, y: number, w: number, h: number) => {
-      if (backgroundColor) {
-        ctx.fillStyle = backgroundColor
-        ctx.fillRect(x, y, w, h)
-        lastColor = ''
-      } else {
-        ctx.clearRect(x, y, w, h)
-      }
-    }
-
-    /** Repaints one rectangle from the undistorted bitmap. */
-    const restore = (x: number, y: number, w: number, h: number) => {
-      if (!still) return
-      wipe(x, y, w, h)
-      ctx.drawImage(still, x * dpr, y * dpr, w * dpr, h * dpr, x, y, w, h)
-    }
+       An earlier version cached the undistorted logo in a bitmap
+       and only repainted the box around the pointer. It was
+       cheaper, but the box was drawn at fractional coordinates,
+       so the browser resampled its edges and the seam showed up
+       on screen as a rectangle following the cursor. A logo is a
+       few thousand dots at a capped frame rate; correctness is
+       worth more here than the saved fill. */
 
     let lastFrame = 0
     const frame = (now: number) => {
@@ -532,63 +481,13 @@ export function PixelatedCanvas({
       const t = now * 0.001 * jitterSpeed
       const act = Math.max(0, Math.min(1, activity))
 
-      /* How far the influence still moves a dot by at least a third
-         of a pixel. Derived from the gaussian rather than guessed:
-         beyond this the dot is exactly where the still bitmap
-         already has it. */
-      const boxL = pointer.x - reach
-      const boxR = pointer.x + reach
-      const boxT = pointer.y - reach
-      const boxB = pointer.y + reach
-
-      if (still && !revealing) {
-        /* The canvas already holds the previous frame. Only two
-           regions can be wrong: where the distortion was, and where
-           it is now. Restoring their union from the still bitmap
-           and repainting the current box keeps every raster
-           operation proportional to the pointer's reach instead of
-           to the whole logo. */
-        if (!baseDrawn) {
-          clear()
-          ctx.drawImage(still, 0, 0, displayW, displayH)
-          baseDrawn = true
-          prevBox = { l: boxL, t: boxT, r: boxR, b: boxB }
-        }
-
-        const rl = Math.max(0, Math.min(prevBox.l, boxL))
-        const rt = Math.max(0, Math.min(prevBox.t, boxT))
-        const rr = Math.min(displayW, Math.max(prevBox.r, boxR))
-        const rb = Math.min(displayH, Math.max(prevBox.b, boxB))
-
-        if (rr > rl && rb > rt) {
-          restore(rl, rt, rr - rl, rb - rt)
-        }
-        /* wipe the current box so the distorted dots are not drawn
-           on top of their undistorted copies */
-        wipe(boxL, boxT, boxR - boxL, boxB - boxT)
-
-        prevBox = { l: boxL, t: boxT, r: boxR, b: boxB }
-        lastColor = ''
-      } else {
-        clear()
-        baseDrawn = false
-      }
+      clear()
 
       for (const s of samples) {
         if (revealing) {
           const local = (reveal - s.seed * 0.55) / 0.45
           if (local <= 0) continue
           ctx.globalAlpha = Math.min(1, local)
-        }
-
-        /* Outside the box this dot has not moved, and the still
-           bitmap already shows it in the right place. */
-        if (
-          still &&
-          !revealing &&
-          (s.x < boxL || s.x > boxR || s.y < boxT || s.y > boxB)
-        ) {
-          continue
         }
 
         let px = s.x
@@ -672,7 +571,6 @@ export function PixelatedCanvas({
     img.onload = () => {
       if (cancelled) return
       if (!build(img)) return
-      buildStill()
 
       if (reduce || !interactive) {
         paintStatic()

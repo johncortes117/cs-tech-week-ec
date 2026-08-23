@@ -30,17 +30,16 @@ export const event = {
   intro:
     'Una semana de charlas, talleres y retos organizada por los capítulos Computer Society del Ecuador, en el año en que IEEE Computer Society cumple ochenta.',
 
+  /** Confirmed start date. */
+  dates: '14 de septiembre, 2026',
+  datesShort: '14 SEP 2026',
+
   // TBD — to confirm with the committee
-  dates: tbd('Fechas por confirmar'),
-  datesShort: tbd('Por confirmar'),
   venue: tbd('Sede por confirmar'),
   format: tbd('Presencial + virtual'),
 
-  /**
-   * Countdown target date (ISO, Ecuador time UTC−5).
-   * PLACEHOLDER — replace with the real start date.
-   */
-  startsAt: '2026-11-09T09:00:00-05:00',
+  /** Countdown target date (ISO, Ecuador time UTC−5). */
+  startsAt: '2026-09-14T09:00:00-05:00',
 
   coords: '0°00′00″ · −78°27′',
   anniversary: 'IEEE CS · 80 años construyendo comunidad',
