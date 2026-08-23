@@ -248,7 +248,14 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
           style={reduce ? undefined : { x: logoX, y: logoY }}
-          className="order-first mx-auto w-[min(56vw,248px)] lg:order-last lg:w-full lg:max-w-[460px]"
+          /* The mark is tall (776:990). On desktop its height, not
+             its width, is the constraint: at the old 460px width it
+             ran ~590px tall and the wordmark fell below the fold
+             under the nav + countdown bar. Derive the width from a
+             share of viewport height (via the aspect ratio) so the
+             whole logo always fits the first screen, and cap it so
+             it never dominates on very tall windows. */
+          className="order-first mx-auto w-[min(56vw,248px)] lg:order-last lg:w-[calc(52vh*776/990)] lg:max-w-[420px]"
         >
           <div className="relative aspect-[776/990] w-full">
             <PixelatedCanvas
