@@ -5,16 +5,16 @@ import { motion, useMotionValue, useSpring } from 'motion/react'
 import { useReducedMotion } from '@/lib/use-reduced-motion'
 
 /* ============================================================
-   TARGET CURSOR  ·  adaptado de React Bits
-   Un punto que sigue al puntero y un marco que se engancha a
-   todo lo que sea accionable. Cuando el marco encaja en un
-   botón, el sitio deja de "tener hover" y pasa a tener puntería.
+   TARGET CURSOR  ·  adapted from React Bits
+   A dot that follows the pointer and a frame that snaps onto
+   anything actionable. When the frame locks onto a button, the
+   site stops "having hover" and starts having aim.
 
-   Reglas duras para que no estorbe:
-   · solo con puntero fino (mouse/trackpad); en táctil no existe
-   · se apaga con prefers-reduced-motion
-   · el cursor nativo vuelve sobre campos de texto — nadie
-     escribe cómodo sin la barra de inserción
+   Hard rules so it never gets in the way:
+   · fine pointer only (mouse/trackpad); on touch it does not exist
+   · switched off by prefers-reduced-motion
+   · the native cursor comes back over text fields — nobody types
+     comfortably without a caret
    ============================================================ */
 
 const SPRING_DOT = { stiffness: 900, damping: 44, mass: 0.35 }
@@ -49,10 +49,10 @@ export function TargetCursor() {
     const SELECTOR =
       'a[href], button, [role="button"], [data-cursor], summary, input[type="submit"]'
 
-    /* `getComputedStyle` fuerza recálculo de estilo. Llamarlo en
-       cada movimiento del ratón, sesenta veces por segundo, es de
-       lo más caro que puede hacer un cursor personalizado — y el
-       radio de un botón no cambia. Se mide una vez por elemento. */
+    /* `getComputedStyle` forces a style recalculation. Calling it
+       on every mouse move, sixty times a second, is about the most
+       expensive thing a custom cursor can do — and a button's
+       radius does not change. It is measured once per element. */
     const radii = new WeakMap<HTMLElement, number>()
     const radiusOf = (el: HTMLElement) => {
       let r = radii.get(el)
@@ -94,7 +94,7 @@ export function TargetCursor() {
       }
     }
 
-    /* una sola lectura de geometría por cuadro, no por evento */
+    /* one geometry read per frame, not per event */
     const onMove = (e: PointerEvent) => {
       pending = e
       if (!frame) frame = requestAnimationFrame(apply)
@@ -122,7 +122,7 @@ export function TargetCursor() {
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[100]">
-      {/* marco que se engancha */}
+      {/* the frame that snaps on */}
       <motion.div
         style={{
           x: frameX,
@@ -132,23 +132,23 @@ export function TargetCursor() {
           borderRadius: fr,
           translateX: '-50%',
           translateY: '-50%',
-          /* valor de partida explícito: Motion no sabe interpolar
-             desde la palabra clave `transparent` que traería el
-             estilo calculado */
+          /* explicit starting value: Motion cannot interpolate from the
+             `transparent` keyword that the computed style would
+             hand it */
           backgroundColor: 'hsl(38 100% 50% / 0)',
           borderColor: 'hsl(210 30% 95% / 0.32)',
         }}
         animate={{
           borderColor: locked ? 'hsl(38 100% 50% / 0.9)' : 'hsl(210 30% 95% / 0.32)',
-          /* el destino tiene que ser un color con alfa 0, no la
-             palabra `transparent`: Motion no puede interpolar
-             hacia una palabra clave */
+          /* the destination has to be a colour with alpha 0, not the
+             `transparent` keyword: Motion cannot interpolate
+             towards a keyword */
           backgroundColor: locked ? 'hsl(38 100% 50% / 0.06)' : 'hsl(38 100% 50% / 0)',
         }}
         transition={{ duration: 0.22 }}
         className="absolute left-0 top-0 border"
       />
-      {/* punto */}
+      {/* dot */}
       <motion.div
         style={{ x: dotX, y: dotY, translateX: '-50%', translateY: '-50%' }}
         animate={{ scale: locked ? 0 : 1 }}

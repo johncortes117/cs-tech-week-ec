@@ -3,9 +3,9 @@
 import { motion, useScroll, useSpring } from 'motion/react'
 
 /**
- * Barra de progreso de lectura. Vive pegada al borde superior,
- * debajo de la barra de anuncio, y usa un spring para que el
- * avance se sienta suave en lugar de nervioso.
+ * Reading progress bar. It sits pinned to the top edge, below
+ * the announcement bar, and uses a spring so the advance feels
+ * smooth rather than twitchy.
  */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll()

@@ -5,10 +5,10 @@ import { animate, useInView } from 'motion/react'
 import { useReducedMotion } from '@/lib/use-reduced-motion'
 
 /* ============================================================
-   COUNT UP  ·  adaptado de React Bits
-   La cifra sube desde 0 cuando el bloque entra en pantalla.
-   Con la curva `cs` (rápida al inicio, asentamiento largo) el
-   número parece frenar solo, no cortarse.
+   COUNT UP  ·  adapted from React Bits
+   The figure counts up from 0 when the block enters the
+   viewport. With the `cs` curve (fast at the start, long settle)
+   the number seems to brake on its own rather than being cut.
    ============================================================ */
 
 export function CountUp({
@@ -34,10 +34,10 @@ export function CountUp({
   const [value, setValue] = React.useState(from)
 
   React.useEffect(() => {
-    /* La preferencia de movimiento se comprueba ANTES que el
-       viewport: si esperáramos a entrar en pantalla, un salto de
-       ancla que no dispare el observador dejaría la cifra en cero,
-       que no es "sin animación" — es un dato equivocado. */
+    /* The motion preference is checked BEFORE the viewport: if we
+       waited to come into view, an anchor jump that never fires
+       the observer would leave the figure at zero, which is not
+       "no animation" — it is wrong data. */
     if (reduce) {
       setValue(to)
       return

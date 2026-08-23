@@ -5,27 +5,27 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   CAMPO BINARIO INTERACTIVO
+   INTERACTIVE BINARY FIELD
 
-   Unos y ceros a la deriva, muy tenues. Cita directa al bug 1/0
-   del logo de IEEE CS y al atributo "Binary" del Brand Identity
-   Prism. Debe leerse como textura, nunca como fondo animado.
+   Ones and zeros adrift, very faint. A direct quote of the 1/0
+   bug in the IEEE CS logo and of the "Binary" attribute of the
+   Brand Identity Prism. It must read as texture, never as an
+   animated background.
 
-   La capa interactiva: el cursor tiene calor. Los bits dentro de
-   su radio se encienden en naranja y empiezan a voltearse, como
-   si el puntero estuviera leyendo memoria.
+   The interactive layer: the cursor carries heat. The bits
+   within its radius light up orange and start flipping, as if
+   the pointer were reading memory.
 
-   Reescrito por coste. La primera versión llamaba a `fillText`
-   una vez por celda y por cuadro: en pantalla grande son ~2000
-   llamadas sesenta veces por segundo, y salía como la función de
-   JavaScript más cara de todo el sitio en el perfilador.
+   Rewritten for cost. The first version called `fillText` once
+   per cell per frame: on a large screen that is ~2000 calls
+   sixty times a second, and it showed up as the most expensive
+   JavaScript function on the whole site in the profiler.
 
-   Ahora la retícula se dibuja UNA vez en un lienzo fuera de
-   pantalla y cada cuadro solo hace un `drawImage` para
-   desplazarla. Lo único que se repinta a mano son las ~130
-   celdas que caen dentro del halo. Cuando un bit se voltea se
-   corrige también en el lienzo base, para que el cambio persista
-   cuando el puntero se aleje.
+   Now the grid is drawn ONCE onto an offscreen canvas and each
+   frame only does one `drawImage` to shift it. The only thing
+   repainted by hand are the ~130 cells that fall inside the
+   halo. When a bit flips it is corrected on the base canvas too,
+   so the change persists once the pointer moves away.
    ============================================================ */
 
 export function BinaryField({
@@ -33,7 +33,7 @@ export function BinaryField({
   cell = 26,
   alpha = 0.05,
   speed = 3.5,
-  /** Radio de influencia del cursor, en px. 0 lo apaga. */
+  /** Cursor influence radius, in px. 0 disables it. */
   reach = 130,
   interactive = true,
 }: {
@@ -70,7 +70,7 @@ export function BinaryField({
     const live = interactive && !reduce && reach > 0
     const FONT = '500 11px var(--font-plex-mono, monospace)'
 
-    /** Repinta una celda del lienzo base (tras voltearse un bit). */
+    /** Repaints one cell of the base canvas (after a bit flips). */
     const paintBase = (x: number, y: number) => {
       const bit = bits[y * cols + x]
       bctx.clearRect(x * cell, y * cell, cell, cell)
@@ -105,13 +105,13 @@ export function BinaryField({
     const draw = (offset: number) => {
       ctx.clearRect(0, 0, w, h)
 
-      /* la retícula entera, de una sola pieza */
+      /* the whole grid, in a single piece */
       const shift = (offset % cell) - cell
       ctx.drawImage(base, 0, shift, cols * cell, rows * cell)
 
       if (!live) return
 
-      /* solo las celdas del halo se repintan a mano */
+      /* only the halo cells are repainted by hand */
       const r2 = reach * reach
       const x0 = Math.max(0, Math.floor((pointer.x - reach) / cell))
       const x1 = Math.min(cols - 1, Math.ceil((pointer.x + reach) / cell))
@@ -127,7 +127,7 @@ export function BinaryField({
           const d2 = dx * dx + dy * dy
           if (d2 >= r2) continue
 
-          // caída cuadrática: el halo tiene borde suave, no aro
+          // quadratic falloff: the halo has a soft edge, not a ring
           let warm = 1 - d2 / r2
           warm *= warm
 
@@ -167,7 +167,7 @@ export function BinaryField({
     if (reduce) draw(0)
     else startLoop()
 
-    /* fuera de pantalla no se dibuja */
+    /* offscreen means nothing is drawn */
     const io = new IntersectionObserver(
       ([e]) => {
         visible = e.isIntersecting
@@ -194,8 +194,8 @@ export function BinaryField({
     }
     window.addEventListener('resize', onResize)
 
-    /* el lienzo se mueve con el scroll: sin refrescar el rect,
-       el halo queda desfasado respecto al cursor */
+    /* the canvas moves with the scroll: without refreshing the
+       rect, the halo drifts out of sync with the cursor */
     const onScroll = () => {
       rect = canvas.getBoundingClientRect()
     }

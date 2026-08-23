@@ -3,21 +3,20 @@
 import * as React from 'react'
 
 /* ============================================================
-   PREFERENCIA DE MOVIMIENTO — versión segura para hidratación
+   MOTION PREFERENCE — hydration-safe version
 
-   El `useReducedMotion` de Motion lee la media query de forma
-   síncrona en el primer render del cliente, pero en el servidor
-   siempre devuelve `false`. Para quien tiene el ajuste activado,
-   eso significa que servidor y cliente producen marcado distinto
-   en el primer render — y React 19 lo trata como error de
-   hidratación, tira el HTML del servidor y vuelve a renderizar
-   toda la página en el cliente.
+   Motion's `useReducedMotion` reads the media query synchronously
+   on the first client render, but on the server it always returns
+   `false`. For anyone with the setting enabled that means server
+   and client produce different markup on the first render — and
+   React 19 treats that as a hydration error, throws away the
+   server HTML and re-renders the whole page on the client.
 
-   Este hook devuelve `false` en el primer render (igual que el
-   servidor) y se corrige justo después de montar. El coste es un
-   fotograma; a cambio, la hidratación nunca se rompe. El CSS ya
-   neutraliza las animaciones puramente declarativas en ese
-   fotograma vía @media (prefers-reduced-motion: reduce).
+   This hook returns `false` on the first render (same as the
+   server) and corrects itself right after mounting. The cost is
+   one frame; in exchange, hydration never breaks. CSS already
+   neutralises the purely declarative animations during that
+   frame via @media (prefers-reduced-motion: reduce).
    ============================================================ */
 
 const QUERY = '(prefers-reduced-motion: reduce)'

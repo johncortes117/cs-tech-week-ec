@@ -5,47 +5,47 @@ import Lenis from 'lenis'
 import { useReducedMotion } from '@/lib/use-reduced-motion'
 
 /* ============================================================
-   SCROLL SUAVE — Lenis
+   SMOOTH SCROLL — Lenis
 
-   Es la capa que más se siente y menos se ve: cambia la inercia
-   de TODO el sitio. Sin esto, cada parallax y cada haz de scroll
-   se mueven a saltos de rueda; con esto, el documento entero se
-   desplaza con la misma curva que el resto del movimiento.
+   It is the layer you feel most and see least: it changes the
+   inertia of the WHOLE site. Without it, every parallax and
+   every scroll beam moves in wheel-sized jumps; with it, the
+   entire document travels on the same curve as everything else.
 
-   Lenis se apaga por completo con prefers-reduced-motion: ahí
-   manda el scroll nativo del sistema. La navegación por anclas,
-   en cambio, se gestiona SIEMPRE desde aquí — ver más abajo por
-   qué no basta con el salto nativo.
+   Lenis is switched off entirely with prefers-reduced-motion:
+   there the system's native scroll takes over. Anchor
+   navigation, by contrast, is ALWAYS handled here — see below
+   for why the native jump is not enough.
    ============================================================ */
 
 let instance: Lenis | null = null
 
-/** Congela el scroll (menú móvil abierto, modales). */
+/** Freezes scrolling (mobile menu open, modals). */
 export const lockScroll = () => {
   instance?.stop()
   document.body.style.overflow = 'hidden'
 }
 
-/** Devuelve el scroll. */
+/** Gives scrolling back. */
 export const unlockScroll = () => {
   instance?.start()
   document.body.style.overflow = ''
 }
 
 /**
- * Empujón de un píxel, ida y vuelta, en dos fotogramas seguidos.
+ * A one-pixel nudge, out and back, over two consecutive frames.
  *
- * No es superstición: los IntersectionObserver que disparan los
- * reveals (`whileInView`, `useInView`) se evalúan en el paso de
- * renderizado, y un salto de scroll instantáneo y largo —el que
- * produce un ancla— puede completarse sin que llegue a haber una
- * reevaluación. El resultado es una sección de destino que se
- * queda en su estado inicial, invisible, hasta que el usuario
- * mueve la rueda. Se reproduce sobre todo con reduced-motion,
- * donde el salto es realmente instantáneo.
+ * Not superstition: the IntersectionObservers that fire the
+ * reveals (`whileInView`, `useInView`) are evaluated during the
+ * rendering step, and a long instantaneous scroll jump —the kind
+ * an anchor produces— can complete without a single
+ * re-evaluation happening. The result is a target section stuck
+ * in its initial state, invisible, until the user moves the
+ * wheel. It reproduces above all with reduced-motion, where the
+ * jump is genuinely instantaneous.
  *
- * Un desplazamiento mínimo fuerza esa reevaluación y el usuario
- * no lo percibe.
+ * A minimal displacement forces that re-evaluation and the user
+ * never notices it.
  */
 const nudgeObservers = () => {
   requestAnimationFrame(() => {
@@ -62,7 +62,7 @@ const navOffset = () => {
   return -((Number.isNaN(nav) ? 68 : nav) + 28)
 }
 
-/** Desplaza a un ancla respetando la altura de la barra fija. */
+/** Scrolls to an anchor, allowing for the fixed bar height. */
 export const scrollToHash = (hash: string) => {
   const el = document.querySelector(hash)
   if (!el) return
@@ -93,8 +93,8 @@ export function SmoothScroll() {
 
     const lenis = new Lenis({
       duration: 1.05,
-      /* exponencial: arranca inmediato y frena largo — la misma
-         sensación que la curva `cs` del resto del sitio */
+      /* exponential: starts immediately and brakes long — the same
+         feel as the `cs` curve used across the site */
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
@@ -116,7 +116,7 @@ export function SmoothScroll() {
     }
   }, [reduce])
 
-  /* ---------- navegación por anclas ---------- */
+  /* ---------- anchor navigation ---------- */
   React.useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.button !== 0) return
@@ -131,7 +131,7 @@ export function SmoothScroll() {
     }
     document.addEventListener('click', onClick)
 
-    /* enlace profundo: se llega con el hash ya puesto en la URL */
+    /* deep link: you arrive with the hash already in the URL */
     if (window.location.hash) nudgeObservers()
 
     return () => document.removeEventListener('click', onClick)

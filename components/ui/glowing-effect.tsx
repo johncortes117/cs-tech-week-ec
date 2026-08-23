@@ -5,32 +5,32 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   GLOWING EFFECT  ·  adaptado de Aceternity UI
+   GLOWING EFFECT  ·  adapted from Aceternity UI
 
-   Un arco de luz recorre el borde de la tarjeta apuntando
-   siempre al cursor. El original usa una paleta arcoíris fija;
-   acá el arco se construye con el color del track más un acento
-   de marca, así cada tarjeta se enciende con SU color y el
-   sistema sigue leyéndose como uno solo.
+   An arc of light travels around the card's border, always
+   pointing at the cursor. The original uses a fixed rainbow
+   palette; here the arc is built from the track's colour plus a
+   brand accent, so each card lights up in ITS colour and the
+   system still reads as one.
 
-   Dos diferencias de fondo con el original, ambas por coste:
+   Two deep differences from the original, both about cost:
 
-   · UN SOLO OÍDO. El componente de Aceternity registra un
-     listener de `pointermove` y otro de `scroll` por instancia.
-     Con ocho tarjetas en pantalla eso son ocho lecturas de
-     geometría —ocho reflows— por cada movimiento del ratón. Acá
-     hay un único listener de módulo que reparte la posición a
-     todas las instancias dentro de un mismo rAF.
+   · A SINGLE EAR. Aceternity's component registers one
+     `pointermove` listener and one `scroll` listener per
+     instance. With eight cards on screen that is eight geometry
+     reads —eight reflows— for every mouse move. Here there is a
+     single module-level listener that distributes the position
+     to every instance within one rAF.
 
-   · SIN `animate()` POR MOVIMIENTO. El original lanza una
-     animación nueva de Motion en cada evento, que se descarta al
-     siguiente. Acá el ángulo se persigue con una interpolación
-     en el mismo bucle: mismo resultado visual, cero basura.
+   · NO `animate()` PER MOVE. The original launches a fresh
+     Motion animation on every event, discarded on the next one.
+     Here the angle is chased with an interpolation inside the
+     same loop: same visual result, zero garbage.
 
-   El anillo desenfocado del halo también desapareció: `filter:
-   blur()` sobre ocho elementos obliga a rasterizar ocho
-   superficies extra por cuadro, y medido costaba más que todo lo
-   demás junto. El arco nítido ya lee como luz.
+   The blurred halo ring is gone too: `filter: blur()` over eight
+   elements forces eight extra surfaces to be rasterised per
+   frame, and measured it cost more than everything else put
+   together. The crisp arc already reads as light.
    ============================================================ */
 
 type Sub = (x: number, y: number) => void
@@ -63,8 +63,8 @@ function subscribe(fn: Sub): () => void {
       },
       { passive: true }
     )
-    /* al hacer scroll la tarjeta se mueve bajo un cursor quieto:
-       hay que recalcular con la última posición conocida */
+    /* on scroll the card moves under a still cursor: it has to be
+       recomputed with the last known position */
     window.addEventListener('scroll', schedule, { passive: true })
   }
   return () => {
@@ -73,15 +73,15 @@ function subscribe(fn: Sub): () => void {
 }
 
 type Props = {
-  /** Hex de 6 dígitos. Por defecto, naranja PMS 137. */
+  /** 6-digit hex. Defaults to PMS 137 orange. */
   color?: string
-  /** Segundo tono del arco. Por defecto, cian Process. */
+  /** Second tone of the arc. Defaults to Process cyan. */
   accent?: string
-  /** Radio muerto en el centro: evita que el arco tiemble al pasar por el medio. */
+  /** Dead radius in the centre: stops the arc jittering as it crosses the middle. */
   inactiveZone?: number
-  /** Margen alrededor de la tarjeta que ya cuenta como "cerca". */
+  /** Margin around the card that already counts as "near". */
   proximity?: number
-  /** Apertura del arco, en grados. */
+  /** Arc aperture, in degrees. */
   spread?: number
   borderWidth?: number
   className?: string
@@ -111,7 +111,7 @@ export const GlowingEffect = React.memo(function GlowingEffect({
       if (!el) return
       const { left, top, width, height } = el.getBoundingClientRect()
 
-      /* fuera de la ventana no hay nada que iluminar */
+      /* outside the window there is nothing to light */
       if (top > window.innerHeight || top + height < 0) {
         el.style.setProperty('--active', '0')
         return
@@ -135,16 +135,16 @@ export const GlowingEffect = React.memo(function GlowingEffect({
       el.style.setProperty('--active', near ? '1' : '0')
       if (!near) return
 
-      /* camino corto del círculo: sin esto el arco da una vuelta
-         entera cada vez que el ángulo cruza los 360° */
+      /* short way round the circle: without this the arc does a full
+         lap every time the angle crosses 360° */
       const target = (180 * Math.atan2(my - cy, mx - cx)) / Math.PI + 90
       const a = angle.current
       a.target = a.current + ((((target - a.current) % 360) + 540) % 360) - 180
       a.current += (a.target - a.current) * 0.12
       el.style.setProperty('--start', String(a.current))
 
-      /* mientras el arco siga persiguiendo al cursor, pide otro
-         cuadro aunque el ratón se haya detenido */
+      /* while the arc is still chasing the cursor, ask for another
+         frame even if the mouse has stopped */
       if (Math.abs(a.target - a.current) > 0.4) schedule()
     }
 
@@ -153,10 +153,11 @@ export const GlowingEffect = React.memo(function GlowingEffect({
 
   if (off) return null
 
-  /* El arco: un solo cónico que arranca en --start (el ángulo
-     hacia el cursor) y se apaga a --spread grados de cada lado.
-     El color del track ocupa el centro y el acento los filos,
-     que es como se comporta la luz al rozar un canto metálico. */
+  /* The arc: a single conic gradient starting at --start (the
+     angle towards the cursor) and fading out --spread degrees to
+     either side. The track colour takes the centre and the
+     accent the edges, which is how light behaves as it grazes a
+     metallic rim. */
   const gradient = `conic-gradient(
       from calc((var(--start) - var(--spread)) * 1deg),
       transparent 0deg,

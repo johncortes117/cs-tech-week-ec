@@ -14,7 +14,7 @@ import { Aurora } from '@/components/ui/aurora'
 import { Magnetic } from '@/components/ui/magnetic'
 
 /* ============================================================
-   FAQ — acordeón
+   FAQ — accordion
    ============================================================ */
 
 function FaqRow({ q, a, index }: { q: string; a: string; index: number }) {
@@ -96,12 +96,12 @@ export function Faq() {
 }
 
 /* ============================================================
-   CTA FINAL — pantalla dedicada, sin distracción
+   FINAL CTA — a dedicated screen, no distractions
    ============================================================ */
 
-/* El contador no cambia de número: lo voltea. Split-flap tomado
-   de React Bits — ver components/ui/split-flap.tsx. Cada dígito
-   es su propia hoja, así los segundos no arrastran a los días. */
+/* The countdown does not change numbers: it flips them.
+   Split-flap taken from React Bits — see components/ui/split-flap.tsx.
+   Each digit is its own flap, so the seconds never drag the days. */
 function CountBox({ value, unit }: { value: string; unit: string }) {
   return (
     <div className="flex flex-col items-center gap-3">
@@ -124,18 +124,18 @@ export function FinalCta() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          /* El halo azul arranca dentro del bloque, no en su canto:
-             con el centro en 0% el degradado nace a máxima
-             intensidad justo en la frontera con la sección
-             anterior y se ve la costura. */
+          /* The blue halo starts inside the block, not at its edge:
+             with the centre at 0% the gradient is born at full
+             intensity right on the border with the previous
+             section and the seam shows. */
           background: `
             radial-gradient(46% 60% at 50% 108%, hsl(var(--orange) / 0.20), transparent 68%),
             radial-gradient(78% 72% at 50% 26%, hsl(var(--abyss) / 0.5), transparent 74%)
           `,
         }}
       />
-      {/* velo de aurora en los tres tonos oficiales: le da fondo al
-          bloque de cierre sin sacar al sitio de su paleta */}
+      {/* aurora veil in the three official tones: it gives the
+          closing block a ground without leaving the palette */}
       <Aurora className="-z-10" intensity={0.4} />
       <BinaryField className="-z-10 opacity-50" reach={170} />
 
@@ -174,7 +174,7 @@ export function FinalCta() {
           reserves, mejor.
         </motion.p>
 
-        {/* contador grande */}
+        {/* large countdown */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -226,7 +226,7 @@ export function FinalCta() {
 }
 
 /* ============================================================
-   PIE
+   FOOTER
    ============================================================ */
 
 export function Footer() {

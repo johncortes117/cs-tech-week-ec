@@ -6,14 +6,15 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   TRACING BEAM  ·  adaptado de Aceternity UI
-   Una línea vertical que se dibuja al ritmo del scroll y lleva
-   una cabeza luminosa. En la agenda hace un trabajo concreto:
-   te dice cuánto del programa llevas leído sin ocupar espacio.
+   TRACING BEAM  ·  adapted from Aceternity UI
+   A vertical line drawn at the pace of the scroll, carrying a
+   glowing head. In the agenda it does a concrete job: it tells
+   you how much of the programme you have read without taking up
+   any space.
 
-   El original usa un SVG con path curvo; acá la línea es recta
-   porque el timeline ya es una columna — una curva decorativa
-   pelearía con la retícula.
+   The original uses an SVG with a curved path; here the line is
+   straight because the timeline is already a column — a
+   decorative curve would fight the grid.
    ============================================================ */
 
 export function TracingBeam({
@@ -56,7 +57,7 @@ export function TracingBeam({
                   'linear-gradient(to bottom, transparent, hsl(var(--deep)) 8%, hsl(var(--orange)) 100%)',
               }}
             />
-            {/* cabeza del haz */}
+            {/* head of the beam */}
             <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_16px_4px_hsl(38_100%_50%_/_0.45)]" />
           </motion.div>
         </div>

@@ -14,24 +14,24 @@ import { ShinyText, Scramble } from '@/components/ui/text-fx'
 /* ============================================================
    HERO
 
-   La escena manda: detrás del texto hay un planeta de siete mil
-   puntos que gira solo, se inclina hacia el cursor y se hunde al
-   hacer scroll, con el ecuador encendido en naranja. No es un
-   fondo decorativo — es la tesis de la marca dibujada en 3D.
-   Ver components/ui/hero-scene.tsx.
+   The scene leads: behind the text there is a planet of seven
+   thousand points that spins on its own, tilts towards the
+   cursor and sinks as you scroll, with the equator lit in
+   orange. It is not a decorative background — it is the brand's
+   thesis drawn in 3D. See components/ui/hero-scene.tsx.
 
-   Sobre esa base, el texto se reparte en tres planos de
-   profundidad. El sello se mueve más que el titular y el titular
-   más que el cuerpo: esa diferencia de recorrido es lo que hace
-   que el conjunto se lea como espacio y no como capas pegadas.
+   On top of that, the text is spread across three depth planes.
+   The badge moves more than the headline and the headline more
+   than the body: that difference in travel is what makes the
+   whole thing read as space rather than as stacked layers.
 
-   Lo que había antes aquí —conos de Spotlight, degradados
-   desenfocados, rejilla y campo binario— se retiró por medida,
-   no por gusto: entre las capas con `filter: blur` y los conos
-   se iba más de la mitad de los fotogramas del sitio.
+   What used to be here —Spotlight cones, blurred gradients, the
+   grid and the binary field— was removed on measurement, not on
+   taste: between the `filter: blur` layers and the cones went
+   more than half of the site's frames.
    ============================================================ */
 
-/** Recorrido en píxeles de cada plano al mover el cursor. */
+/** Travel in pixels of each plane as the cursor moves. */
 const PLANES = { badge: 16, title: 10, body: 6 }
 
 export function Hero() {
@@ -45,9 +45,9 @@ export function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 90])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
-  /* Un solo listener para todo el paralaje del hero, agrupado en
-     un rAF: tres planos leyendo el puntero por su cuenta sería
-     tres veces el mismo trabajo de layout. */
+  /* A single listener for all of the hero's parallax, batched in
+     one rAF: three planes reading the pointer on their own would
+     be the same layout work three times over. */
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
   const px = useSpring(mx, { stiffness: 90, damping: 22, mass: 0.7 })
@@ -94,8 +94,8 @@ export function Hero() {
     >
       <HeroScene className="-z-10" />
 
-      {/* El texto necesita su propio suelo o compite con el brillo
-          del ecuador. Un degradado plano, sin filtros. */}
+      {/* The text needs its own ground or it competes with the glow
+          of the equator. A flat gradient, no filters. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -109,7 +109,7 @@ export function Hero() {
         className="shell relative"
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
       >
-        {/* sello del 80.º */}
+        {/* 80th anniversary badge */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,7 +124,7 @@ export function Hero() {
           <ShinyText className="label">{event.anniversary}</ShinyText>
         </motion.div>
 
-        {/* titular por líneas enmascaradas */}
+        {/* headline in masked lines */}
         <motion.h1
           style={reduce ? undefined : { x: titleX, y: titleY }}
           className="mt-7 font-display text-[clamp(2.7rem,9vw,7rem)] font-black leading-[0.9] tracking-display"
@@ -151,7 +151,7 @@ export function Hero() {
         </motion.h1>
 
         <motion.div style={reduce ? undefined : { x: bodyX, y: bodyY }}>
-          {/* línea ecuatorial que se traza */}
+          {/* equatorial line, drawn on load */}
           <motion.div
             aria-hidden="true"
             variants={drawLine}
@@ -166,9 +166,9 @@ export function Hero() {
             <span className="absolute -top-[3px] left-0 h-[7px] w-px bg-primary" />
           </motion.div>
 
-          {/* Las coordenadas se desencriptan al entrar: es el único
-              dato del hero que es literalmente un número, y merece
-              leerse como lectura de instrumento. */}
+          {/* The coordinates decrypt on entry: it is the only piece of
+              hero data that is literally a number, and it deserves
+              to read like an instrument readout. */}
           <Scramble
             text={event.coords}
             step={34}
@@ -184,7 +184,7 @@ export function Hero() {
             {event.intro}
           </motion.p>
 
-          {/* metadatos */}
+          {/* metadata */}
           <motion.dl
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -208,7 +208,7 @@ export function Hero() {
             </div>
           </motion.dl>
 
-          {/* llamados a la acción */}
+          {/* calls to action */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -228,7 +228,7 @@ export function Hero() {
             </Magnetic>
           </motion.div>
 
-          {/* organizan */}
+          {/* organisers */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -256,7 +256,7 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* señal de scroll: un bit que cae por el riel */}
+      {/* scroll cue: a bit falling down the rail */}
       <motion.div
         aria-hidden="true"
         initial={{ opacity: 0 }}

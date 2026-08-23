@@ -9,15 +9,16 @@ import { CountUp } from '@/components/ui/count-up'
 import { Orbit } from './orbit'
 
 /* ============================================================
-   SOBRE EL EVENTO — cifras + tracks
-   Cada track lleva un hex de la paleta bright oficial de IEEE CS.
-   Así entra color al sitio sin romper la base negra ni robarle
-   protagonismo al naranja, que sigue reservado para los CTA.
+   ABOUT THE EVENT — figures + tracks
+   Every track carries a hex from the official IEEE CS bright
+   palette. That brings colour into the site without breaking the
+   black base or stealing focus from the orange, which stays
+   reserved for the calls to action.
 
-   El "Glowing Effect" de Aceternity UI es lo que convierte esa
-   decisión de color en interacción: el arco que recorre el borde
-   de cada tarjeta se dibuja con SU hex, no con uno genérico. Seis
-   tarjetas, seis luces distintas, un solo sistema.
+   Aceternity UI's "Glowing Effect" is what turns that colour
+   decision into interaction: the arc travelling around each card
+   is drawn with ITS hex, not a generic one. Six cards, six
+   different lights, one single system.
    ============================================================ */
 
 function TrackCard({ track, index }: { track: (typeof tracks)[number]; index: number }) {
@@ -31,8 +32,8 @@ function TrackCard({ track, index }: { track: (typeof tracks)[number]; index: nu
       className="group relative h-full rounded-card"
       data-cursor
     >
-      {/* El arco vive FUERA de la tarjeta: dentro quedaría recortado
-          por su overflow-hidden y perdería el halo exterior. */}
+      {/* The arc lives OUTSIDE the card: inside it would be clipped
+          by its overflow-hidden and lose the outer halo. */}
       <GlowingEffect
         color={track.hex}
         accent="#FFA300"
@@ -42,7 +43,7 @@ function TrackCard({ track, index }: { track: (typeof tracks)[number]; index: nu
       />
 
       <Card className="relative h-full p-6 transition-colors duration-500 ease-cs">
-        {/* lavado de color propio del track, solo al pasar el cursor */}
+        {/* the track's own colour wash, only on hover */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-cs group-hover:opacity-100"
@@ -84,7 +85,7 @@ export function About() {
           lede="Seis días de charlas, talleres y retos técnicos, abiertos y gratuitos, organizados en conjunto por los capítulos Computer Society del Ecuador. Presencial donde se pueda llegar, virtual para todo el resto del país."
         />
 
-        {/* cifras */}
+        {/* figures */}
         <RevealGroup
           className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line md:grid-cols-4"
           step={0.08}
@@ -97,14 +98,14 @@ export function About() {
               <RevealItem key={s.label} className="group relative bg-ink-raise p-6">
                 <div className="flex h-[clamp(2rem,4vw,2.75rem)] items-center font-display text-[clamp(2rem,4vw,2.75rem)] font-extrabold leading-none tracking-head tabular">
                   {isTbd(s.value) ? (
-                    /* hueco explícito: se lee como reservado, no como error */
+                    /* explicit gap: reads as reserved, not as an error */
                     <span
                       className="h-[0.62em] w-[1.15em] rounded-[4px] border border-dashed border-primary/45 bg-primary/[0.06]"
                       title="Dato pendiente de confirmar"
                       aria-label="Por confirmar"
                     />
                   ) : countable ? (
-                    /* la cifra sube desde cero al entrar en pantalla */
+                    /* the figure counts up from zero when it enters the viewport */
                     <CountUp to={n} delay={i * 0.08} className="grad-text" />
                   ) : (
                     <span className="grad-text">{s.value}</span>
@@ -120,7 +121,7 @@ export function About() {
         </RevealGroup>
       </div>
 
-      {/* constelación */}
+      {/* constellation */}
       <div className="mt-24 md:mt-28">
         <Orbit />
       </div>

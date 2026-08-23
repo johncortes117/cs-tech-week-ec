@@ -1,44 +1,44 @@
 /* ============================================================
-   FUENTE ÚNICA DE CONTENIDO
-   Todo lo editable del sitio vive aquí. Los componentes no
-   traen texto quemado: cambiar el evento = cambiar este archivo.
+   SINGLE SOURCE OF CONTENT
+   Everything editable on the site lives here. Components carry
+   no hard-coded copy: changing the event = changing this file.
 
-   Lo marcado con  TBD:  son datos que faltan confirmar. Salen
-   en pantalla con estilo de marcador naranja punteado para que
-   nadie los confunda con información real.
+   Anything marked  TBD:  is data still to be confirmed. It is
+   rendered on screen as a dotted orange placeholder so nobody
+   mistakes it for real information.
    ============================================================ */
 
 export const TBD = '__TBD__' as const
 
-/** Envuelve un valor pendiente para que la UI lo pinte como marcador. */
+/** Wraps a pending value so the UI renders it as a placeholder. */
 export const tbd = (hint: string) => `${TBD}${hint}`
 export const isTbd = (v: string) => v.startsWith(TBD)
 export const tbdText = (v: string) => v.slice(TBD.length)
 
 /* ---------------------------------------------------------- */
-/* EVENTO                                                       */
+/* EVENT                                                        */
 /* ---------------------------------------------------------- */
 
 export const event = {
   name: 'CS Tech Week',
   region: 'Ecuador',
   year: 2026,
-  /** Titular del hero. El <em> se pinta en naranja. */
+  /** Hero headline. The <em> is painted orange. */
   headline: ['CS Tech', 'Week', 'Ecuador'],
   tagline: 'Latitud cero. Ochenta años. Una semana.',
   taglineEn: 'Latitude zero. Eighty years. One week.',
   intro:
     'Una semana de charlas, talleres y retos organizada por los capítulos Computer Society del Ecuador, en el año en que IEEE Computer Society cumple ochenta.',
 
-  // TBD — confirmar con el comité
+  // TBD — to confirm with the committee
   dates: tbd('Fechas por confirmar'),
   datesShort: tbd('Por confirmar'),
   venue: tbd('Sede por confirmar'),
   format: tbd('Presencial + virtual'),
 
   /**
-   * Fecha objetivo del contador (ISO, hora de Ecuador UTC−5).
-   * PLACEHOLDER — reemplazar por la fecha real de arranque.
+   * Countdown target date (ISO, Ecuador time UTC−5).
+   * PLACEHOLDER — replace with the real start date.
    */
   startsAt: '2026-11-09T09:00:00-05:00',
 
@@ -57,7 +57,7 @@ export const event = {
 } as const
 
 /* ---------------------------------------------------------- */
-/* NAVEGACIÓN                                                   */
+/* NAVIGATION                                                   */
 /* ---------------------------------------------------------- */
 
 export const navLinks = [
@@ -70,7 +70,7 @@ export const navLinks = [
 ] as const
 
 /* ---------------------------------------------------------- */
-/* TRACKS — cada hex sale de la paleta bright oficial de IEEE CS */
+/* TRACKS — every hex comes from the official IEEE CS bright palette */
 /* ---------------------------------------------------------- */
 
 export type TrackKey = 'ia' | 'cloud' | 'sec' | 'data' | 'dev' | 'quantum'
@@ -132,7 +132,7 @@ export const trackByKey = Object.fromEntries(tracks.map((t) => [t.key, t])) as R
 >
 
 /* ---------------------------------------------------------- */
-/* CIFRAS                                                       */
+/* FIGURES                                                      */
 /* ---------------------------------------------------------- */
 
 export const stats = [
@@ -143,22 +143,22 @@ export const stats = [
 ] as const
 
 /* ---------------------------------------------------------- */
-/* CONSTELACIÓN TECNOLÓGICA (§ orbit)                           */
-/* Etiquetas de tecnología, no logos de sponsor.                */
-/* edge: true = queda fuera del ancho útil en móvil, se oculta. */
+/* TECHNOLOGY CONSTELLATION (§ orbit)                           */
+/* Technology labels, not sponsor logos.                        */
+/* edge: true = falls outside the usable width on mobile, hidden. */
 /* ---------------------------------------------------------- */
 
 export const orbitNodes = [
-  // anillo 0 (r=240)
+  // ring 0 (r=240)
   { label: 'Python', ring: 0, angle: 210 },
   { label: 'React', ring: 0, angle: 270 },
   { label: 'Docker', ring: 0, angle: 330 },
-  // anillo 1 (r=370)
+  // ring 1 (r=370)
   { label: 'Kubernetes', ring: 1, angle: 198 },
   { label: 'PyTorch', ring: 1, angle: 235 },
   { label: 'Rust', ring: 1, angle: 305 },
   { label: 'Go', ring: 1, angle: 342 },
-  // anillo 2 (r=495)
+  // ring 2 (r=495)
   { label: 'Linux', ring: 2, angle: 192, edge: true },
   { label: 'Postgres', ring: 2, angle: 216 },
   { label: 'LLMs', ring: 2, angle: 270 },
@@ -168,8 +168,8 @@ export const orbitNodes = [
 
 /* ---------------------------------------------------------- */
 /* AGENDA                                                       */
-/* Se muestra tal cual esté: si days va vacío, la sección       */
-/* entra en modo "en construcción" con captura de correo.       */
+/* Rendered exactly as it stands: if days is empty, the section  */
+/* switches to "under construction" mode with email capture.    */
 /* ---------------------------------------------------------- */
 
 export type Modality = 'presencial' | 'virtual' | 'hibrido'
@@ -193,7 +193,7 @@ export type Day = {
   sessions: Session[]
 }
 
-/** Vacío a propósito: el programa aún no está definido. */
+/** Empty on purpose: the programme is not defined yet. */
 export const days: Day[] = []
 
 export const modalityLabels: Record<Modality, string> = {
@@ -221,14 +221,14 @@ export type Speaker = {
   track?: TrackKey
 }
 
-/** Vacío a propósito: aún no hay confirmados públicamente. */
+/** Empty on purpose: nobody is publicly confirmed yet. */
 export const speakers: Speaker[] = []
 
-/** Cuántos huecos mostrar mientras no haya speakers confirmados. */
+/** How many slots to show while no speakers are confirmed. */
 export const speakerSlots = 4
 
 /* ---------------------------------------------------------- */
-/* SEDES                                                        */
+/* VENUES                                                       */
 /* ---------------------------------------------------------- */
 
 export type Venue = {
@@ -243,15 +243,15 @@ export type Venue = {
 export const venues: Venue[] = []
 
 /* ---------------------------------------------------------- */
-/* CAPÍTULOS ORGANIZADORES                                      */
-/* El brand guide exige el nombre completo, sin siglas.         */
+/* ORGANISING CHAPTERS                                          */
+/* The brand guide requires the full name, no acronyms.         */
 /* ---------------------------------------------------------- */
 
 export type Chapter = { name: string; city: string }
 
 export const chapters: Chapter[] = []
 
-/** Huecos a mostrar mientras se confirma la lista. */
+/* Slots to show while the list is being confirmed. */
 export const chapterSlots = 6
 
 /* ---------------------------------------------------------- */
@@ -336,23 +336,23 @@ export const faq = [
 ]
 
 /* ---------------------------------------------------------- */
-/* PIE                                                          */
+/* FOOTER                                                       */
 /* ---------------------------------------------------------- */
 
 export const footerNote =
   'CS Tech Week Ecuador es una iniciativa de los capítulos IEEE Computer Society del Ecuador. IEEE, el logo de IEEE y el logo de IEEE Computer Society son marcas registradas de sus respectivos titulares.'
 
 /* ---------------------------------------------------------- */
-/* GLOBO — Ecuador sobre el paralelo cero                       */
-/* Son las ciudades del país, NO sedes confirmadas. La sección  */
-/* lo dice explícitamente para no prometer lo que no está.      */
+/* GLOBE — Ecuador on the zero parallel                         */
+/* These are cities of the country, NOT confirmed venues. The    */
+/* section says so explicitly, to promise nothing that isn't set. */
 /* ---------------------------------------------------------- */
 
 export type GeoCity = { name: string; location: [number, number]; size?: number }
 
-/* Los tamaños son pequeños a propósito: el país entero cabe en
-   pocos grados, y con marcadores grandes las nueve ciudades se
-   funden en una sola mancha naranja. */
+/* The sizes are deliberately small: the whole country fits in a
+   few degrees, and with large markers the nine cities merge into
+   a single orange blob. */
 export const globeCities: GeoCity[] = [
   { name: 'Quito', location: [-0.1807, -78.4678], size: 0.045 },
   { name: 'Guayaquil', location: [-2.1709, -79.9224], size: 0.04 },
@@ -366,7 +366,7 @@ export const globeCities: GeoCity[] = [
 ]
 
 /* ---------------------------------------------------------- */
-/* TELETIPO — banda de texto entre el hero y el resto            */
+/* TICKER — text band between the hero and the rest              */
 /* ---------------------------------------------------------- */
 
 export const ticker = [

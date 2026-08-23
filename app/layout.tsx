@@ -6,9 +6,9 @@ import { SmoothScroll } from '@/components/ui/smooth-scroll'
 import { TargetCursor } from '@/components/ui/target-cursor'
 import { ClickSpark } from '@/components/ui/click-spark'
 
-/* Montserrat y Open Sans son las familias que exige el brand guide
-   de IEEE Computer Society. IBM Plex Mono se suma solo para
-   micro-datos (coordenadas, contador, horarios). */
+/* Montserrat and Open Sans are the families required by the IEEE
+   Computer Society brand guide. IBM Plex Mono joins only for
+   micro-data (coordinates, countdown, schedules). */
 
 const montserrat = Montserrat({
   subsets: ['latin', 'latin-ext'],
@@ -63,13 +63,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${montserrat.variable} ${openSans.variable} ${plexMono.variable} font-sans antialiased`}
       >
-        {/* MotionProvider es quien respeta prefers-reduced-motion en
-            todo el sitio: desactiva transform y layout, deja pasar
-            opacidad. Los componentes no tienen que ramificar nada. */}
+        {/* MotionProvider is what honours prefers-reduced-motion across
+            the site: it disables transform and layout and lets
+            opacity through. Components never branch on it. */}
         <MotionProvider>
-          {/* Capa de experiencia. Las tres piezas se apagan solas con
-              la preferencia de movimiento, y el cursor además exige
-              puntero fino: en móvil ninguna llega a montarse. */}
+          {/* Experience layer. All three pieces switch themselves off with
+              the motion preference, and the cursor additionally
+              requires a fine pointer: on mobile none of them mount. */}
           <SmoothScroll />
           <TargetCursor />
           <ClickSpark />

@@ -6,26 +6,26 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   GLOBO  ·  la idea viene del "3D Globe" de Aceternity UI
-   El componente de Aceternity monta three.js + three-globe
-   (cientos de kB) para dibujar una esfera. Acá el mismo gesto se
-   resuelve con `cobe`: ~5 kB, WebGL directo, y una esfera de
-   puntos que ya habla el mismo idioma que el domo de la
-   constelación orbital.
+   GLOBE  ·  the idea comes from Aceternity UI's "3D Globe"
+   Aceternity's component pulls in three.js + three-globe
+   (hundreds of kB) to draw a sphere. Here the same gesture is
+   solved with `cobe`: ~5 kB, plain WebGL, and a sphere of dots
+   that already speaks the same language as the dome of the
+   orbital constellation.
 
-   No es adorno: arranca encuadrado en Ecuador, con el eje casi
-   sin inclinar, de modo que la línea ecuatorial cruza la esfera
-   horizontalmente por la mitad. Es el concepto de marca dibujado
-   a escala planeta — y es lo único del sitio que se agarra con
-   el cursor y se gira.
+   It is not an ornament: it starts framed on Ecuador, with the
+   axis almost untilted, so the equatorial line crosses the
+   sphere horizontally through the middle. It is the brand
+   concept drawn at planet scale — and it is the only thing on
+   the site you grab with the cursor and spin.
    ============================================================ */
 
-/** [phi, theta] para centrar la cámara en una coordenada. */
+/** [phi, theta] to centre the camera on a coordinate. */
 function focus(lat: number, lon: number): [number, number] {
   return [Math.PI - ((lon * Math.PI) / 180 - Math.PI / 2), (lat * Math.PI) / 180]
 }
 
-/** Quito: el punto que define el encuadre inicial. */
+/** Quito: the point that defines the initial framing. */
 const [BASE_PHI] = focus(-0.1807, -78.4678)
 const THETA = 0.06
 
@@ -33,7 +33,7 @@ export function Globe({
   markers = [],
   arcs = [],
   className,
-  /** Amplitud del vaivén automático, en radianes. */
+  /** Amplitude of the automatic sway, in radians. */
   sway = 0.26,
   speed = 0.0026,
 }: {
@@ -50,8 +50,8 @@ export function Globe({
   const [ready, setReady] = React.useState(false)
   const [failed, setFailed] = React.useState(false)
 
-  /* arrastre: objetivo y valor interpolado, para que soltar el
-     puntero no corte el giro en seco */
+  /* drag: target and interpolated value, so releasing the
+     pointer does not cut the spin dead */
   const dragTarget = React.useRef(0)
   const drag = React.useRef(0)
   const grabOrigin = React.useRef<number | null>(null)
@@ -82,11 +82,11 @@ export function Globe({
         diffuse: 1.15,
         mapSamples: 15000,
         mapBrightness: 5.4,
-        /* la tierra pertenece a la rampa de fondos, no es azul de stock */
+        /* the earth belongs to the background ramp, it is not stock blue */
         baseColor: [0.09, 0.14, 0.2],
-        /* PMS 137 — el naranja solo lo llevan las ciudades */
+        /* PMS 137 — only the cities carry the orange */
         markerColor: [1, 0.64, 0],
-        /* PMS 3015 difuminado en el limbo de la esfera */
+        /* PMS 3015 diffused across the limb of the sphere */
         glowColor: [0.05, 0.28, 0.44],
         markers,
         arcs,
@@ -100,8 +100,8 @@ export function Globe({
       return
     }
 
-    /* cobe v2 ya no expone onRender: el estado se empuja desde
-       nuestro propio bucle con update(). */
+    /* cobe v2 no longer exposes onRender: state is pushed from our
+       own loop with update(). */
     const frame = () => {
       if (!reduce && grabOrigin.current === null) t += speed
       drag.current += (dragTarget.current - drag.current) * 0.09
@@ -114,9 +114,9 @@ export function Globe({
       raf = requestAnimationFrame(frame)
     }
 
-    /* El globo es WebGL: fuera de pantalla seguiría consumiendo
-       GPU en cada cuadro durante toda la visita. Solo dibuja
-       mientras se le está viendo. */
+    /* The globe is WebGL: offscreen it would keep burning GPU on
+       every frame for the whole visit. It only draws while it is
+       being looked at. */
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -130,8 +130,8 @@ export function Globe({
     )
     io.observe(wrap)
 
-    /* el primer cuadro tarda un par de decenas de ms: sin esta
-       espera el canvas aparece en negro y luego salta */
+    /* the first frame takes a couple of tens of ms: without this
+       wait the canvas shows up black and then jumps */
     const id = window.setTimeout(() => setReady(true), 140)
 
     return () => {
@@ -183,8 +183,8 @@ export function Globe({
         }}
       />
 
-      {/* La línea ecuatorial atraviesa el globo por la mitad: el
-          mismo divisor que separa las secciones del sitio. */}
+      {/* The equatorial line crosses the globe through the middle:
+          the same divider that separates the site's sections. */}
       <div
         aria-hidden="true"
         className={cn(
@@ -197,8 +197,8 @@ export function Globe({
             'linear-gradient(90deg, transparent, hsl(var(--orange) / 0.5) 20%, hsl(var(--orange) / 0.9) 50%, hsl(var(--orange) / 0.5) 80%, transparent)',
         }}
       />
-      {/* La etiqueta va al extremo derecho de la línea: en el centro
-          se monta justo encima de los marcadores de Ecuador. */}
+      {/* The label goes to the right end of the line: in the centre
+          it lands right on top of Ecuador's markers. */}
       <span
         aria-hidden="true"
         className={cn(

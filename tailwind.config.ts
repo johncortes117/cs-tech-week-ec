@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Rampa de fondos: negros sesgados al azul CS (PMS 295), nunca #000 puro */
+        /* Background ramp: blacks skewed towards CS blue (PMS 295), never pure #000 */
         ink: {
           DEFAULT: 'hsl(var(--ink))',
           raise: 'hsl(var(--ink-raise))',
@@ -29,7 +29,7 @@ const config: Config = {
         },
         subtle: 'hsl(var(--paper-3))',
 
-        /* Acentos oficiales IEEE Computer Society */
+        /* Official IEEE Computer Society accents */
         primary: {
           DEFAULT: 'hsl(var(--orange))',
           foreground: 'hsl(var(--ink))',
@@ -38,7 +38,7 @@ const config: Config = {
         deep: 'hsl(var(--deep))',
         abyss: 'hsl(var(--abyss))',
 
-        /* Tracks — todos de la paleta bright oficial del brand guide */
+        /* Tracks — all from the official bright palette in the brand guide */
         track: {
           ia: 'hsl(var(--track-ia))',
           cloud: 'hsl(var(--track-cloud))',
@@ -76,8 +76,8 @@ const config: Config = {
           '70%': { opacity: '0', transform: 'scale(1.9)' },
           '100%': { opacity: '0', transform: 'scale(1.9)' },
         },
-        /* transform, no backgroundPosition: la GPU compone el
-           desplazamiento sin repintar la capa */
+        /* transform, not backgroundPosition: the GPU composites the
+           displacement without repainting the layer */
         aurora: {
           '0%,100%': { transform: 'translate3d(-3%, -2%, 0) scale(1.06)' },
           '50%': { transform: 'translate3d(4%, 3%, 0) scale(1.16)' },
@@ -95,7 +95,7 @@ const config: Config = {
         aurora: 'aurora 26s ease-in-out infinite',
       },
       transitionTimingFunction: {
-        /* Curva única del sitio: salida rápida, asentamiento largo */
+        /* The site's single curve: fast out, long settle */
         cs: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },

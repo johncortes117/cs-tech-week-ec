@@ -11,7 +11,7 @@ import { Btn } from '@/components/ui/primitives'
 import { lockScroll, unlockScroll } from '@/components/ui/smooth-scroll'
 
 /* ============================================================
-   BARRA DE ANUNCIO — contador siempre visible
+   ANNOUNCEMENT BAR — countdown always visible
    ============================================================ */
 
 function CountUnit({ value, unit }: { value: string; unit: string }) {
@@ -46,7 +46,7 @@ function AnnouncementBar() {
             <CountUnit value={c.days} unit="d" />
             <CountUnit value={c.hours} unit="h" />
             <CountUnit value={c.minutes} unit="m" />
-            {/* los segundos sobran en pantallas angostas */}
+            {/* seconds are redundant on narrow screens */}
             <span className="hidden sm:inline-flex">
               <CountUnit value={c.seconds} unit="s" />
             </span>
@@ -58,7 +58,7 @@ function AnnouncementBar() {
 }
 
 /* ============================================================
-   NAVEGACIÓN
+   NAVIGATION
    ============================================================ */
 
 export function SiteHeader() {
@@ -68,10 +68,10 @@ export function SiteHeader() {
 
   useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 24))
 
-  /* Bloquea el scroll del fondo mientras el menú móvil está
-     abierto. Con Lenis corriendo, `overflow: hidden` a secas ya
-     no basta: hay que detener también su bucle o la rueda sigue
-     desplazando el documento por debajo del menú. */
+  /* Locks background scrolling while the mobile menu is open.
+     With Lenis running, plain `overflow: hidden` is no longer
+     enough: its loop has to be stopped too, or the wheel keeps
+     scrolling the document underneath the menu. */
   React.useEffect(() => {
     if (open) lockScroll()
     else unlockScroll()
@@ -130,7 +130,7 @@ export function SiteHeader() {
           </div>
         </nav>
 
-        {/* Menú móvil */}
+        {/* Mobile menu */}
         <AnimatePresence initial={false}>
           {open ? (
             <motion.div

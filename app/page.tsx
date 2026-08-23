@@ -16,8 +16,8 @@ export default function Page() {
       <ScrollProgress />
       <main>
         <Hero />
-        {/* Corte entre el hero y el cuerpo: la banda corre sola y
-            acelera con el scroll (ScrollVelocity, React Bits). */}
+        {/* Break between the hero and the body: the band scrolls on its
+            own and speeds up with the page (ScrollVelocity, React Bits). */}
         <Ticker />
         <About />
         <Agenda />

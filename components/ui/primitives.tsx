@@ -8,8 +8,8 @@ import { TBD, isTbd, tbdText } from '@/lib/content'
 import { SplitText } from '@/components/ui/text-fx'
 
 /* ============================================================
-   REVEAL — aparición al entrar en viewport.
-   Respeta prefers-reduced-motion: cae a pura opacidad.
+   REVEAL — appearance on entering the viewport.
+   Honours prefers-reduced-motion: falls back to pure opacity.
    ============================================================ */
 
 export function Reveal({
@@ -42,7 +42,7 @@ export function Reveal({
   )
 }
 
-/** Contenedor que escalona a sus hijos `<Reveal>` o `motion.*`. */
+/** Container that staggers its `<Reveal>` or `motion.*` children. */
 export function RevealGroup({
   children,
   className,
@@ -72,7 +72,7 @@ export function RevealGroup({
   )
 }
 
-/** Hijo de RevealGroup: hereda el escalonado del padre. */
+/** Child of RevealGroup: inherits the parent's stagger. */
 export function RevealItem({
   children,
   className,
@@ -83,9 +83,10 @@ export function RevealItem({
   variants?: Variants
 }) {
   return (
-    /* `data-reveal` no lo lee JavaScript: es el gancho de la red de
-       seguridad de globals.css. Este hijo no tiene whileInView
-       propio —hereda del grupo— así que hay que marcarlo a mano. */
+    /* `data-reveal` is never read by JavaScript: it is the hook for
+       the safety net in globals.css. This child has no whileInView
+       of its own —it inherits from the group— so it has to be
+       marked by hand. */
     <motion.div data-reveal className={className} variants={variants ?? fadeUp}>
       {children}
     </motion.div>
@@ -93,7 +94,7 @@ export function RevealItem({
 }
 
 /* ============================================================
-   REGLA ECUATORIAL — el divisor es el concepto
+   EQUATORIAL RULE — the divider is the concept
    ============================================================ */
 
 export function Equator({ label, className }: { label?: string; className?: string }) {
@@ -117,7 +118,7 @@ export function Equator({ label, className }: { label?: string; className?: stri
 }
 
 /* ============================================================
-   ENCABEZADO DE SECCIÓN
+   SECTION HEADING
    ============================================================ */
 
 export function SectionHead({
@@ -148,11 +149,11 @@ export function SectionHead({
           <span className="label text-primary">{eyebrow}</span>
         </span>
       </RevealItem>
-      {/* Cuando el título es texto plano sube palabra por palabra
-          desde su propia máscara (SplitText, React Bits): es la
-          versión de sección del titular del hero. Si trae marcado
-          —un <span> con degradado, por ejemplo— no se puede
-          partir sin romperlo, y cae al reveal de bloque. */}
+      {/* When the title is plain text it rises word by word from its
+          own mask (SplitText, React Bits): it is the section-level
+          version of the hero headline. If it carries markup —a
+          <span> with a gradient, for instance— it cannot be split
+          without breaking it, and falls back to the block reveal. */}
       {typeof title === 'string' ? (
         <SplitText
           as="h2"
@@ -191,8 +192,8 @@ export function SectionHead({
 }
 
 /* ============================================================
-   MARCADOR DE DATO PENDIENTE
-   Naranja punteado: imposible confundirlo con contenido real.
+   PENDING-DATA PLACEHOLDER
+   Dotted orange: impossible to mistake for real content.
    ============================================================ */
 
 export function Tbd({ children, className }: { children: string; className?: string }) {
@@ -210,7 +211,7 @@ export function Tbd({ children, className }: { children: string; className?: str
   )
 }
 
-/** Pinta un string que puede o no ser un marcador TBD. */
+/** Renders a string that may or may not be a TBD placeholder. */
 export function Val({ value, className }: { value: string; className?: string }) {
   if (isTbd(value)) return <Tbd className={className}>{tbdText(value)}</Tbd>
   return <span className={className}>{value}</span>
@@ -248,7 +249,7 @@ export function Btn({
         className
       )}
     >
-      {/* Barrido de brillo al pasar el cursor */}
+      {/* Shine sweep on hover */}
       {variant === 'primary' ? (
         <span
           aria-hidden="true"
@@ -261,7 +262,7 @@ export function Btn({
 }
 
 /* ============================================================
-   TARJETA BASE — borde hairline + shine superior en hover
+   BASE CARD — hairline border + top shine on hover
    ============================================================ */
 
 export function Card({
@@ -286,7 +287,7 @@ export function Card({
 }
 
 /* ============================================================
-   PÍLDORA DE ETIQUETA (tracks, modalidad, tipo)
+   LABEL PILL (tracks, modality, type)
    ============================================================ */
 
 export function Pill({

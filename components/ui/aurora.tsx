@@ -4,25 +4,26 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   AURORA  ·  adaptado de Aceternity UI ("Aurora Background")
+   AURORA  ·  adapted from Aceternity UI ("Aurora Background")
 
-   Un velo de luz que se desplaza muy lento por detrás del
-   contenido. El original es multicolor tipo aurora boreal; acá
-   se limita a tres tonos oficiales —PMS 3015, Process Cyan y
-   PMS 137— para que el fondo respire sin sacar al sitio de su
-   paleta.
+   A veil of light drifting very slowly behind the content. The
+   original is multicoloured, northern-lights style; here it is
+   limited to three official tones —PMS 3015, Process Cyan and
+   PMS 137— so the background can breathe without taking the site
+   out of its palette.
 
-   Reescrito por rendimiento. La versión de Aceternity apila un
-   degradado repetido, `filter: blur(64px)` y una animación de
-   `background-position`. Esa combinación es de las más caras que
-   existen en CSS: el desenfoque obliga a rasterizar una capa
-   enorme y animar la posición del fondo la invalida entera en
-   cada cuadro. Medido, costaba más fotogramas que ninguna otra
-   capa del sitio.
+   Rewritten for performance. Aceternity's version stacks a
+   repeating gradient, `filter: blur(64px)` and an animation of
+   `background-position`. That combination is one of the most
+   expensive things in CSS: the blur forces a huge layer to be
+   rasterised, and animating the background position invalidates
+   it entirely on every frame. Measured, it cost more frames than
+   any other layer on the site.
 
-   Acá la suavidad está horneada en los propios degradados
-   radiales —que ya nacen difusos, sin filtro— y el movimiento se
-   hace con `transform`, que la GPU compone sin repintar nada.
+   Here the softness is baked into the radial gradients
+   themselves —which are born diffuse, with no filter— and the
+   movement uses `transform`, which the GPU composites without
+   repainting anything.
    ============================================================ */
 
 export function Aurora({

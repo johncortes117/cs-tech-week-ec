@@ -5,35 +5,35 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   ESCENA DEL HERO — WebGL
+   HERO SCENE — WebGL
 
-   Un planeta de siete mil puntos con el ecuador encendido, y una
-   línea de luz naranja que lo atraviesa y sigue de lado a lado
-   de la pantalla. Es la misma regla ecuatorial que separa cada
-   sección del sitio, pero aquí se ve de dónde sale: de un
-   planeta, a la altura exacta de la latitud cero.
+   A planet of seven thousand points with its equator lit, and a
+   line of orange light that crosses it and carries on from one
+   side of the screen to the other. It is the same equatorial
+   rule that separates every section of the site, but here you
+   see where it comes from: a planet, at exactly latitude zero.
 
-   Sustituye a toda la atmósfera anterior (conos de Spotlight,
-   degradados desenfocados, rejilla y campo binario). No fue por
-   gusto: medido sobre el build de producción, las capas con
-   `filter: blur` costaban 2,3× de fotogramas y los conos otro
-   1,8×, porque cada una obliga a rasterizar superficies enormes
-   en cada cuadro. Un shader hace todo eso en una pasada.
+   It replaces the whole previous atmosphere (Spotlight cones,
+   blurred gradients, grid and binary field). Not by taste:
+   measured on the production build, the `filter: blur` layers
+   cost 2.3× in frames and the cones another 1.8×, because each
+   one forces enormous surfaces to be rasterised every frame. A
+   shader does all of that in a single pass.
 
-   Dos programas, dos llamadas de dibujo:
+   Two programs, two draw calls:
 
-   1. FONDO — un triángulo a pantalla completa. Nebulosa con
-      ruido fbm, halo alrededor del planeta y la línea del
-      ecuador. Los cinco colores salen del brand guide.
+   1. BACKGROUND — a full-screen triangle. Nebula built from fbm
+      noise, halo around the planet and the equator line. All
+      five colours come from the brand guide.
 
-   2. PLANETA — puntos repartidos por espiral de Fibonacci sobre
-      una esfera unitaria. Gira solo, se inclina con el cursor y
-      se hunde con el scroll. Los puntos cuya latitud es ~0 se
-      pintan naranja: el ecuador no está dibujado encima, lo
-      dibuja la propia geometría del planeta.
+   2. PLANET — points spread by Fibonacci spiral over a unit
+      sphere. It spins on its own, tilts with the cursor and
+      sinks with the scroll. The points whose latitude is ~0 are
+      painted orange: the equator is not drawn on top, it is
+      drawn by the planet's own geometry.
 
-   Todo el 3D es matemática en el vertex shader — sin three.js,
-   sin OGL, sin dependencias.
+   All the 3D is maths in the vertex shader — no three.js, no
+   OGL, no dependencies.
    ============================================================ */
 
 const VERT_BG = `
@@ -44,11 +44,11 @@ void main() { gl_Position = vec4(aXY, 0.0, 1.0); }
 const FRAG_BG = `
 precision mediump float;
 uniform vec2  uRes;
-uniform vec2  uCenter;   /* centro del planeta, en espacio p */
+uniform vec2  uCenter;   /* planet centre, in p space */
 uniform float uTime;
 uniform float uScroll;
-uniform float uQuality;  /* 1 = completo, 0 = versión barata */
-uniform float uIntroBg;  /* la línea del ecuador nace con el planeta */
+uniform float uQuality;  /* 1 = full, 0 = cheap version */
+uniform float uIntroBg;  /* the equator line is born with the planet */
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
@@ -77,8 +77,9 @@ void main() {
   float r = length(d);
   float n = fbm(p * 1.9 + vec2(uTime * 0.018, uTime * 0.011));
 
-  /* La página es negra. La luz nace del planeta y se apaga
-     rápido: sin esto el fondo se lava y deja de ser IEEE CS. */
+  /* The page is black. The light is born from the planet and dies
+     fast: without this the background washes out and stops being
+     IEEE CS. */
   vec3 col = INK;
   col += ABYSS * 1.05 * exp(-r * 1.9) * (0.55 + 0.55 * n);
   col += DEEP  * 0.34 * exp(-r * 3.1);
@@ -88,21 +89,21 @@ void main() {
     col += CYAN * pow(n2, 4.0) * 0.13 * exp(-r * 1.2);
   }
 
-  /* La línea del ecuador cruza toda la pantalla a la altura del
-     planeta: el filo nítido más un rescoldo ancho debajo. */
+  /* The equator line crosses the whole screen at the planet's
+     height: the crisp edge plus a wide ember underneath. */
   float ecuador = p.y - uCenter.y;
   col += ORANGE * exp(-abs(ecuador) * 150.0) * 0.55 * uIntroBg;
   col += ORANGE * exp(-abs(ecuador) * 13.0) * 0.085 * (0.6 + 0.4 * n) * uIntroBg;
 
-  /* se apaga hacia los bordes horizontales para que la línea no
-     choque de frente con el marco */
+  /* fades towards the horizontal edges so the line does not hit
+     the frame head-on */
   col *= 1.0 - 0.5 * smoothstep(0.55, 1.1, abs(p.x) / max(0.35, uRes.x / uRes.y * 0.5));
 
-  /* viñeta y desvanecido inferior hacia la siguiente sección */
+  /* vignette and bottom fade towards the next section */
   col *= 1.0 - 0.42 * smoothstep(0.30, 1.0, length(p * vec2(0.72, 1.25)));
   col *= 1.0 - 0.55 * smoothstep(0.30, 0.5, p.y * -1.0) * uScroll;
 
-  /* grano finísimo: mata el banding de los degradados oscuros */
+  /* very fine grain: kills the banding of the dark gradients */
   col += (hash(gl_FragCoord.xy + uTime) - 0.5) * 0.013;
 
   gl_FragColor = vec4(col, 1.0);
@@ -119,7 +120,7 @@ uniform float uAspect;
 uniform float uScale;
 uniform vec2  uCenterNdc;
 uniform float uDpr;
-uniform float uIntro;   /* 0 = disperso, 1 = planeta formado */
+uniform float uIntro;   /* 0 = scattered, 1 = planet formed */
 
 varying float vDepth;
 varying float vIntro;
@@ -127,25 +128,25 @@ varying float vEquator;
 varying float vRand;
 
 void main() {
-  /* ENSAMBLAJE. Los puntos entran desde fuera y caen a su sitio
-     en la esfera, cada uno con su propio retraso. Es lo primero
-     que se ve al abrir la página: el planeta se construye. */
+  /* ASSEMBLY. The points come in from outside and fall into place
+     on the sphere, each with its own delay. It is the first
+     thing you see on opening the page: the planet builds itself. */
   float delay = aRand * 0.4;
   float k = clamp((uIntro - delay) / max(0.0001, 1.0 - delay), 0.0, 1.0);
   k = 1.0 - pow(1.0 - k, 3.0);
   vIntro = k;
   vec3 seed = aPos * mix(3.4, 1.0, k);
 
-  /* giro sobre el eje polar */
+  /* spin about the polar axis */
   float cy = cos(uYaw), sy = sin(uYaw);
   vec3 p = vec3(seed.x * cy + seed.z * sy, seed.y, -seed.x * sy + seed.z * cy);
 
-  /* inclinación: es lo que responde al cursor */
+  /* tilt: this is what responds to the cursor */
   float cp = cos(uPitch), sp = sin(uPitch);
   p = vec3(p.x, p.y * cp - p.z * sp, p.y * sp + p.z * cp);
 
-  /* la latitud se mide ANTES de rotar: el ecuador viaja con el
-     planeta, no con la cámara */
+  /* latitude is measured BEFORE rotating: the equator travels
+     with the planet, not with the camera */
   vEquator = 1.0 - smoothstep(0.0, 0.038, abs(aPos.y));
   vDepth = p.z;
   vRand = aRand;
@@ -173,8 +174,8 @@ void main() {
   if (d > 0.25) discard;
   float soft = smoothstep(0.25, 0.015, d);
 
-  /* La cara oculta se apaga con fuerza. Sin esta diferencia la
-     esfera se lee como un disco de ruido en vez de un volumen. */
+  /* The hidden face is dimmed hard. Without that difference the
+     sphere reads as a disc of noise instead of a volume. */
   float front = smoothstep(-1.0, 0.9, vDepth);
   front *= front;
 
@@ -213,7 +214,7 @@ function program(gl: WebGLRenderingContext, vs: string, fs: string) {
   return p
 }
 
-/** Espiral de Fibonacci: reparto uniforme sin acumular en los polos. */
+/** Fibonacci spiral: even spread without bunching at the poles. */
 function sphere(count: number) {
   const pos = new Float32Array(count * 3)
   const rand = new Float32Array(count)
@@ -267,8 +268,8 @@ export function HeroScene({ className }: { className?: string }) {
       return
     }
 
-    /* triángulo que cubre la pantalla: más barato que dos, evita
-       la costura de la diagonal */
+    /* triangle that covers the screen: cheaper than two, and it
+       avoids the seam along the diagonal */
     const quad = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, quad)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
@@ -299,9 +300,10 @@ export function HeroScene({ className }: { className?: string }) {
     const uDpr = gl.getUniformLocation(progDots, 'uDpr')
     const uIntro = gl.getUniformLocation(progDots, 'uIntro')
 
-    /* Resolución tope 1.5: por encima no se distingue un fondo
-       difuso y el coste de relleno se dispara. Baja sola a 1 si
-       la máquina no da los cuadros (ver medición más abajo). */
+    /* Resolution capped at 1.5: above that a diffuse background is
+       indistinguishable and the fill cost explodes. Drops to 1 on
+       its own if the machine cannot keep up (see the measurement
+       further down). */
     let dprCap = 1.5
     let dpr = Math.min(window.devicePixelRatio || 1, dprCap)
     let quality = 1
@@ -312,8 +314,8 @@ export function HeroScene({ className }: { className?: string }) {
 
     const layout = () => {
       const aspect = w / h
-      /* En vertical el planeta no cabe al lado del texto: se
-         centra y baja, y el texto queda encima de su hemisferio. */
+      /* In portrait the planet does not fit beside the text: it is
+         centred and lowered, and the text sits over its hemisphere. */
       const portrait = aspect < 0.95
       cx = portrait ? 0 : 0.44
       cy = portrait ? -0.52 : -0.04
@@ -339,10 +341,10 @@ export function HeroScene({ className }: { className?: string }) {
     let raf = 0
     let visible = true
 
-    /* Calidad adaptativa: se miden los primeros cuadros reales y,
-       si la máquina no llega, se baja resolución y se apaga la
-       capa de ruido secundaria. Vale más un hero fluido que uno
-       bonito a tirones. */
+    /* Adaptive quality: the first real frames are measured and, if
+       the machine falls short, resolution drops and the secondary
+       noise layer is switched off. A fluid hero is worth more than
+       a pretty one that stutters. */
     let probe = 0
     let acc = 0
     let prev = 0
@@ -351,7 +353,7 @@ export function HeroScene({ className }: { className?: string }) {
     const draw = (t: number) => {
       const time = t / 1000
       if (!t0) t0 = t
-      /* 2,2 s de ensamblaje; con reduced-motion ya está formado */
+      /* 2.2 s of assembly; with reduced-motion it is already formed */
       const intro = reduce ? 1 : Math.min(1, (t - t0) / 2200)
 
       if (!reduce && probe < 45) {
@@ -366,8 +368,8 @@ export function HeroScene({ className }: { className?: string }) {
         }
       }
 
-      /* suavizado exponencial: el puntero manda un objetivo y la
-         escena lo persigue, así el giro nunca da tirones */
+      /* exponential smoothing: the pointer sets a target and the
+         scene chases it, so the spin never jerks */
       const m = mouse.current
       m.x += (m.tx - m.x) * 0.045
       m.y += (m.ty - m.y) * 0.045
@@ -382,8 +384,8 @@ export function HeroScene({ className }: { className?: string }) {
       gl.uniform1f(uTimeBg, reduce ? 12 : time)
       gl.uniform1f(uScrollBg, s)
       gl.uniform1f(uQualityBg, quality)
-      /* la línea tarda un poco más que los puntos: primero el
-         planeta, después el ecuador */
+      /* the line takes slightly longer than the points: first the
+         planet, then the equator */
       gl.uniform1f(uIntroBg, Math.max(0, (intro - 0.45) / 0.55))
       gl.disable(gl.BLEND)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
@@ -398,8 +400,8 @@ export function HeroScene({ className }: { className?: string }) {
       gl.vertexAttribPointer(aRand, 1, gl.FLOAT, false, 0, 0)
 
       gl.uniform1f(uYaw, (reduce ? 0.6 : time * 0.05) + m.x * 0.45)
-      /* casi de canto: así el ecuador se lee como una línea recta
-         y empalma con la que cruza la pantalla */
+      /* almost edge-on: this way the equator reads as a straight
+         line and joins the one crossing the screen */
       gl.uniform1f(uPitch, -0.1 + m.y * 0.2 + s * 0.3)
       gl.uniform1f(uAspect, w / h)
       gl.uniform1f(uScale, 0.66 * (1 - s * 0.22))
@@ -424,8 +426,9 @@ export function HeroScene({ className }: { className?: string }) {
     if (reduce) requestAnimationFrame(draw)
     else startLoop()
 
-    /* Fuera de pantalla no se dibuja. Es la diferencia entre
-       gastar la GPU toda la visita o solo mientras se ve. */
+    /* Offscreen means nothing is drawn. It is the difference
+       between burning GPU for the whole visit and only while it
+       is visible. */
     const io = new IntersectionObserver(
       ([e]) => {
         visible = e.isIntersecting
@@ -468,8 +471,8 @@ export function HeroScene({ className }: { className?: string }) {
       aria-hidden="true"
     >
       {failed ? (
-        /* Sin WebGL el hero no se queda negro: el mismo cuadro,
-           resuelto con degradados y sin filtros. */
+        /* Without WebGL the hero does not go black: the same frame,
+           solved with gradients and no filters. */
         <div
           className="absolute inset-0"
           style={{

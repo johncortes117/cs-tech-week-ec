@@ -8,12 +8,12 @@ import { orbitNodes } from '@/lib/content'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   CONSTELACIÓN TECNOLÓGICA
-   Las órbitas no giran alrededor de un punto cualquiera: giran
-   alrededor de la línea ecuatorial, que es la base del cuadro.
-   El domo de puntos es el hemisferio visto desde el paralelo 0.
-   Todo se calcula de forma determinista — sin Math.random —
-   para que servidor y cliente rindan idéntico.
+   TECHNOLOGY CONSTELLATION
+   The orbits do not revolve around just any point: they revolve
+   around the equatorial line, which is the base of the frame.
+   The dot dome is the hemisphere seen from parallel 0.
+   Everything is computed deterministically — no Math.random —
+   so that server and client render identically.
    ============================================================ */
 
 const VB = { w: 1200, h: 560 }
@@ -22,10 +22,10 @@ const CY = VB.h
 const RADII = [240, 370, 495]
 
 /**
- * Posición del nodo en porcentaje del contenedor.
- * Se redondea a 3 decimales a propósito: sin eso, servidor y
- * cliente serializan el flotante distinto y React reporta un
- * desajuste de hidratación.
+ * Node position as a percentage of the container.
+ * Rounded to 3 decimals on purpose: without it, server and
+ * client serialise the float differently and React reports a
+ * hydration mismatch.
  */
 function polarPct(ring: number, angleDeg: number) {
   const r = RADII[ring] ?? RADII[RADII.length - 1]
@@ -38,7 +38,7 @@ function polarPct(ring: number, angleDeg: number) {
   }
 }
 
-/** Domo de puntos: filas horizontales dentro de un semicírculo. */
+/** Dot dome: horizontal rows inside a semicircle. */
 function DotDome({ radius = 200, rows = 18, gap = 12 }) {
   const dots: { x: number; y: number; o: number }[] = []
   for (let i = 0; i < rows; i++) {
@@ -47,7 +47,7 @@ function DotDome({ radius = 200, rows = 18, gap = 12 }) {
     const count = Math.max(1, Math.floor((halfWidth * 2) / gap))
     for (let j = 0; j <= count; j++) {
       const x = -halfWidth + (j * (halfWidth * 2)) / count
-      // los puntos se apagan hacia el borde del domo
+      // the dots fade out towards the edge of the dome
       const edge = Math.hypot(x, y) / radius
       dots.push({ x, y, o: 0.5 * (1 - edge * 0.85) })
     }
@@ -72,7 +72,7 @@ export function Orbit() {
 
   return (
     <div ref={ref} className="relative isolate overflow-hidden" aria-hidden="true">
-      {/* resplandor bajo el horizonte */}
+      {/* glow below the horizon */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
@@ -101,7 +101,7 @@ export function Orbit() {
               </linearGradient>
             </defs>
 
-            {/* anillos orbitales */}
+            {/* orbital rings */}
             {RADII.map((r, i) => (
               <motion.circle
                 key={r}
@@ -122,7 +122,7 @@ export function Orbit() {
             <DotDome />
           </svg>
 
-          {/* nodos de tecnología */}
+          {/* technology nodes */}
           {orbitNodes.map((n, i) => {
             const p = polarPct(n.ring, n.angle)
             return (
@@ -149,7 +149,7 @@ export function Orbit() {
           })}
         </div>
 
-        {/* la línea ecuatorial cierra el cuadro */}
+        {/* the equatorial line closes the frame */}
         <div
           className="absolute inset-x-0 bottom-0 h-px"
           style={{

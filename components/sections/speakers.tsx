@@ -9,15 +9,15 @@ import { CometCard } from '@/components/ui/comet-card'
 
 /* ============================================================
    SPEAKERS
-   Mientras no haya confirmados, los huecos se muestran como
-   marcos vacíos deliberados — con número de orden y "por
-   anunciar" — en vez de tarjetas falsas con nombres inventados.
+   While nobody is confirmed, the slots are shown as deliberately
+   empty frames — with an order number and "to be announced" —
+   instead of fake cards with invented names.
 
-   Las tarjetas van dentro del "Comet Card" de Aceternity UI: la
-   ficha se inclina en perspectiva siguiendo al cursor y un
-   reflejo especular se desplaza sobre ella. Es el sitio exacto
-   donde ese efecto tiene sentido — una ficha de persona se
-   siente objeto, y un objeto se toma en la mano.
+   The cards sit inside Aceternity UI's "Comet Card": the card
+   tilts in perspective following the cursor and a specular
+   highlight travels across it. This is exactly where that effect
+   makes sense — a person's card feels like an object, and an
+   object is something you pick up.
    ============================================================ */
 
 function GhostSpeaker({ index }: { index: number }) {
@@ -34,7 +34,7 @@ function GhostSpeaker({ index }: { index: number }) {
           className="group relative aspect-[4/5] overflow-hidden rounded-card border border-dashed border-line-strong bg-ink-raise"
           data-cursor
         >
-          {/* trama de puntos: el mismo lenguaje del domo orbital */}
+          {/* dot pattern: the same language as the orbital dome */}
           <div
             aria-hidden="true"
             className="absolute inset-0 opacity-40 transition-opacity duration-500 ease-cs group-hover:opacity-80"
@@ -45,7 +45,7 @@ function GhostSpeaker({ index }: { index: number }) {
               WebkitMaskImage: 'radial-gradient(70% 60% at 50% 38%, #000, transparent)',
             }}
           />
-          {/* barrido: el hueco se está "escaneando" a la espera de alguien */}
+          {/* sweep: the slot is "scanning", waiting for someone */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-24 -translate-y-full opacity-0 transition-all duration-[900ms] ease-cs group-hover:translate-y-[420%] group-hover:opacity-100 motion-reduce:hidden"

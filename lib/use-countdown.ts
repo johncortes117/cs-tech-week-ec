@@ -8,7 +8,7 @@ export type Countdown = {
   minutes: string
   seconds: string
   done: boolean
-  /** false hasta que monta en el cliente — evita desajuste de hidratación */
+  /** false until it mounts on the client — avoids a hydration mismatch */
   ready: boolean
 }
 
@@ -30,9 +30,9 @@ function compute(target: number): Omit<Countdown, 'ready'> {
 }
 
 /**
- * Contador hacia una fecha ISO. Renderiza ceros en el servidor y
- * arranca al montar, así el HTML del servidor y el del cliente
- * coinciden y no hay parpadeo de hidratación.
+ * Countdown towards an ISO date. It renders zeros on the server
+ * and starts on mount, so the server HTML and the client HTML
+ * match and there is no hydration flash.
  */
 export function useCountdown(iso: string): Countdown {
   const target = new Date(iso).getTime()

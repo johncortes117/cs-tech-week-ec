@@ -3,33 +3,33 @@
 @tailwind utilities;
 
 /* ============================================================
-   CS TECH WEEK ECUADOR — sistema "Latitud Cero"
-   Tema oscuro comprometido. Los hex vienen del IEEE CS Brand
-   Identity & Graphic Style Guide; los negros se derivan de
-   PMS 295 (#002855) para que pertenezcan a la marca.
+   CS TECH WEEK ECUADOR — the "Latitude Zero" system
+   Committed dark theme. The hex values come from the IEEE CS
+   Brand Identity & Graphic Style Guide; the blacks are derived
+   from PMS 295 (#002855) so they belong to the brand.
    ============================================================ */
 
 @layer base {
   :root {
-    /* Fondos — matiz ≈213°, nunca gris neutro */
+    /* Backgrounds — hue ≈213°, never a neutral grey */
     --ink:        216 38% 3%;    /* #05070B  base            */
-    --ink-raise:  216 41% 7%;    /* #0B111A  superficie      */
-    --ink-plate:  212 32% 9%;    /* #10171F  elevado         */
+    --ink-raise:  216 41% 7%;    /* #0B111A  surface         */
+    --ink-plate:  212 32% 9%;    /* #10171F  raised          */
     --line:       214 28% 15%;   /* #1B2430  hairline        */
-    --line-strong:214 24% 22%;   /* #2A3746  borde marcado   */
+    --line-strong:214 24% 22%;   /* #2A3746  strong border   */
 
-    /* Texto */
+    /* Text */
     --paper:      210 30% 95%;   /* #EEF2F6 */
     --paper-2:    212 18% 64%;   /* #94A3B4 */
     --paper-3:    213 15% 42%;   /* #5A6779 */
 
-    /* Acentos IEEE CS */
+    /* IEEE CS accents */
     --orange:      38 100% 50%;  /* #FFA300  PMS 137 C       */
     --cyan:       192 100% 44%;  /* #00B5E2  PMS Process Cyan*/
     --deep:       202 100% 30%;  /* #00629B  PMS 3015        */
     --abyss:      212 100% 17%;  /* #002855  PMS 295         */
 
-    /* Tracks — paleta bright oficial, un hex por temática */
+    /* Tracks — official bright palette, one hex per topic */
     --track-ia:      301 68% 35%;  /* #981D97  PMS 254 C */
     --track-cloud:   192 100% 44%; /* #00B5E2  PMS Process Cyan */
     --track-sec:     347 88% 39%;  /* #BA0C2F  PMS 200 C */
@@ -80,7 +80,7 @@
     border-radius: 3px;
   }
 
-  /* Barra de scroll acorde al tema */
+  /* Scrollbar, themed to match */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: hsl(var(--ink)); }
   ::-webkit-scrollbar-thumb {
@@ -92,7 +92,7 @@
 }
 
 @layer components {
-  /* Contenedor único del sitio */
+  /* The site's single container */
   .shell {
     width: min(100% - 40px, 1240px);
     margin-inline: auto;
@@ -101,12 +101,12 @@
     .shell { width: min(100% - 72px, 1240px); }
   }
 
-  /* Etiqueta micro monoespaciada — el tono de "hoja técnica" */
+  /* Micro monospaced label — the "spec sheet" register */
   .label {
     @apply font-mono text-[11px] uppercase tracking-label text-subtle;
   }
 
-  /* Regla ecuatorial: el divisor ES el concepto */
+  /* Equatorial rule: the divider IS the concept */
   .equator {
     position: relative;
     height: 1px;
@@ -128,7 +128,7 @@
     background: hsl(var(--orange));
   }
 
-  /* Línea de brillo superior en tarjetas — heredada de DevIAthon */
+  /* Top shine line on cards — inherited from DevIAthon */
   .shine-top::before {
     content: '';
     position: absolute;
@@ -147,7 +147,7 @@
   }
   .shine-top:hover::before { opacity: 1; }
 
-  /* Retícula técnica, desvanecida por máscara */
+  /* Technical grid, faded out by a mask */
   .tech-grid {
     background-image:
       linear-gradient(hsl(var(--paper) / 0.045) 1px, transparent 1px),
@@ -155,7 +155,7 @@
     background-size: 56px 56px;
   }
 
-  /* Degradado de texto para cifras y palabras clave */
+  /* Text gradient for figures and key words */
   .grad-text {
     background: linear-gradient(
       92deg,
@@ -168,7 +168,7 @@
     color: transparent;
   }
 
-  /* Borde con degradado (truco de doble fondo, sin pseudo-elemento) */
+  /* Gradient border (double-background trick, no pseudo-element) */
   .grad-border {
     border: 1px solid transparent;
     background:
@@ -199,8 +199,8 @@
   .tabular { font-variant-numeric: tabular-nums; }
 }
 
-/* Respeto absoluto por reduced-motion: Motion lo maneja vía hook,
-   esto cubre las animaciones puramente CSS. */
+/* Absolute respect for reduced-motion: Motion handles it through
+   a hook, this covers the purely CSS animations. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *,
@@ -213,20 +213,20 @@
 }
 
 /* ============================================================
-   CAPA DE INTERACCIÓN
-   Todo lo que necesitan los componentes tomados de Aceternity UI
-   y React Bits, reescrito para el sistema "Latitud Cero". Vive
-   fuera de los @layer de Tailwind porque son piezas concretas,
-   no utilidades: nada de esto debe poder purgarse por accidente.
+   INTERACTION LAYER
+   Everything the components borrowed from Aceternity UI and
+   React Bits need, rewritten for the "Latitude Zero" system.
+   It lives outside Tailwind's @layer because these are concrete
+   pieces, not utilities: none of it should ever be purged.
    ============================================================ */
 
 :root {
   --ease-cs: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---------- Lenis (scroll suave) --------------------------- */
-/* Lenis toma el control del desplazamiento: el smooth nativo
-   tiene que apagarse o los dos se pelean y el scroll tirita. */
+/* ---------- Lenis (smooth scroll) -------------------------- */
+/* Lenis takes over scrolling: native smooth scroll has to be
+   turned off or the two fight and the page stutters. */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -244,10 +244,10 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* ---------- Anillo de luz (GlowingEffect) ------------------ */
-/* Receta de borde con degradado: dos máscaras idénticas, una
-   recortada al content-box, y `exclude` entre ambas. Lo que
-   queda visible es exactamente el padding — o sea, el borde. */
+/* ---------- Light ring (GlowingEffect) --------------------- */
+/* Gradient-border recipe: two identical masks, one clipped to
+   the content-box, and `exclude` between them. What stays
+   visible is exactly the padding — that is, the border. */
 .glow-ring {
   position: absolute;
   inset: 0;
@@ -291,7 +291,7 @@ html.lenis body {
   }
 }
 
-/* ---------- Split-flap (contador) -------------------------- */
+/* ---------- Split-flap (countdown) ------------------------- */
 .flap-cell {
   position: relative;
   display: inline-grid;
@@ -318,9 +318,9 @@ html.lenis body {
 }
 
 /* ---------- TargetCursor ----------------------------------- */
-/* Solo se activa cuando el componente confirma puntero fino;
-   los campos de texto recuperan el cursor nativo porque nadie
-   escribe cómodo sin barra de inserción. */
+/* Only enabled once the component confirms a fine pointer; text
+   fields keep the native cursor because nobody types comfortably
+   without a caret. */
 html.has-target-cursor,
 html.has-target-cursor * {
   cursor: none !important;
@@ -332,7 +332,7 @@ html.has-target-cursor [contenteditable='true'] {
   cursor: auto !important;
 }
 
-/* ---------- Señal de scroll -------------------------------- */
+/* ---------- Scroll cue ------------------------------------- */
 .scroll-cue > span:first-child {
   animation: cue 2.2s var(--ease-cs) infinite;
 }
@@ -363,26 +363,25 @@ html.has-target-cursor [contenteditable='true'] {
   }
 }
 
-/* ---------- Red de seguridad de los reveals ----------------- */
-/* Las apariciones al hacer scroll dependen de un
-   IntersectionObserver. Cuando la preferencia de movimiento está
-   activa el salto a un ancla es instantáneo, y en ese caso el
-   observador de Motion puede no llegar a disparar: la sección de
-   destino se quedaría en su estado inicial —invisible— hasta que
-   el usuario mueva la rueda.
+/* ---------- Reveal safety net ------------------------------ */
+/* Scroll-triggered reveals depend on an IntersectionObserver.
+   When the motion preference is on, jumping to an anchor is
+   instantaneous, and in that case Motion's observer may never
+   fire: the target section would stay in its initial state
+   —invisible— until the user moves the wheel.
 
-   Para quien pide menos movimiento la respuesta correcta no es
-   animar mejor, es no animar: el contenido simplemente está.
-   Estas dos líneas lo garantizan por CSS, que no depende de que
-   ningún observador funcione. */
+   For someone asking for less motion the right answer is not to
+   animate better, it is not to animate: the content is simply
+   there. These two lines guarantee that in CSS, which does not
+   depend on any observer working. */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
   }
-  /* Los anillos orbitales se dibujan animando pathLength, que
-     Motion traduce a stroke-dashoffset. Sin animación el trazo
-     quedaría oculto, así que se muestra entero de una vez. */
+  /* The orbital rings are drawn by animating pathLength, which
+     Motion translates into stroke-dashoffset. With no animation
+     the stroke would stay hidden, so it is shown all at once. */
   svg [data-reveal] {
     stroke-dasharray: none !important;
     stroke-dashoffset: 0 !important;

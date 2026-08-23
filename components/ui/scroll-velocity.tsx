@@ -6,14 +6,14 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   SCROLL VELOCITY  ·  adaptado de React Bits
-   Una banda de texto que corre sola y cambia de velocidad —
-   incluso de sentido — según lo rápido que scrollees. Es el
-   detalle que hace que la página se sienta "conectada" al
-   gesto en lugar de reaccionar a él.
+   SCROLL VELOCITY  ·  adapted from React Bits
+   A band of text that scrolls on its own and changes speed —
+   even direction — depending on how fast you scroll. It is the
+   detail that makes the page feel "connected" to the gesture
+   rather than merely reacting to it.
 
-   Acá cumple además una función editorial: separa el hero del
-   resto y repite el lema como si fuera un teletipo.
+   Here it also does an editorial job: it separates the hero from
+   the rest and repeats the tagline like a ticker tape.
    ============================================================ */
 
 function wrap(min: number, max: number, v: number) {
@@ -30,7 +30,7 @@ export function ScrollVelocity({
   itemClassName,
 }: {
   children: React.ReactNode
-  /** px/s en reposo. Negativo invierte el sentido. */
+  /** px/s at rest. Negative reverses the direction. */
   baseVelocity?: number
   copies?: number
   className?: string
@@ -55,9 +55,9 @@ export function ScrollVelocity({
 
   const x = useTransform(baseX, (v) => (copyWidth === 0 ? '0px' : `${wrap(-copyWidth, 0, v)}px`))
 
-  /* Fuera de pantalla la cinta no se mueve: es un bucle de cada
-     cuadro que, si no se apaga, sigue moviendo una capa que nadie
-     está viendo durante toda la visita. */
+  /* Offscreen the band does not move: it is an every-frame loop
+     that, if not switched off, keeps moving a layer nobody is
+     looking at for the whole visit. */
   const wrapRef = React.useRef<HTMLDivElement>(null)
   const visible = React.useRef(true)
 

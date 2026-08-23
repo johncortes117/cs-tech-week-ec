@@ -9,25 +9,25 @@ import { Globe } from '@/components/ui/globe'
 import { GlareHover } from '@/components/ui/glare-hover'
 
 /* ============================================================
-   SEDES
-   El globo es la pieza central de la sección y la única del
-   sitio que se puede agarrar: se arrastra y gira. La idea viene
-   del "3D Globe" de Aceternity UI, pero montada sobre `cobe`
-   (~5 kB) en vez de three.js — ver components/ui/globe.tsx.
+   VENUES
+   The globe is the centrepiece of the section and the only thing
+   on the site you can grab: it drags and spins. The idea comes
+   from Aceternity UI's "3D Globe", but built on `cobe` (~5 kB)
+   instead of three.js — see components/ui/globe.tsx.
 
-   Arranca encuadrado en Ecuador, con la línea ecuatorial
-   cruzando la esfera por la mitad. No es un adorno global
-   genérico: es el concepto de marca dibujado a escala planeta.
+   It starts framed on Ecuador, with the equatorial line crossing
+   the sphere through the middle. It is not a generic globe
+   ornament: it is the brand concept drawn at planet scale.
 
-   Los puntos son ciudades del país, NO sedes confirmadas, y el
-   pie de foto lo dice con todas sus letras.
+   The dots are cities of the country, NOT confirmed venues, and
+   the caption says so in as many words.
    ============================================================ */
 
-/* Referencia estable: si el array se construyera en el render, el
-   globo se destruiría y volvería a crearse en cada pasada.
+/* Stable reference: if the array were built during render, the
+   globe would be destroyed and recreated on every pass.
 
-   Sin arcos a propósito: cobe los soporta, pero entre ciudades
-   separadas por dos grados no se ven — solo ensucian el punto. */
+   No arcs on purpose: cobe supports them, but between cities two
+   degrees apart they are invisible — they only muddy the spot. */
 const GLOBE_MARKERS = globeCities.map((c) => ({ location: c.location, size: c.size ?? 0.03 }))
 
 function CityLegend() {
@@ -66,9 +66,9 @@ export function Venues() {
         />
 
         <div className="mt-16 grid items-center gap-12 lg:grid-cols-[1fr_0.95fr] lg:gap-16">
-          {/* ---------- el globo ---------- */}
+          {/* ---------- the globe ---------- */}
           <div className="relative mx-auto w-full max-w-[520px]">
-            {/* resplandor bajo la esfera: la separa del fondo negro */}
+            {/* glow beneath the sphere: it separates it from the black */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-[-12%] -z-10"
@@ -84,7 +84,7 @@ export function Venues() {
             </p>
           </div>
 
-          {/* ---------- lectura del globo ---------- */}
+          {/* ---------- reading the globe ---------- */}
           <div className="flex flex-col gap-7">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -168,9 +168,9 @@ export function Venues() {
 }
 
 /* ============================================================
-   CAPÍTULOS ORGANIZADORES
-   El brand guide exige el nombre completo del capítulo, sin
-   siglas, y con "IEEE COMPUTER SOCIETY" en mayúsculas.
+   ORGANISING CHAPTERS
+   The brand guide requires the chapter's full name, with no
+   acronyms and with "IEEE COMPUTER SOCIETY" in capitals.
    ============================================================ */
 
 export function Chapters() {
@@ -198,7 +198,7 @@ export function Chapters() {
               className="group relative flex min-h-[128px] flex-col justify-center gap-2 overflow-hidden bg-ink-raise p-6 transition-colors duration-500 ease-cs hover:bg-ink-plate"
               data-cursor
             >
-              {/* halo que sigue al cursor dentro de la celda */}
+              {/* halo that follows the cursor inside the cell */}
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-cs group-hover:opacity-100"

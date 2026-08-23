@@ -21,10 +21,10 @@ import { TracingBeam } from '@/components/ui/tracing-beam'
 
 /* ============================================================
    AGENDA
-   Mientras `days` esté vacío la sección entra en modo "en
-   construcción": no dibujamos cajas huecas ni texto de relleno,
-   mostramos lo que sí sabemos (los tracks) y capturamos correos.
-   El vacío se convierte en lista de contactos.
+   While `days` is empty the section switches to "under
+   construction" mode: we draw no hollow boxes and no filler
+   text, we show what we do know (the tracks) and capture emails.
+   The emptiness turns into a contact list.
    ============================================================ */
 
 type Filter<T extends string> = T | 'todos'
@@ -105,13 +105,13 @@ function FilterRow<T extends string>({
   )
 }
 
-/* ---------- estado "programa en construcción" ---------- */
+/* ---------- "programme under construction" state ---------- */
 
 function NotifyForm() {
   const [email, setEmail] = React.useState('')
   const [sent, setSent] = React.useState(false)
 
-  // TODO: conectar a la lista real (Resend, Supabase o vTools).
+  // TODO: connect to the real list (Resend, Supabase or vTools).
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.includes('@')) return
@@ -161,9 +161,9 @@ function NotifyForm() {
 function AgendaEmpty() {
   return (
     <div className="relative mt-14 rounded-card">
-      {/* La única tarjeta de la sección lleva el arco de luz: es
-          donde queremos que caiga la atención mientras no haya
-          programa que mostrar. */}
+      {/* The section's only card carries the light arc: it is where
+          we want attention to land while there is no programme to
+          show. */}
       <GlowingEffect
         color="#FFA300"
         accent="#00B5E2"
@@ -195,7 +195,7 @@ function AgendaEmpty() {
           <NotifyForm />
         </div>
 
-        {/* vista previa de los tracks como líneas de tiempo fantasma */}
+        {/* preview of the tracks as ghost timelines */}
         <div className="relative flex flex-col gap-2.5" aria-hidden="true">
           {tracks.map((t, i) => (
             <motion.div
@@ -227,7 +227,7 @@ function AgendaEmpty() {
   )
 }
 
-/* ---------- timeline real ---------- */
+/* ---------- real timeline ---------- */
 
 function SessionRow({ s, index }: { s: (typeof days)[number]['sessions'][number]; index: number }) {
   const track = trackByKey[s.track]
@@ -241,7 +241,7 @@ function SessionRow({ s, index }: { s: (typeof days)[number]['sessions'][number]
       transition={{ duration: 0.4, ease: EASE, delay: Math.min(index * 0.04, 0.3) }}
       className="grid grid-cols-[64px_1fr] gap-4 md:grid-cols-[86px_1fr] md:gap-6"
     >
-      {/* columna de hora */}
+      {/* time column */}
       <div className="relative pt-4 text-right">
         <div className="font-mono text-[13px] font-semibold tabular text-foreground">{s.start}</div>
         <div className="font-mono text-[11px] tabular text-subtle">{s.end}</div>
@@ -312,7 +312,7 @@ export function Agenda() {
           <AgendaEmpty />
         ) : (
           <>
-            {/* filtros */}
+            {/* filters */}
             <Reveal className="mt-14 flex flex-col gap-5">
               <FilterRow
                 label="Track"
@@ -344,7 +344,7 @@ export function Agenda() {
               />
             </Reveal>
 
-            {/* pestañas de día */}
+            {/* day tabs */}
             <div className="mask-fade-x mt-10 overflow-x-auto pb-1">
               <div className="flex min-w-max gap-1 border-b border-line">
                 {days.map((d) => {
@@ -376,8 +376,8 @@ export function Agenda() {
               </div>
             </div>
 
-            {/* sesiones — el haz de Aceternity se dibuja al ritmo
-                del scroll y dice cuánto del día llevas leído */}
+            {/* sessions — Aceternity's beam is drawn at the pace of the
+                scroll and tells you how much of the day you have read */}
             <TracingBeam className="mt-8">
             <ul className="flex flex-col gap-4">
               <AnimatePresence mode="popLayout" initial={false}>

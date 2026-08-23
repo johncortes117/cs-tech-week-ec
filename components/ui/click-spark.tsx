@@ -4,13 +4,13 @@ import * as React from 'react'
 import { useReducedMotion } from '@/lib/use-reduced-motion'
 
 /* ============================================================
-   CLICK SPARK  ·  adaptado de React Bits
-   Cada clic suelta un destello radial corto. Suena a capricho,
-   pero es lo que hace que la interfaz responda al gesto incluso
-   cuando el clic no navega a ningún lado.
+   CLICK SPARK  ·  adapted from React Bits
+   Every click releases a short radial flash. It sounds like a
+   whim, but it is what makes the interface answer the gesture
+   even when the click does not navigate anywhere.
 
-   Un solo canvas para todo el documento, tamaño de ventana,
-   sin listeners por elemento.
+   A single canvas for the whole document, window sized, with no
+   per-element listeners.
    ============================================================ */
 
 type Spark = { x: number; y: number; born: number }
@@ -50,14 +50,14 @@ export function ClickSpark({
     resize()
     window.addEventListener('resize', resize)
 
-    /* salida rápida y frenado largo: la misma curva que el resto */
+    /* fast out, long settle: the same curve as everything else */
     const ease = (t: number) => 1 - Math.pow(1 - t, 3)
 
     const onClick = (e: MouseEvent) => {
       sparks.current.push({ x: e.clientX, y: e.clientY, born: performance.now() })
-      /* el bucle solo existe mientras haya algo que dibujar: un
-         rAF permanente que limpia un lienzo a pantalla completa
-         cuesta compositor todo el rato, sin pintar nada */
+      /* the loop only exists while there is something to draw: a
+         permanent rAF clearing a full-screen canvas costs the
+         compositor all the time, while painting nothing */
       if (!raf) raf = requestAnimationFrame(frame)
     }
     window.addEventListener('click', onClick)

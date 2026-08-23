@@ -6,19 +6,19 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   COMET CARD  ·  adaptado de Aceternity UI
-   Tarjeta con perspectiva 3D: rota siguiendo al cursor y un
-   brillo especular se desplaza por encima como si hubiera una
-   fuente de luz real sobre la pantalla.
+   COMET CARD  ·  adapted from Aceternity UI
+   A card with 3D perspective: it rotates following the cursor
+   and a specular highlight travels over it as if there were a
+   real light source above the screen.
 
-   Dos cambios respecto al original:
-   1. El original usa clases de Tailwind v4 (`perspective-distant`,
-      `transform-3d`) que este proyecto (Tailwind 3.4) no compila
-      — acá van como estilo en línea.
-   2. El destello es blanco puro al 60 % en el original; sobre un
-      fondo #05070B eso quema la tarjeta. Acá baja a 0.22 y se
-      tiñe de naranja, que es como se comporta un reflejo real
-      sobre una superficie oscura.
+   Two changes from the original:
+   1. The original uses Tailwind v4 classes (`perspective-distant`,
+      `transform-3d`) that this project (Tailwind 3.4) does not
+      compile — here they are inline styles.
+   2. The highlight is pure white at 60 % in the original; over a
+      #05070B background that blows the card out. Here it drops
+      to 0.22 and is tinted orange, which is how a real
+      reflection behaves on a dark surface.
    ============================================================ */
 
 export function CometCard({

@@ -4,23 +4,23 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   GLARE HOVER  ·  adaptado de React Bits
-   Una banda de luz cruza la tarjeta en diagonal al pasar el
-   cursor, como el reflejo de una vitrina. Es el efecto más
-   barato de todos —una sola transición de transform— y el que
-   más "producto terminado" aporta por línea de código.
+   GLARE HOVER  ·  adapted from React Bits
+   A band of light crosses the card diagonally on hover, like the
+   reflection on a shop window. It is the cheapest effect of them
+   all —a single transform transition— and the one that adds the
+   most "finished product" per line of code.
 
-   El ángulo, el ancho y la duración salen por variables CSS
-   para que el estado :hover pueda reescribir el transform sin
-   pelearse con el estilo en línea.
+   The angle, width and duration come through CSS variables so
+   the :hover state can rewrite the transform without fighting
+   the inline style.
    ============================================================ */
 
 export function GlareHover({
   children,
   className,
-  /** Ancho de la banda, en % del contenedor. */
+  /** Band width, as a % of the container. */
   width = 26,
-  /** Inclinación, en grados. */
+  /** Tilt, in degrees. */
   angle = -22,
   intensity = 0.1,
   duration = 850,

@@ -7,15 +7,15 @@ import { cn } from '@/lib/utils'
 import { EASE } from '@/lib/motion'
 
 /* ============================================================
-   EFECTOS DE TEXTO
-   Tres piezas tomadas de React Bits y reescritas para este
-   sistema. Cada una tiene un trabajo distinto y un solo lugar
-   donde se usa — el texto que se mueve todo el tiempo cansa.
+   TEXT EFFECTS
+   Three pieces taken from React Bits and rewritten for this
+   system. Each has a distinct job and exactly one place where it
+   is used — text that moves all the time is tiring.
    ============================================================ */
 
 /* ------------------------------------------------------------
-   SHINY TEXT — un reflejo cruza la palabra cada pocos segundos.
-   Para etiquetas pequeñas (el sello del 80.º), nunca para copy.
+   SHINY TEXT — a reflection crosses the word every few seconds.
+   For small labels (the 80th anniversary badge), never for copy.
    ------------------------------------------------------------ */
 
 export function ShinyText({
@@ -43,10 +43,10 @@ export function ShinyText({
 }
 
 /* ------------------------------------------------------------
-   SCRAMBLE / DECRYPTED TEXT — el texto se "desencripta" letra a
-   letra desde glifos aleatorios. Es la cita más directa al
-   atributo "Binary" del prisma de marca de IEEE CS, así que va
-   en los datos técnicos: coordenadas, códigos de sección.
+   SCRAMBLE / DECRYPTED TEXT — the text "decrypts" letter by
+   letter out of random glyphs. It is the most direct quote of
+   the "Binary" attribute in the IEEE CS brand prism, so it goes
+   on technical data: coordinates, section codes.
    ------------------------------------------------------------ */
 
 const GLYPHS = '01<>/\[]{}=+*#%&$@ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -54,11 +54,11 @@ const GLYPHS = '01<>/\[]{}=+*#%&$@ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 export function Scramble({
   text,
   className,
-  /** ms entre pasos. Más bajo = se resuelve más rápido. */
+  /** ms between steps. Lower = resolves faster. */
   step = 38,
-  /** cuántos pasos tarda cada letra en fijarse */
+  /** how many steps each letter takes to settle */
   settle = 3,
-  /** 'view' resuelve al entrar en pantalla; 'hover' al pasar el cursor */
+  /** 'view' resolves on entering the viewport; 'hover' on cursor over */
   trigger = 'view',
   as: Tag = 'span',
 }: {
@@ -119,9 +119,9 @@ export function Scramble({
 }
 
 /* ------------------------------------------------------------
-   SPLIT TEXT — cada palabra sube desde debajo de su máscara al
-   entrar en pantalla. Es la versión "de sección" del titular
-   enmascarado del hero: mismo lenguaje, menos peso.
+   SPLIT TEXT — each word rises from beneath its mask as it
+   enters the viewport. It is the "section-level" version of the
+   hero's masked headline: same language, less weight.
    ------------------------------------------------------------ */
 
 export function SplitText({
@@ -145,10 +145,10 @@ export function SplitText({
   return (
     <Tag className={className} aria-label={text}>
       {words.map((w, i) => (
-        /* El espacio va FUERA de la máscara, como nodo de texto
-           real. Un margen en em nunca coincide del todo con el
-           ancho del espacio de la fuente, y a tamaño de titular
-           esa diferencia se lee como palabras sueltas. */
+        /* The space goes OUTSIDE the mask, as a real text node. A
+           margin in em never quite matches the width of the font's
+           space, and at headline size that difference reads as
+           loose words. */
         <React.Fragment key={`${w}-${i}`}>
           <span
             aria-hidden="true"

@@ -3,25 +3,24 @@
 import { MotionConfig } from 'motion/react'
 
 /* ============================================================
-   CONFIGURACIÓN GLOBAL DE MOVIMIENTO
+   GLOBAL MOTION CONFIGURATION
 
-   `reducedMotion="user"` hace que Motion respete la preferencia
-   del sistema por su cuenta: cuando está activada, desactiva las
-   animaciones de transform y layout (desplazamientos, escalas,
-   rotaciones) y deja pasar solo opacidad y color.
+   `reducedMotion="user"` makes Motion honour the system
+   preference on its own: when it is enabled, transform and
+   layout animations (translations, scales, rotations) are
+   disabled and only opacity and colour get through.
 
-   Esto reemplaza al patrón `variants={reduce ? still : fadeUp}`,
-   que parecía equivalente pero tenía un fallo real: el hook de
-   preferencia solo puede dar el valor correcto DESPUÉS de montar
-   —si lo da antes, el marcado del servidor y el del cliente no
-   coinciden y React rehace la página— y ese cambio a mitad de
-   camino intercambiaba el objeto de variantes por otro, lo que
-   dejaba a los hijos orquestados congelados en su estado
-   "hidden": secciones enteras invisibles para quien tiene la
-   preferencia puesta.
+   This replaces the `variants={reduce ? still : fadeUp}`
+   pattern, which looked equivalent but had a real bug: the
+   preference hook can only give the correct value AFTER mounting
+   —if it gives it earlier, server and client markup disagree and
+   React re-renders the page— and that mid-flight change swapped
+   one variants object for another, which left orchestrated
+   children frozen in their "hidden" state: whole sections
+   invisible to anyone with the preference turned on.
 
-   Con MotionConfig la decisión se toma en el momento de animar,
-   no en el de renderizar. El marcado es idéntico siempre.
+   With MotionConfig the decision is taken at animation time, not
+   at render time. The markup is always identical.
    ============================================================ */
 
 export function MotionProvider({ children }: { children: React.ReactNode }) {

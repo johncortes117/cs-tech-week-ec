@@ -7,15 +7,14 @@ import { cn } from '@/lib/utils'
 import { EASE } from '@/lib/motion'
 
 /* ============================================================
-   SPLIT-FLAP  ·  adaptado de React Bits ("Split Flap Text")
-   El contador no cambia de número: lo voltea, como el tablero
-   de un aeropuerto. Es la pieza que convierte "faltan N días"
-   en algo que se mira.
+   SPLIT-FLAP  ·  adapted from React Bits ("Split Flap Text")
+   The countdown does not change numbers: it flips them, like an
+   airport board. It is the piece that turns "N days to go" into
+   something you actually look at.
 
-   Cada dígito es una tarjeta partida por la mitad. Al cambiar,
-   la mitad superior cae sobre la inferior. Solo se re-monta el
-   dígito que cambió — los segundos no obligan a voltear los
-   días.
+   Each digit is a card split down the middle. On change, the top
+   half falls onto the bottom one. Only the digit that changed is
+   remounted — the seconds never force the days to flip.
    ============================================================ */
 
 function Flap({ char, className }: { char: string; className?: string }) {
@@ -35,7 +34,7 @@ function Flap({ char, className }: { char: string; className?: string }) {
       style={{ perspective: '260px' }}
       aria-hidden="true"
     >
-      {/* fondo estático: sostiene el hueco mientras la hoja gira */}
+      {/* static backing: it holds the gap while the flap turns */}
       <span className="absolute inset-0 grid place-items-center opacity-25">{char}</span>
 
       <AnimatePresence mode="popLayout" initial={false}>
@@ -52,15 +51,15 @@ function Flap({ char, className }: { char: string; className?: string }) {
         </motion.span>
       </AnimatePresence>
 
-      {/* línea de bisagra: sin esto no se lee como tablero */}
+      {/* hinge line: without it this does not read as a board */}
       <span className="pointer-events-none absolute inset-x-0 top-1/2 z-20 h-px -translate-y-1/2 bg-ink/80" />
     </span>
   )
 }
 
 /**
- * Renderiza una cadena de dígitos como tablero split-flap.
- * `label` va al lector de pantalla; las hojas son decorativas.
+ * Renders a string of digits as a split-flap board.
+ * `label` goes to the screen reader; the flaps are decorative.
  */
 export function SplitFlap({
   value,

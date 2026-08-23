@@ -12,9 +12,9 @@ import { Magnetic } from '@/components/ui/magnetic'
 
 /* ============================================================
    SPONSORS
-   Dos trabajos distintos en una sección: mostrar a quien ya
-   está (huecos honestos mientras no haya nadie) y convencer a
-   quien todavía no. El argumento de venta va primero.
+   Two different jobs in one section: showing who is already in
+   (honest empty slots while there is nobody) and convincing who
+   is not in yet. The pitch comes first.
    ============================================================ */
 
 function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index: number }) {
@@ -27,8 +27,8 @@ function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index:
       transition={{ duration: 0.6, ease: EASE, delay: index * 0.07 }}
       className="relative h-full rounded-card"
     >
-      {/* Solo el nivel destacado enciende el arco: si todas las
-          tarjetas brillaran, ninguna sería la destacada. */}
+      {/* Only the featured tier lights the arc: if every card
+          glowed, none of them would be the featured one. */}
       {tier.featured ? (
         <GlowingEffect color="#FFA300" accent="#00B5E2" spread={40} className="rounded-card" />
       ) : null}
@@ -56,7 +56,7 @@ function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index:
           {tier.blurb}
         </p>
 
-        {/* huecos de logo: se ven como espacios reservados, no como error */}
+        {/* logo slots: they read as reserved space, not as an error */}
         <div
           className="mt-6 grid gap-2"
           style={{ gridTemplateColumns: `repeat(${Math.min(tier.slots, 3)}, minmax(0, 1fr))` }}
@@ -81,7 +81,7 @@ function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index:
 export function Sponsors() {
   return (
     <section id="sponsors" className="relative scroll-mt-24 py-24 md:py-32">
-      {/* retícula técnica solo detrás de este bloque */}
+      {/* technical grid only behind this block */}
       <div
         className="tech-grid mask-fade-y pointer-events-none absolute inset-0 -z-10 opacity-50"
         aria-hidden="true"

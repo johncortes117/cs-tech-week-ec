@@ -6,13 +6,13 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { cn } from '@/lib/utils'
 
 /* ============================================================
-   MAGNET  ·  adaptado de React Bits
-   El elemento se deja atraer por el cursor dentro de un radio y
-   vuelve a su sitio con resorte al salir. Se usa SOLO en los
-   llamados a la acción: si todo es magnético, nada lo es.
+   MAGNET  ·  adapted from React Bits
+   The element lets itself be pulled by the cursor within a
+   radius and springs back on exit. Used ONLY on calls to action:
+   if everything is magnetic, nothing is.
 
-   Solo actúa con puntero fino (mouse/trackpad). En táctil el
-   efecto no existe y el botón se comporta como un botón.
+   Active only with a fine pointer (mouse/trackpad). On touch the
+   effect does not exist and the button behaves like a button.
    ============================================================ */
 
 export function Magnetic({
@@ -22,9 +22,9 @@ export function Magnetic({
   className,
 }: {
   children: React.ReactNode
-  /** Distancia en px desde el borde a la que empieza a atraer. */
+  /** Distance in px from the edge at which it starts pulling. */
   radius?: number
-  /** Cuánto se desplaza respecto a la distancia al cursor (0–1). */
+  /** How far it moves relative to the cursor distance (0–1). */
   strength?: number
   className?: string
 }) {
@@ -43,9 +43,9 @@ export function Magnetic({
 
     let frame = 0
 
-    /* La medición se agrupa en un rAF: hay varios imanes en la
-       página y un getBoundingClientRect por cada movimiento del
-       puntero fuerza tantos reflows como botones haya. */
+    /* Measurement is batched into one rAF: there are several
+       magnets on the page and a getBoundingClientRect per pointer
+       move forces as many reflows as there are buttons. */
     const onMove = (e: PointerEvent) => {
       if (frame) return
       const { clientX, clientY } = e
@@ -57,8 +57,8 @@ export function Magnetic({
         const dx = clientX - (r.left + r.width / 2)
         const dy = clientY - (r.top + r.height / 2)
 
-        /* el radio se mide desde el borde, no desde el centro:
-           así un botón ancho y uno angosto atraen igual de lejos */
+        /* the radius is measured from the edge, not from the centre:
+           that way a wide button and a narrow one pull from equally far */
         const inside =
           Math.abs(dx) < r.width / 2 + radius && Math.abs(dy) < r.height / 2 + radius
 
