@@ -20,8 +20,10 @@ in the year IEEE Computer Society turns eighty.
 | Globe | [cobe](https://cobe.vercel.app) |
 | Icons | [lucide-react](https://lucide.dev) |
 
-There is no 3D engine in the dependency list. The hero scene is written directly
-against the WebGL API (see `components/ui/hero-scene.tsx`).
+There is no 3D engine in the dependency list. The hero backdrop is written directly
+against the WebGL API (`components/ui/hero-backdrop.tsx`), and the event logo is
+sampled into an interactive grid of dots on a 2D canvas
+(`components/ui/pixelated-canvas.tsx`).
 
 ## Getting started
 
@@ -56,7 +58,7 @@ lib/
 
 components/
 ├── sections/            One file per page section
-└── ui/                  Reusable pieces: primitives, effects, the WebGL scene
+└── ui/                  Reusable pieces: primitives, effects, canvas scenes
 
 public/logo/             Logos served to the browser
 brand/                   Brand assets and the internal branding proposal
@@ -120,7 +122,8 @@ a placeholder date.
   visible.
 - Cursor-driven effects require a fine pointer, so they do not exist on touch
   devices.
-- The WebGL hero falls back to a gradient when WebGL is unavailable.
+- The WebGL backdrop falls back to a gradient when WebGL is unavailable, and the
+  pixelated logo renders a single static frame instead of animating.
 
 ## Deployment
 
