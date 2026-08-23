@@ -10,7 +10,7 @@ import { Btn, Val } from '@/components/ui/primitives'
 import { HeroBackdrop } from '@/components/ui/hero-backdrop'
 import { PixelatedCanvas } from '@/components/ui/pixelated-canvas'
 import { Magnetic } from '@/components/ui/magnetic'
-import { ShinyText, Scramble } from '@/components/ui/text-fx'
+import { Scramble } from '@/components/ui/text-fx'
 
 /* ============================================================
    HERO
@@ -21,18 +21,18 @@ import { ShinyText, Scramble } from '@/components/ui/text-fx'
    pixels, which is the point of a computing event.
    See components/ui/pixelated-canvas.tsx.
 
-   Behind it, the backdrop carries the nebula and the orange
-   equator line that crosses the whole screen; the same rule that
-   separates every section of the site.
+   Behind it, the backdrop carries the nebula and a warm ember
+   behind the mark. No hard lines: the light is the only thing
+   that shapes the scene.
 
-   The text is spread across three depth planes. The badge moves
-   more than the headline and the headline more than the body:
-   that difference in travel is what makes the whole thing read
-   as space rather than as stacked layers.
+   The text is spread across depth planes. The headline moves more
+   than the body, and the logo leans the other way: that
+   difference in travel is what makes the whole thing read as
+   space rather than as stacked layers.
    ============================================================ */
 
 /** Travel in pixels of each plane as the cursor moves. */
-const PLANES = { badge: 16, title: 10, body: 6, logo: 22 }
+const PLANES = { title: 10, body: 6, logo: 22 }
 
 export function Hero() {
   const reduce = useReducedMotion()
@@ -73,8 +73,6 @@ export function Hero() {
     }
   }, [reduce, mx, my])
 
-  const badgeX = useTransform(px, [-1, 1], [PLANES.badge, -PLANES.badge])
-  const badgeY = useTransform(py, [-1, 1], [PLANES.badge * 0.55, -PLANES.badge * 0.55])
   const titleX = useTransform(px, [-1, 1], [PLANES.title, -PLANES.title])
   const titleY = useTransform(py, [-1, 1], [PLANES.title * 0.55, -PLANES.title * 0.55])
   const bodyX = useTransform(px, [-1, 1], [PLANES.body, -PLANES.body])
@@ -93,12 +91,12 @@ export function Hero() {
     <section
       ref={ref}
       id="top"
-      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pb-24 pt-[calc(var(--nav-h)+80px)]"
+      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pb-20 pt-[calc(var(--nav-h)+28px)] lg:pb-24 lg:pt-[calc(var(--nav-h)+80px)]"
     >
       <HeroBackdrop className="-z-10" />
 
       {/* The text needs its own ground or it competes with the glow
-          of the equator. A flat gradient, no filters. */}
+          behind the logo. A flat gradient, no filters. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -109,30 +107,15 @@ export function Hero() {
       />
 
       <motion.div
-        className="shell relative grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14"
+        className="shell relative grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14"
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
       >
         {/* ---------- copy ---------- */}
         <div className="order-last lg:order-first">
-          {/* 80th anniversary badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            style={reduce ? undefined : { x: badgeX, y: badgeY }}
-            className="inline-flex items-center gap-2.5 rounded-pill border border-primary/30 bg-primary/[0.07] py-1.5 pl-2.5 pr-4"
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-primary animate-pulse-ring" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-            </span>
-            <ShinyText className="label">{event.anniversary}</ShinyText>
-          </motion.div>
-
           {/* headline in masked lines */}
           <motion.h1
             style={reduce ? undefined : { x: titleX, y: titleY }}
-            className="mt-7 font-display text-[clamp(2.6rem,6.4vw,5.2rem)] font-black leading-[0.92] tracking-display"
+            className="font-display text-[clamp(2.6rem,6.4vw,5.2rem)] font-black leading-[0.92] tracking-display"
           >
             {event.headline.map((line, i) => (
               <span key={line} className="block overflow-hidden pb-[0.06em]">
@@ -143,10 +126,11 @@ export function Hero() {
                   initial="hidden"
                   animate="show"
                 >
+                  {/* No glow on the orange line: the mask above has
+                      to clip, and a blurred text-shadow inside it
+                      gets cut into a visible rectangle. */}
                   {i === event.headline.length - 1 ? (
-                    <span className="text-primary [text-shadow:0_0_42px_hsl(38_100%_50%_/_0.35)]">
-                      {line}
-                    </span>
+                    <span className="text-primary">{line}</span>
                   ) : (
                     line
                   )}
@@ -174,11 +158,15 @@ export function Hero() {
             {/* The coordinates decrypt on entry: it is the only piece
                 of hero data that is literally a number, and it
                 deserves to read like an instrument readout. */}
-            <Scramble
-              text={event.coords}
-              step={34}
-              className="mt-3 block font-mono text-[10px] tracking-[0.16em] text-primary"
-            />
+            <div className="mt-3 flex items-center gap-1.5 text-primary">
+              <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />
+              <Scramble
+                text={event.coords}
+                step={34}
+                trigger="mount"
+                className="block font-mono text-[10px] tracking-[0.16em]"
+              />
+            </div>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -194,7 +182,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.66 }}
-              className="mt-9 flex flex-wrap gap-x-8 gap-y-5"
+              className="mt-7 flex flex-wrap gap-x-8 gap-y-5 lg:mt-9"
             >
               {meta.map((m) => (
                 <div key={m.label} className="border-l border-line-strong pl-4">
@@ -204,13 +192,6 @@ export function Hero() {
                   </dd>
                 </div>
               ))}
-              <div className="border-l border-primary/40 pl-4">
-                <dt className="label text-primary/70">Latitud</dt>
-                <dd className="mt-1 inline-flex items-center gap-1.5 font-mono text-[0.9375rem] font-semibold tabular text-primary">
-                  <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                  0°00′00″
-                </dd>
-              </div>
             </motion.dl>
 
             {/* calls to action */}
@@ -218,7 +199,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.78 }}
-              className="mt-10 flex flex-wrap gap-3"
+              className="mt-8 flex flex-wrap gap-3 lg:mt-10"
             >
               <Magnetic radius={70} strength={0.26}>
                 <Btn href={event.registerUrl} size="lg">
@@ -267,16 +248,24 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
           style={reduce ? undefined : { x: logoX, y: logoY }}
-          className="order-first mx-auto w-[min(66vw,280px)] lg:order-last lg:w-full lg:max-w-[460px]"
+          className="order-first mx-auto w-[min(56vw,248px)] lg:order-last lg:w-full lg:max-w-[460px]"
         >
           <div className="relative aspect-[776/990] w-full">
             <PixelatedCanvas
               src="/logo/cs-tech-week-ec.svg"
               fill
-              cellSize={4}
-              dotScale={0.85}
+              /* Resolution is fixed in cells, not pixels: the ribbon
+                 lettering and the wordmark need a certain number of
+                 cells per glyph to stay readable, and a fixed
+                 cellSize would drop below that as soon as the
+                 element shrank on mobile. */
+              columns={120}
+              dotScale={0.8}
               shape="square"
-              dropoutStrength={0.2}
+              /* Dropout thins low-contrast areas — which is exactly
+                 where thin letter strokes live. Kept low so the
+                 texture stays in the flat fills. */
+              dropoutStrength={0.08}
               distortionMode="swirl"
               distortionStrength={4}
               distortionRadius={95}

@@ -7,9 +7,9 @@ import { cn } from '@/lib/utils'
 /* ============================================================
    HERO BACKDROP — WebGL
 
-   A nebula that breathes, a halo behind the logo, and the orange
-   equator line crossing the whole screen. It is the same
-   equatorial rule that separates every section of the site.
+   A nebula that breathes and a halo behind the logo, warmed by a
+   faint orange ember. No hard edges anywhere: everything is
+   light falling off with distance.
 
    One program, one draw call: a full-screen triangle with fbm
    noise. All five colours come from the brand guide.
@@ -33,7 +33,7 @@ uniform vec2  uCenter;   /* focus of the halo, in p space */
 uniform float uTime;
 uniform float uScroll;
 uniform float uQuality;  /* 1 = full, 0 = cheap version */
-uniform float uIntro;    /* the equator line is born with the page */
+uniform float uIntro;    /* the ember comes up with the page */
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
@@ -72,12 +72,11 @@ void main() {
     col += CYAN * pow(n2, 4.0) * 0.13 * exp(-r * 1.2);
   }
 
-  /* The equator line: a crisp edge plus a wide ember underneath. */
-  float equator = p.y - uCenter.y;
-  col += ORANGE * exp(-abs(equator) * 150.0) * 0.5 * uIntro;
-  col += ORANGE * exp(-abs(equator) * 13.0) * 0.075 * (0.6 + 0.4 * n) * uIntro;
+  /* A single warm ember behind the logo. Broad and low in
+     intensity: it reads as light in the scene, never as an edge. */
+  col += ORANGE * 0.05 * exp(-r * 2.6) * (0.6 + 0.4 * n) * uIntro;
 
-  /* fades towards the horizontal edges so the line does not hit
+  /* fades towards the horizontal edges so the glow does not hit
      the frame head-on */
   col *= 1.0 - 0.5 * smoothstep(0.55, 1.1, abs(p.x) / max(0.35, uRes.x / uRes.y * 0.5));
 
@@ -284,7 +283,7 @@ export function HeroBackdrop({ className }: { className?: string }) {
             background: `
               radial-gradient(38% 52% at 72% 48%, hsl(var(--abyss) / 0.95), transparent 72%),
               radial-gradient(22% 30% at 72% 48%, hsl(var(--deep) / 0.5), transparent 74%),
-              linear-gradient(0deg, transparent 46%, hsl(var(--orange) / 0.5) 48%, transparent 50%),
+              radial-gradient(26% 34% at 72% 48%, hsl(var(--orange) / 0.10), transparent 70%),
               hsl(var(--ink))`,
           }}
         />

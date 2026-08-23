@@ -58,7 +58,12 @@ export function Scramble({
   step = 38,
   /** how many steps each letter takes to settle */
   settle = 3,
-  /** 'view' resolves on entering the viewport; 'hover' on cursor over */
+  /**
+   * 'view' resolves on entering the viewport, 'hover' on cursor
+   * over, 'mount' straight away — the last one is for text that is
+   * already above the fold, where an observer that never fires
+   * would leave the line blank.
+   */
   trigger = 'view',
   as: Tag = 'span',
 }: {
@@ -66,7 +71,7 @@ export function Scramble({
   className?: string
   step?: number
   settle?: number
-  trigger?: 'view' | 'hover'
+  trigger?: 'view' | 'hover' | 'mount'
   as?: 'span' | 'div'
 }) {
   const reduce = useReducedMotion()
@@ -77,12 +82,18 @@ export function Scramble({
 
   const run = React.useCallback(() => {
     if (reduce) return setOut(text)
-    let frame = 0
+
+    /* Progress comes from the clock, not from a tick counter. The
+       hero paints a canvas of several thousand dots while this
+       runs, and a busy main thread coalesces timer callbacks —
+       counting ticks stretched a two second decrypt into ten and
+       left the line looking stuck. */
+    const startedAt = performance.now()
     const total = text.length * settle + settle * 2
 
     window.clearInterval(timer.current)
     timer.current = window.setInterval(() => {
-      frame += 1
+      const frame = (performance.now() - startedAt) / step
       const revealed = Math.floor(frame / settle)
       setOut(
         text
@@ -101,10 +112,15 @@ export function Scramble({
     }, step)
   }, [text, step, settle, reduce])
 
+  /* One boolean, so the effect re-runs when the trigger resolves
+     and not every time `inView` settles afterwards — each extra
+     call would restart the decrypt from zero. */
+  const armed = trigger === 'mount' || (trigger === 'view' && inView)
+
   React.useEffect(() => {
-    if (trigger === 'view' && inView) run()
+    if (armed) run()
     return () => window.clearInterval(timer.current)
-  }, [inView, trigger, run])
+  }, [armed, run])
 
   return (
     <Tag
