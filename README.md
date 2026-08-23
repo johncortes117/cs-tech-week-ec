@@ -1,179 +1,146 @@
-# CS Tech Week Ecuador 2026
+# CS Tech Week Ecuador
 
-Landing del evento organizado por los capítulos IEEE Computer Society del Ecuador,
-en el año del 80.º aniversario de IEEE CS.
+Website for CS Tech Week Ecuador — a week of talks, workshops and technical
+challenges organised jointly by the IEEE Computer Society chapters of Ecuador,
+in the year IEEE Computer Society turns eighty.
 
-**Identidad:** «Latitud Cero» — ver `brand/branding-proposal.html` para el manual completo
-(concepto, logo, paleta, tipografía, lenguaje gráfico).
+> **Language note.** The site copy is written in Spanish, because the audience
+> is Ecuadorian. Everything else — code, comments, documentation and commit
+> messages — is in English.
 
 ## Stack
 
-Next.js 16 · React 19 · TypeScript · Tailwind 3.4 · [Motion](https://motion.dev) 12 · lucide-react
-· [Lenis](https://lenis.darkroom.engineering) (scroll suave, ~4 kB) · [cobe](https://cobe.vercel.app) (globo WebGL, ~5 kB)
+| | |
+| --- | --- |
+| Framework | [Next.js 16](https://nextjs.org) (App Router, static export) |
+| UI | React 19 · TypeScript |
+| Styling | [Tailwind CSS 3.4](https://tailwindcss.com) |
+| Animation | [Motion 12](https://motion.dev) |
+| Smooth scroll | [Lenis](https://lenis.darkroom.engineering) |
+| Globe | [cobe](https://cobe.vercel.app) |
+| Icons | [lucide-react](https://lucide.dev) |
 
-El mismo stack de `deviathon/devclub_website`, más dos dependencias diminutas para la
-capa de interacción. Nada de three.js ni GSAP: todo lo demás es Motion, canvas 2D y CSS.
+There is no 3D engine in the dependency list. The hero scene is written directly
+against the WebGL API (see `components/ui/hero-scene.tsx`).
+
+## Getting started
+
+Requires **Node.js 20+** and [pnpm](https://pnpm.io).
 
 ```bash
 pnpm install
-pnpm dev      # http://localhost:3000
-pnpm build
+pnpm dev          # http://localhost:3000
 ```
 
-## Dónde se edita el contenido
+| Script | What it does |
+| --- | --- |
+| `pnpm dev` | Development server with Turbopack |
+| `pnpm build` | Production build |
+| `pnpm start` | Serve the production build |
+| `pnpm lint` | Next.js ESLint rules |
 
-**Todo** vive en `lib/content.ts`. Los componentes no tienen texto quemado.
+## Project structure
 
-| Qué                        | Constante                          |
-| -------------------------- | ---------------------------------- |
-| Fechas, sede, contador     | `event`                            |
-| Menú                       | `navLinks`                         |
-| Tracks y sus colores       | `tracks`                           |
-| Cifras del bloque "evento" | `stats`                            |
-| Etiquetas de la órbita     | `orbitNodes`                       |
-| Ciudades del globo (sedes) | `globeCities`                      |
-| Teletipo bajo el hero      | `ticker`                           |
-| Programa                   | `days`                             |
-| Ponentes                   | `speakers`                         |
-| Sedes                      | `venues`                           |
-| Capítulos organizadores    | `chapters`                         |
-| Niveles de sponsor         | `sponsorTiers`, `sponsorPitch`     |
-| Preguntas frecuentes       | `faq`                              |
+```
+app/                     App Router entry, global styles and fonts
+├── layout.tsx           Root layout, fonts, providers
+├── page.tsx             The single page: sections in order
+└── globals.css          Design tokens, component classes, utilities
 
-### Marcadores de dato pendiente
+lib/
+├── content.ts           ← all editable copy and data lives here
+├── motion.ts            Shared easing curves and animation variants
+├── use-countdown.ts     Countdown to the event start
+├── use-reduced-motion.ts  Hydration-safe motion-preference hook
+└── utils.ts             `cn()` class helper
 
-Envuelve cualquier valor por confirmar con `tbd('...')`:
+components/
+├── sections/            One file per page section
+└── ui/                  Reusable pieces: primitives, effects, the WebGL scene
+
+public/logo/             Logos served to the browser
+brand/                   Brand assets and the internal branding proposal
+```
+
+## Editing the content
+
+**All copy and data live in `lib/content.ts`.** Components contain no hard-coded
+text, so updating the event means editing that one file: dates, venue, tracks,
+speakers, sponsor tiers, FAQ, navigation and footer.
+
+Sections fill themselves in from that data. While `speakers`, `days`, `venues`
+or `chapters` are empty arrays, the matching section renders a deliberate
+"to be announced" state instead of placeholder cards.
+
+### Unconfirmed data
+
+Anything not yet confirmed is wrapped with the `tbd()` helper:
 
 ```ts
-venue: tbd('Sede por confirmar'),
+dates: tbd('Fechas por confirmar'),
 ```
 
-Sale en pantalla en naranja con subrayado punteado, imposible de confundir con
-información real. Cuando el dato exista, reemplaza la llamada por el string normal.
+It renders on screen as a dotted orange placeholder, so unconfirmed information
+can never be mistaken for a real announcement. Replace the call with a plain
+string once the value is final:
 
-### Secciones que se llenan solas
+```ts
+dates: '9–14 de noviembre de 2026',
+```
 
-`days`, `speakers`, `venues` y `chapters` están vacíos a propósito. Mientras lo estén,
-cada sección muestra un estado "en construcción" diseñado — no cajas rotas. Apenas les
-cargues datos, la sección cambia a su versión completa sin tocar ningún componente.
+Search the file for `tbd(` to see everything still pending.
 
-## Pendientes técnicos
+### Countdown
 
-- [ ] `NotifyForm` (`components/sections/agenda.tsx`) guarda el correo solo en estado local.
-      Conectar a Resend / Supabase / vTools.
-- [ ] `event.registerUrl` apunta a `#registro`. Cambiar por la URL real de inscripción.
-- [ ] `event.startsAt` es una fecha placeholder. Ajustar a la real (define el contador).
-- [ ] Imagen Open Graph (`app/opengraph-image.tsx` o `public/og.png`).
+`event.startsAt` drives the countdown in the announcement bar and in the final
+call to action. It is an ISO string in Ecuador time (UTC−5) and currently holds
+a placeholder date.
 
-## Assets de marca
+## Conventions
 
-`public/logo/` y `brand/assets/logo/` — los cuatro SVG oficiales del 80.º aniversario,
-corregidos: los originales venían de Illustrator con `display:none` en la raíz y no se
-renderizaban en web.
+- **Commits** follow [Conventional Commits](https://www.conventionalcommits.org)
+  and are written in English: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`.
+- **Animation** comes from `lib/motion.ts`. If a curve or variant is not defined
+  there, it should not be used — one vocabulary for the whole site.
+- **Motion preference** is handled globally by `MotionProvider`
+  (`MotionConfig reducedMotion="user"`). Components must not branch their
+  variants on the preference; when the value is genuinely needed in JavaScript,
+  use `useReducedMotion` from `lib/use-reduced-motion.ts`, not the one from
+  `motion/react`.
+- **Rendering cost.** Avoid `filter: blur()` on large or animated elements,
+  animate `transform` and `opacity` rather than layout or background
+  properties, and stop every `requestAnimationFrame` loop with an
+  `IntersectionObserver` when its element leaves the viewport.
 
-| Archivo                        | Uso                            |
-| ------------------------------ | ------------------------------ |
-| `ieee-cs-80th-white.svg`       | Principal en web (fondo negro) |
-| `ieee-cs-80th-orange-white.svg`| Sobre azul CS                  |
-| `ieee-cs-80th-color.svg`       | Impreso, certificados          |
-| `ieee-cs-80th-black.svg`       | Una tinta                      |
+## Accessibility
 
-El logo **no se recolorea, no se redibuja y no pierde el `TM`**. Espacio de respeto:
-0.3 × la altura del logo, en los cuatro lados.
+- `prefers-reduced-motion` is honoured throughout: transform and layout
+  animations are disabled, smooth scroll and the custom cursor never mount, and
+  a CSS safety net guarantees no content depends on an animation to become
+  visible.
+- Cursor-driven effects require a fine pointer, so they do not exist on touch
+  devices.
+- The WebGL hero falls back to a gradient when WebGL is unavailable.
 
-## Movimiento
+## Deployment
 
-Todas las curvas y variantes salen de `lib/motion.ts`. Si una animación no viene de ahí,
-no debería existir — la coherencia es lo que separa "moderno" de "ruidoso".
+The project builds to static output and runs on any Node or static host.
+On [Vercel](https://vercel.com), importing the repository is enough — the
+framework is detected automatically and no environment variables are required.
 
-### `prefers-reduced-motion`
+```bash
+pnpm build
+pnpm start
+```
 
-Lo gestiona `<MotionProvider>` (`components/ui/motion-provider.tsx`), que envuelve la app
-con `MotionConfig reducedMotion="user"`: Motion desactiva transform y layout, y deja pasar
-opacidad y color. **Los componentes no deben ramificar sus variantes con un ternario** del
-tipo `variants={reduce ? still : fadeUp}` — parece equivalente y no lo es (rompía la
-orquestación padre-hijo y dejaba secciones enteras invisibles).
+## Credits
 
-Cuando hace falta el valor en JS —apagar un bucle de canvas, no montar el cursor, detener
-Lenis— se usa `useReducedMotion` de `lib/use-reduced-motion.ts`, **no** el de `motion/react`:
-el de Motion lee la media query en el primer render del cliente pero devuelve `false` en el
-servidor, y esa discrepancia rompe la hidratación. El nuestro se corrige tras montar.
+Built by the IEEE Computer Society chapters of Ecuador.
 
-Como red de seguridad, todo elemento que aparece con scroll lleva `data-reveal`, y
-`globals.css` fuerza `opacity: 1` sobre ellos bajo `prefers-reduced-motion`. Así el
-contenido nunca depende de que un IntersectionObserver llegue a disparar.
+Several interaction components are adapted from [Aceternity UI](https://ui.aceternity.com)
+and [React Bits](https://reactbits.dev), reworked to match the event's visual
+system.
 
-## Capa de interacción
-
-Componentes adaptados de [Aceternity UI](https://ui.aceternity.com/components) y
-[React Bits](https://reactbits.dev) al sistema "Latitud Cero". Ninguno se copió tal cual:
-todos están recoloreados a la paleta oficial de IEEE CS y reescritos para Tailwind 3.4.
-
-| Componente (`components/ui/`) | Origen | Dónde vive |
-| ----------------------------- | ------ | ---------- |
-| `hero-scene.tsx`     | propio · WebGL sin dependencias | Hero — el planeta de puntos y la línea del ecuador |
-| `binary-field.tsx`   | propio (idea: RB · DotGrid)  | CTA final — los bits se encienden y voltean con el cursor |
-| `magnetic.tsx`       | React Bits · Magnet          | Todos los CTA |
-| `text-fx.tsx`        | RB · ShinyText / Decrypted / SplitText | Sello del 80.º, coordenadas, títulos de sección |
-| `scroll-velocity.tsx` + `ticker.tsx` | React Bits · ScrollVelocity | Banda entre el hero y el cuerpo |
-| `count-up.tsx`       | React Bits · CountUp         | Cifras del bloque "evento" |
-| `glowing-effect.tsx` | Aceternity · Glowing Effect  | Tarjetas de track (arco del color del track), agenda, sponsor destacado |
-| `comet-card.tsx`     | Aceternity · Comet Card      | Fichas de speaker |
-| `globe.tsx`          | Aceternity · 3D Globe (sobre cobe, no three.js) | Sedes |
-| `glare-hover.tsx`    | React Bits · GlareHover      | Niveles de sponsor, tarjetas de sede |
-| `tracing-beam.tsx`   | Aceternity · Tracing Beam    | Timeline de la agenda (cuando haya `days`) |
-| `split-flap.tsx`     | React Bits · Split Flap Text | Contador del CTA final |
-| `aurora.tsx`         | Aceternity · Aurora Background | Fondo del CTA final |
-| `target-cursor.tsx`  | React Bits · TargetCursor    | Global, solo con puntero fino |
-| `click-spark.tsx`    | React Bits · ClickSpark      | Global |
-| `smooth-scroll.tsx`  | Lenis                        | Global — y toda la navegación por anclas |
-
-Los efectos que dependen del cursor (`glowing-effect`, `comet-card`, `magnetic`,
-`target-cursor`) no existen en táctil ni con la preferencia de movimiento activa.
-
-## La escena del hero
-
-`components/ui/hero-scene.tsx` — WebGL a pelo, sin three.js ni OGL. Dos programas y dos
-llamadas de dibujo:
-
-1. **Fondo**: un triángulo a pantalla completa. Nebulosa con ruido fbm, halo alrededor del
-   planeta y la línea del ecuador. Los cinco colores salen del brand guide.
-2. **Planeta**: 7000 puntos repartidos por espiral de Fibonacci sobre una esfera unitaria.
-   Los puntos de latitud ~0 se pintan naranja, así que **el ecuador no está dibujado
-   encima: lo dibuja la geometría**. Se ensambla al cargar, gira solo, se inclina con el
-   cursor y se hunde con el scroll.
-
-Salvaguardas: resolución tope 1,5×; **calidad adaptativa** (mide los primeros 45 cuadros y,
-si no llega a ~48 fps, baja a 1× y apaga la capa de ruido secundaria); no dibuja nada
-mientras está fuera de pantalla; y si no hay WebGL cae a un degradado equivalente.
-
-## Rendimiento
-
-El sitio arrancaba a **6 fps** en el build de producción medido con renderizado por software.
-El perfilador de CPU daba 70 % de tiempo ocioso: el cuello no era JavaScript, era **pintado**.
-Retirando capas una por una salieron los culpables y se corrigieron:
-
-| Causa | Coste medido | Qué se hizo |
-| ----- | ------------ | ----------- |
-| `filter: blur()` sobre capas grandes (atmósfera del hero, Aurora, halo del glowing effect) | ×2,3 de fotogramas | Fuera. La suavidad va horneada en los degradados; el hero la hace el shader |
-| Conos del Spotlight + rejilla técnica a pantalla completa | ×1,8 | Sustituidos por la escena WebGL |
-| `background-position` animado en Aurora | repintaba la capa entera cada cuadro | Ahora se mueve con `transform` |
-| `fillText` por celda y por cuadro en `binary-field` (~2000 llamadas × 60/s) | la función JS más cara del sitio | La retícula se cachea en un lienzo fuera de pantalla; solo se repintan las ~130 celdas del halo |
-| Un `pointermove` + `scroll` por instancia de `glowing-effect` (×8) | 8 reflows por movimiento de ratón | Un único listener de módulo que reparte a todas las instancias en un rAF |
-| `getComputedStyle` en cada movimiento del cursor personalizado | recálculo de estilo a 60 Hz | Cacheado por elemento en un `WeakMap` |
-| Bucles de rAF permanentes (globo, cinta de scroll, chispas del clic) | GPU y compositor toda la visita | Se apagan fuera de pantalla, o solo corren cuando hay algo que dibujar |
-
-**Resultado: de 6 a ~42 fps**, y prácticamente sin cambio al frenar la CPU 4× — señal de que
-ya no queda trabajo de JavaScript en el camino crítico. Todas esas cifras salen de
-renderizado por software (sin GPU), que es el peor caso posible; con GPU real va sobrada.
-
-### Reglas para no volver atrás
-
-- Nada de `filter: blur()` sobre elementos grandes o animados. Si hace falta suavidad, se
-  hornea en el degradado o se resuelve en el shader.
-- Animar `transform` y `opacity`, nunca `background-position`, `top/left` ni `width`.
-- Todo bucle de `requestAnimationFrame` se apaga con un `IntersectionObserver` cuando su
-  elemento sale de pantalla.
-- Los listeners de `pointermove` se agrupan en un rAF y se comparten entre instancias.
-  Ninguna lectura de geometría (`getBoundingClientRect`, `getComputedStyle`) va suelta
-  dentro de un manejador de eventos.
+IEEE, the IEEE logo and the IEEE Computer Society logo are trademarks of their
+respective owners. The brand assets in this repository are used under the
+IEEE Computer Society brand guidelines for chapter activities.
