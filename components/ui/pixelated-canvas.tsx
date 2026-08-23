@@ -62,6 +62,14 @@ export type PixelatedCanvasProps = {
   fill?: boolean
   /** Size of each sampling cell, in CSS pixels. */
   cellSize?: number
+  /**
+   * Target number of cells across the canvas. Overrides `cellSize`
+   * when set: the grid then holds the same amount of detail at any
+   * rendered size, instead of getting coarser as the element
+   * shrinks. Use it whenever the artwork contains fine detail
+   * (lettering) and is displayed responsively.
+   */
+  columns?: number
   /** Dot size as a fraction of the cell (0..1). */
   dotScale?: number
   shape?: 'circle' | 'square'
@@ -141,6 +149,7 @@ export function PixelatedCanvas({
   height = 500,
   fill = false,
   cellSize = 4,
+  columns,
   dotScale = 0.9,
   shape = 'square',
   backgroundColor,
@@ -216,11 +225,23 @@ export function PixelatedCanvas({
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    /* `columns` is a request, not a promise. A cell has to keep at
+       least one pixel of gap around its dot, so below 3px the dot
+       is 1px against a 2px cell and the whole image loses three
+       quarters of its coverage — it reads as dimmed, not as
+       pixelated. */
+    const cell = columns
+      ? Math.max(3, Math.round(displayW / columns))
+      : cellSize
+
     let cancelled = false
     let raf = 0
     let visible = true
     let samples: Sample[] = []
-    let dot = Math.max(1, Math.floor(cellSize * dotScale))
+    /* Rounded, not floored: at a 3px cell, flooring turns a 0.8
+       dotScale into a 2px dot asking for 2.4, and the error shows
+       up as a visibly darker image. */
+    let dot = Math.max(1, Math.round(cell * dotScale))
     let startedAt = 0
 
     const dpr = Math.min(typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1, maxDpr)
@@ -293,11 +314,11 @@ export function PixelatedCanvas({
       }
 
       const built: Sample[] = []
-      const half = Math.floor(cellSize / 2)
+      const half = Math.floor(cell / 2)
 
-      for (let y = 0; y < off.height; y += cellSize) {
+      for (let y = 0; y < off.height; y += cell) {
         const cy = Math.min(off.height - 1, y + half)
-        for (let x = 0; x < off.width; x += cellSize) {
+        for (let x = 0; x < off.width; x += cell) {
           const cx = Math.min(off.width - 1, x + half)
 
           let r = 0
@@ -403,7 +424,7 @@ export function PixelatedCanvas({
          draw loop. */
       built.sort((p, q2) => (p.color < q2.color ? -1 : p.color > q2.color ? 1 : 0))
       samples = built
-      dot = Math.max(1, Math.floor(cellSize * dotScale))
+      dot = Math.max(1, Math.round(cell * dotScale))
       return true
     }
 
@@ -610,6 +631,7 @@ export function PixelatedCanvas({
     src,
     size,
     cellSize,
+    columns,
     dotScale,
     shape,
     backgroundColor,

@@ -107,7 +107,7 @@ export function Hero() {
       />
 
       <motion.div
-        className="shell relative grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14"
+        className="shell relative grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14"
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
       >
         {/* ---------- copy ---------- */}
@@ -182,7 +182,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.66 }}
-              className="mt-9 flex flex-wrap gap-x-8 gap-y-5"
+              className="mt-7 flex flex-wrap gap-x-8 gap-y-5 lg:mt-9"
             >
               {meta.map((m) => (
                 <div key={m.label} className="border-l border-line-strong pl-4">
@@ -199,7 +199,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.78 }}
-              className="mt-10 flex flex-wrap gap-3"
+              className="mt-8 flex flex-wrap gap-3 lg:mt-10"
             >
               <Magnetic radius={70} strength={0.26}>
                 <Btn href={event.registerUrl} size="lg">
@@ -248,16 +248,24 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
           style={reduce ? undefined : { x: logoX, y: logoY }}
-          className="order-first mx-auto w-[min(48vw,208px)] lg:order-last lg:w-full lg:max-w-[460px]"
+          className="order-first mx-auto w-[min(56vw,248px)] lg:order-last lg:w-full lg:max-w-[460px]"
         >
           <div className="relative aspect-[776/990] w-full">
             <PixelatedCanvas
               src="/logo/cs-tech-week-ec.svg"
               fill
-              cellSize={4}
-              dotScale={0.85}
+              /* Resolution is fixed in cells, not pixels: the ribbon
+                 lettering and the wordmark need a certain number of
+                 cells per glyph to stay readable, and a fixed
+                 cellSize would drop below that as soon as the
+                 element shrank on mobile. */
+              columns={120}
+              dotScale={0.8}
               shape="square"
-              dropoutStrength={0.2}
+              /* Dropout thins low-contrast areas — which is exactly
+                 where thin letter strokes live. Kept low so the
+                 texture stays in the flat fills. */
+              dropoutStrength={0.08}
               distortionMode="swirl"
               distortionStrength={4}
               distortionRadius={95}
