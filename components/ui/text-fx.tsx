@@ -82,12 +82,18 @@ export function Scramble({
 
   const run = React.useCallback(() => {
     if (reduce) return setOut(text)
-    let frame = 0
+
+    /* Progress comes from the clock, not from a tick counter. The
+       hero paints a canvas of several thousand dots while this
+       runs, and a busy main thread coalesces timer callbacks —
+       counting ticks stretched a two second decrypt into ten and
+       left the line looking stuck. */
+    const startedAt = performance.now()
     const total = text.length * settle + settle * 2
 
     window.clearInterval(timer.current)
     timer.current = window.setInterval(() => {
-      frame += 1
+      const frame = (performance.now() - startedAt) / step
       const revealed = Math.floor(frame / settle)
       setOut(
         text
