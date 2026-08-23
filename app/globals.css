@@ -1,0 +1,390 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CS TECH WEEK ECUADOR — sistema "Latitud Cero"
+   Tema oscuro comprometido. Los hex vienen del IEEE CS Brand
+   Identity & Graphic Style Guide; los negros se derivan de
+   PMS 295 (#002855) para que pertenezcan a la marca.
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* Fondos — matiz ≈213°, nunca gris neutro */
+    --ink:        216 38% 3%;    /* #05070B  base            */
+    --ink-raise:  216 41% 7%;    /* #0B111A  superficie      */
+    --ink-plate:  212 32% 9%;    /* #10171F  elevado         */
+    --line:       214 28% 15%;   /* #1B2430  hairline        */
+    --line-strong:214 24% 22%;   /* #2A3746  borde marcado   */
+
+    /* Texto */
+    --paper:      210 30% 95%;   /* #EEF2F6 */
+    --paper-2:    212 18% 64%;   /* #94A3B4 */
+    --paper-3:    213 15% 42%;   /* #5A6779 */
+
+    /* Acentos IEEE CS */
+    --orange:      38 100% 50%;  /* #FFA300  PMS 137 C       */
+    --cyan:       192 100% 44%;  /* #00B5E2  PMS Process Cyan*/
+    --deep:       202 100% 30%;  /* #00629B  PMS 3015        */
+    --abyss:      212 100% 17%;  /* #002855  PMS 295         */
+
+    /* Tracks — paleta bright oficial, un hex por temática */
+    --track-ia:      301 68% 35%;  /* #981D97  PMS 254 C */
+    --track-cloud:   192 100% 44%; /* #00B5E2  PMS Process Cyan */
+    --track-sec:     347 88% 39%;  /* #BA0C2F  PMS 200 C */
+    --track-data:    184 100% 33%; /* #009CA6  PMS 320 C */
+    --track-dev:      86 71% 44%;  /* #78BE20  PMS 368 C */
+    --track-quantum:  49 100% 50%; /* #FFD100  PMS 109 C */
+
+    --nav-h: 68px;
+  }
+
+  * {
+    @apply border-line;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h) + 24px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: hsl(var(--ink));
+    color: hsl(var(--paper));
+    @apply font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: hsl(var(--orange) / 0.25);
+    color: hsl(var(--paper));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--orange));
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* Barra de scroll acorde al tema */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--ink)); }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--line-strong));
+    border-radius: 99px;
+    border: 3px solid hsl(var(--ink));
+  }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--paper-3)); }
+}
+
+@layer components {
+  /* Contenedor único del sitio */
+  .shell {
+    width: min(100% - 40px, 1240px);
+    margin-inline: auto;
+  }
+  @media (min-width: 768px) {
+    .shell { width: min(100% - 72px, 1240px); }
+  }
+
+  /* Etiqueta micro monoespaciada — el tono de "hoja técnica" */
+  .label {
+    @apply font-mono text-[11px] uppercase tracking-label text-subtle;
+  }
+
+  /* Regla ecuatorial: el divisor ES el concepto */
+  .equator {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--line)) 12%,
+      hsl(var(--line)) 88%,
+      transparent
+    );
+  }
+  .equator::after {
+    content: '';
+    position: absolute;
+    left: 34%;
+    top: -3px;
+    width: 1px;
+    height: 7px;
+    background: hsl(var(--orange));
+  }
+
+  /* Línea de brillo superior en tarjetas — heredada de DevIAthon */
+  .shine-top::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    right: 24px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--orange) / 0.35),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.45s var(--ease-cs, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .shine-top:hover::before { opacity: 1; }
+
+  /* Retícula técnica, desvanecida por máscara */
+  .tech-grid {
+    background-image:
+      linear-gradient(hsl(var(--paper) / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--paper) / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Degradado de texto para cifras y palabras clave */
+  .grad-text {
+    background: linear-gradient(
+      92deg,
+      hsl(var(--paper)) 0%,
+      hsl(var(--paper)) 42%,
+      hsl(var(--orange)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Borde con degradado (truco de doble fondo, sin pseudo-elemento) */
+  .grad-border {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(hsl(var(--ink-raise)), hsl(var(--ink-raise))) padding-box,
+      linear-gradient(
+          135deg,
+          hsl(var(--orange) / 0.5),
+          hsl(var(--deep) / 0.35) 45%,
+          hsl(var(--line)) 80%
+        )
+        border-box;
+  }
+}
+
+@layer utilities {
+  .mask-fade-y {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .mask-radial {
+    -webkit-mask-image: radial-gradient(65% 65% at 50% 50%, #000, transparent);
+    mask-image: radial-gradient(65% 65% at 50% 50%, #000, transparent);
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+/* Respeto absoluto por reduced-motion: Motion lo maneja vía hook,
+   esto cubre las animaciones puramente CSS. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   CAPA DE INTERACCIÓN
+   Todo lo que necesitan los componentes tomados de Aceternity UI
+   y React Bits, reescrito para el sistema "Latitud Cero". Vive
+   fuera de los @layer de Tailwind porque son piezas concretas,
+   no utilidades: nada de esto debe poder purgarse por accidente.
+   ============================================================ */
+
+:root {
+  --ease-cs: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Lenis (scroll suave) --------------------------- */
+/* Lenis toma el control del desplazamiento: el smooth nativo
+   tiene que apagarse o los dos se pelean y el scroll tirita. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ---------- Anillo de luz (GlowingEffect) ------------------ */
+/* Receta de borde con degradado: dos máscaras idénticas, una
+   recortada al content-box, y `exclude` entre ambas. Lo que
+   queda visible es exactamente el padding — o sea, el borde. */
+.glow-ring {
+  position: absolute;
+  inset: 0;
+  padding: var(--glow-border-width, 1px);
+  background: var(--glow-gradient);
+  opacity: var(--active, 0);
+  transition: opacity 0.35s var(--ease-cs);
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* ---------- ShinyText -------------------------------------- */
+.shiny-text {
+  --shine-base: hsl(var(--orange));
+  --shine-hi: hsl(38 100% 86%);
+  background-image: linear-gradient(
+    110deg,
+    var(--shine-base) 0%,
+    var(--shine-base) 42%,
+    var(--shine-hi) 50%,
+    var(--shine-base) 58%,
+    var(--shine-base) 100%
+  );
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine var(--shine-duration, 5s) linear infinite;
+}
+@keyframes shine {
+  to {
+    background-position: -160% 0;
+  }
+}
+
+/* ---------- Split-flap (contador) -------------------------- */
+.flap-cell {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 7px;
+  border: 1px solid hsl(var(--line-strong));
+  background: linear-gradient(180deg, hsl(var(--ink-plate)), hsl(var(--ink)) 52%, hsl(var(--ink-raise)));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--paper) / 0.06),
+    0 8px 18px -12px rgb(0 0 0 / 0.9);
+  transform-style: preserve-3d;
+}
+
+/* ---------- GlareHover ------------------------------------- */
+.glare-sheen {
+  transform: rotate(var(--glare-angle, -22deg)) translateX(-340%);
+  transition: transform var(--glare-duration, 850ms) var(--ease-cs);
+  will-change: transform;
+}
+.glare:hover .glare-sheen,
+.glare:focus-within .glare-sheen {
+  transform: rotate(var(--glare-angle, -22deg)) translateX(420%);
+}
+
+/* ---------- TargetCursor ----------------------------------- */
+/* Solo se activa cuando el componente confirma puntero fino;
+   los campos de texto recuperan el cursor nativo porque nadie
+   escribe cómodo sin barra de inserción. */
+html.has-target-cursor,
+html.has-target-cursor * {
+  cursor: none !important;
+}
+html.has-target-cursor input,
+html.has-target-cursor textarea,
+html.has-target-cursor select,
+html.has-target-cursor [contenteditable='true'] {
+  cursor: auto !important;
+}
+
+/* ---------- Señal de scroll -------------------------------- */
+.scroll-cue > span:first-child {
+  animation: cue 2.2s var(--ease-cs) infinite;
+}
+@keyframes cue {
+  0% {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(180%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shiny-text {
+    color: var(--shine-base);
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+  }
+  .glare-sheen,
+  .scroll-cue {
+    display: none;
+  }
+}
+
+/* ---------- Red de seguridad de los reveals ----------------- */
+/* Las apariciones al hacer scroll dependen de un
+   IntersectionObserver. Cuando la preferencia de movimiento está
+   activa el salto a un ancla es instantáneo, y en ese caso el
+   observador de Motion puede no llegar a disparar: la sección de
+   destino se quedaría en su estado inicial —invisible— hasta que
+   el usuario mueva la rueda.
+
+   Para quien pide menos movimiento la respuesta correcta no es
+   animar mejor, es no animar: el contenido simplemente está.
+   Estas dos líneas lo garantizan por CSS, que no depende de que
+   ningún observador funcione. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* Los anillos orbitales se dibujan animando pathLength, que
+     Motion traduce a stroke-dashoffset. Sin animación el trazo
+     quedaría oculto, así que se muestra entero de una vez. */
+  svg [data-reveal] {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

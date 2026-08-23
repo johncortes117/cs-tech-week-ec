@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+
+# despliegue
+.vercel
+
+# sistema y editores
+.DS_Store
+Thumbs.db
+*.log
+.idea/

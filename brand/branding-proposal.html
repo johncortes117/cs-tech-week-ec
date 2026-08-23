@@ -1,0 +1,1190 @@
+<title>Latitud Cero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ============================================================
+   CS TECH WEEK ECUADOR 2026 — Propuesta de identidad "Latitud Cero"
+   Documento de una sola atmósfera (dark). Ver §03 para el porqué.
+   ============================================================ */
+
+:root{
+  /* — Fondos: negros sesgados al azul CS (H≈213°), nunca #000 puro — */
+  --ink:        #05070B;
+  --ink-raise:  #0B111A;
+  --ink-plate:  #10171F;
+  --ink-line:   #1B2430;
+  --ink-line-2: #2A3746;
+
+  /* — Tinta / texto — */
+  --paper:      #EEF2F6;
+  --paper-2:    #94A3B4;
+  --paper-3:    #5A6779;
+
+  /* — Acentos de marca IEEE CS (hex oficiales del brand guide) — */
+  --cs-orange:  #FFA300;  /* PMS 137 C  — el acento. Escaso. */
+  --cs-orange-h:#FFB733;
+  --cs-abyss:   #002855;  /* PMS 295    — atmósfera, degradados */
+  --cs-deep:    #00629B;  /* PMS 3015   — atmósfera media */
+  --cs-cyan:    #00B5E2;  /* PMS Cyan   — dato, hover, terminal de degradado */
+
+  /* — Tipografía — */
+  --f-display: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  --f-body:    "Open Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:    "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  --t-display: clamp(2.75rem, 8.5vw, 6.75rem);
+  --t-h1:      clamp(2rem, 4.6vw, 3.25rem);
+  --t-h2:      clamp(1.45rem, 2.9vw, 2rem);
+  --t-h3:      1.0625rem;
+  --t-body:    1.0625rem;
+  --t-small:   0.875rem;
+  --t-micro:   0.6875rem;
+
+  /* — Ritmo — */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px; --s9: 112px;
+
+  --shell: 1240px;
+  --rail:  132px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+svg[data-logo]{ width:100%; height:auto; display:block; }
+
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  line-height:1.72;
+  font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+}
+
+:focus-visible{ outline:2px solid var(--cs-orange); outline-offset:3px; border-radius:2px; }
+
+/* ---------- primitivas tipográficas ---------- */
+h1,h2,h3,h4{ font-family:var(--f-display); margin:0; text-wrap:balance; }
+
+.micro{
+  font-family:var(--f-mono);
+  font-size:var(--t-micro);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--paper-3);
+  font-weight:500;
+}
+.micro--orange{ color:var(--cs-orange); }
+.mono{ font-family:var(--f-mono); font-variant-numeric:tabular-nums; }
+
+.lede{ font-size:1.1875rem; line-height:1.62; color:var(--paper-2); max-width:62ch; }
+p{ margin:0; max-width:66ch; color:var(--paper-2); }
+strong{ color:var(--paper); font-weight:600; }
+
+/* marcador de dato pendiente — para que no se confunda con una decisión */
+.tbd{
+  font-family:var(--f-mono); font-size:.8em; letter-spacing:.06em;
+  color:var(--cs-orange);
+  border-bottom:1px dashed rgba(255,163,0,.5);
+  padding-bottom:1px; white-space:nowrap;
+}
+
+/* ---------- estructura ---------- */
+.shell{ width:min(100% - 40px, var(--shell)); margin-inline:auto; }
+
+section{ padding-block: var(--s9); }
+
+.sect{
+  display:grid;
+  grid-template-columns: var(--rail) minmax(0,1fr);
+  gap: var(--s7);
+  align-items:start;
+}
+.sect__rail{ position:sticky; top:96px; }
+.sect__num{
+  font-family:var(--f-mono); font-size:.75rem; font-weight:600;
+  color:var(--cs-orange); letter-spacing:.1em; display:block;
+}
+.sect__label{
+  font-family:var(--f-mono); font-size:var(--t-micro); letter-spacing:.16em;
+  text-transform:uppercase; color:var(--paper-3); margin-top:var(--s2); display:block;
+}
+.sect__body{ display:flex; flex-direction:column; gap:var(--s6); min-width:0; }
+
+@media (max-width: 900px){
+  .sect{ grid-template-columns:1fr; gap:var(--s4); }
+  .sect__rail{ position:static; display:flex; align-items:baseline; gap:var(--s3); }
+  .sect__label{ margin-top:0; }
+  section{ padding-block: var(--s8); }
+}
+
+/* ---------- la regla ecuatorial: el divisor ES el concepto ---------- */
+.equator{
+  position:relative; height:1px; width:100%;
+  background:linear-gradient(90deg, transparent, var(--ink-line) 12%, var(--ink-line) 88%, transparent);
+}
+.equator::after{
+  content:""; position:absolute; left:34%; top:-3px; width:1px; height:7px;
+  background:var(--cs-orange);
+}
+.equator__label{
+  position:absolute; left:calc(34% + 12px); top:-8px;
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.14em; color:var(--paper-3);
+}
+
+/* ---------- masthead ---------- */
+.masthead{
+  position:sticky; top:0; z-index:40;
+  background:rgba(5,7,11,.78);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--ink-line);
+}
+.masthead__in{
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s5);
+  padding-block:var(--s3); min-height:60px;
+}
+.masthead__logo{ width:min(216px, 46vw); }
+.masthead__logo svg{ width:100%; height:auto; display:block; }
+.masthead__meta{ display:flex; gap:var(--s5); align-items:center; }
+@media (max-width:640px){ .masthead__meta .micro:first-child{ display:none; } }
+
+/* ---------- hero ---------- */
+.hero{ position:relative; padding-block: clamp(72px,13vh,140px) var(--s9); overflow:hidden; }
+.hero__glow{
+  position:absolute; inset:-30% -10% auto -10%; height:150%;
+  background:
+    radial-gradient(58% 46% at 26% 30%, rgba(0,98,155,.34), transparent 72%),
+    radial-gradient(46% 40% at 76% 16%, rgba(255,163,0,.13), transparent 70%),
+    radial-gradient(70% 60% at 50% 88%, rgba(0,40,85,.42), transparent 76%);
+  filter:blur(8px); pointer-events:none;
+}
+.hero__field{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:.5; }
+.hero__in{ position:relative; }
+
+.hero h1{
+  font-size:var(--t-display); font-weight:900; line-height:.92; letter-spacing:-.038em;
+  margin-block: var(--s5) var(--s5); max-width:16ch;
+}
+.hero h1 em{ font-style:normal; color:var(--cs-orange); }
+.hero h1 .dim{ color:var(--paper-3); }
+
+/* firma numérica 0 · 80 · 1 */
+.signature{
+  display:flex; flex-wrap:wrap; gap:0; margin-top:var(--s7);
+  border-top:1px solid var(--ink-line); border-bottom:1px solid var(--ink-line);
+}
+.signature__cell{
+  flex:1 1 150px; padding:var(--s5) var(--s5) var(--s5) 0;
+  border-right:1px solid var(--ink-line);
+}
+.signature__cell:last-child{ border-right:0; }
+.signature__n{
+  font-family:var(--f-display); font-weight:800; font-size:clamp(2rem,4.4vw,3rem);
+  line-height:1; letter-spacing:-.03em; color:var(--paper); font-variant-numeric:tabular-nums;
+}
+.signature__n span{ color:var(--cs-orange); }
+.signature__t{ margin-top:var(--s3); font-size:var(--t-small); color:var(--paper-2); max-width:26ch; line-height:1.55; }
+
+/* ---------- placas / plates ---------- */
+.plate{
+  background:var(--ink-raise);
+  border:1px solid var(--ink-line);
+  border-radius:3px;
+  padding:var(--s6);
+}
+.plate--flush{ padding:0; overflow:hidden; }
+.plate__hd{
+  display:flex; align-items:baseline; justify-content:space-between; gap:var(--s4);
+  flex-wrap:wrap; margin-bottom:var(--s5);
+}
+.plate h3{ font-size:var(--t-h3); font-weight:700; letter-spacing:-.01em; }
+
+.grid2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--s4); }
+.grid3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:var(--s4); }
+.grid4{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:var(--s3); }
+
+h2.head{ font-size:var(--t-h1); font-weight:800; letter-spacing:-.03em; line-height:1.04; }
+h3.sub{ font-size:var(--t-h2); font-weight:700; letter-spacing:-.02em; line-height:1.12; }
+
+/* ---------- logo plates ---------- */
+.logoplate{ display:flex; flex-direction:column; border:1px solid var(--ink-line); border-radius:3px; overflow:hidden; }
+.logoplate__stage{ display:grid; place-items:center; padding:var(--s7) var(--s5); min-height:132px; }
+.logoplate__stage svg{ width:min(100%,240px); height:auto; display:block; }
+.logoplate__cap{
+  padding:var(--s3) var(--s4); border-top:1px solid var(--ink-line);
+  background:var(--ink-raise); display:flex; justify-content:space-between; gap:var(--s3); align-items:center;
+}
+.bg-ink{   background:var(--ink); }
+.bg-abyss{ background:var(--cs-abyss); }
+.bg-paper{ background:#FFFFFF; }
+.bg-orange{background:var(--cs-orange); }
+
+/* espacio de respeto */
+.clearspace{ position:relative; display:grid; place-items:center; padding:var(--s8); background:var(--ink); }
+.clearspace__box{ position:relative; padding:16px; outline:1px dashed rgba(255,163,0,.4); }
+.clearspace__box svg{ width:min(100%,260px); height:auto; display:block; }
+
+/* ---------- color ---------- */
+.ramp{ display:flex; border:1px solid var(--ink-line); border-radius:3px; overflow:hidden; }
+.ramp__seg{ flex:1; display:flex; flex-direction:column; min-width:0; }
+.ramp__chip{ height:88px; border-right:1px solid rgba(255,255,255,.05); }
+.ramp__seg:last-child .ramp__chip{ border-right:0; }
+.ramp__meta{ padding:var(--s3); border-top:1px solid var(--ink-line); background:var(--ink-raise); }
+.ramp__hex{ font-family:var(--f-mono); font-size:.72rem; color:var(--paper); letter-spacing:.02em; }
+.ramp__role{ font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--paper-3); margin-top:3px; }
+
+.swatch{ border:1px solid var(--ink-line); border-radius:3px; overflow:hidden; display:flex; flex-direction:column; }
+.swatch__fill{ height:120px; position:relative; }
+.swatch__fill span{
+  position:absolute; left:var(--s4); bottom:var(--s3);
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.1em; font-weight:600;
+}
+.swatch__data{ padding:var(--s4); background:var(--ink-raise); display:flex; flex-direction:column; gap:var(--s2); flex:1; }
+.swatch__name{ font-family:var(--f-display); font-weight:700; font-size:.9375rem; letter-spacing:-.01em; }
+.swatch__spec{ font-family:var(--f-mono); font-size:11px; line-height:1.75; color:var(--paper-3); }
+.swatch__use{ font-size:.8125rem; color:var(--paper-2); line-height:1.5; margin-top:auto; padding-top:var(--s2); }
+
+/* barra de proporción */
+.ratio{ display:flex; height:38px; border-radius:3px; overflow:hidden; border:1px solid var(--ink-line); }
+.ratio__seg{ display:grid; place-items:center; font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; font-weight:600; }
+.ratio__key{ display:flex; flex-wrap:wrap; gap:var(--s5); margin-top:var(--s4); }
+.ratio__k{ display:flex; align-items:center; gap:var(--s2); font-size:.8125rem; color:var(--paper-2); }
+.ratio__dot{ width:9px; height:9px; border-radius:1px; flex:none; }
+
+/* ---------- tipografía ---------- */
+.spec-display{
+  font-family:var(--f-display); font-weight:900; font-size:clamp(2.5rem,7.5vw,5.5rem);
+  letter-spacing:-.04em; line-height:.9; color:var(--paper);
+}
+.ladder{ display:flex; flex-direction:column; gap:var(--s3); }
+.ladder__row{ display:flex; align-items:baseline; gap:var(--s5); border-bottom:1px solid var(--ink-line); padding-bottom:var(--s3); }
+.ladder__row:last-child{ border-bottom:0; }
+.ladder__w{ font-family:var(--f-mono); font-size:10px; letter-spacing:.12em; color:var(--paper-3); width:96px; flex:none; }
+.ladder__s{ font-family:var(--f-display); font-size:clamp(1.1rem,2.4vw,1.6rem); letter-spacing:-.02em; color:var(--paper); }
+
+table{ width:100%; border-collapse:collapse; font-size:.8125rem; }
+.scroller{ overflow-x:auto; }
+th{
+  text-align:left; font-family:var(--f-mono); font-size:10px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--paper-3); font-weight:500;
+  padding:0 var(--s4) var(--s3) 0; border-bottom:1px solid var(--ink-line-2); white-space:nowrap;
+}
+td{
+  padding:var(--s3) var(--s4) var(--s3) 0; border-bottom:1px solid var(--ink-line);
+  color:var(--paper-2); vertical-align:top;
+}
+td:first-child{ color:var(--paper); font-weight:600; white-space:nowrap; }
+td.num{ font-family:var(--f-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+/* ---------- reglas sí / no ---------- */
+.rules{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:var(--s5); }
+.rules ul{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--s3); }
+.rules li{ display:flex; gap:var(--s3); font-size:.9375rem; line-height:1.55; color:var(--paper-2); }
+.rules li::before{ font-family:var(--f-mono); font-size:.8125rem; flex:none; line-height:1.7; }
+.rules--do li::before{ content:"+"; color:var(--cs-cyan); }
+.rules--dont li::before{ content:"×"; color:#E8556B; }
+
+/* ---------- lenguaje gráfico ---------- */
+.motif{ border:1px solid var(--ink-line); border-radius:3px; overflow:hidden; display:flex; flex-direction:column; }
+.motif__stage{ height:170px; position:relative; background:var(--ink); overflow:hidden; }
+.motif__stage canvas{ position:absolute; inset:0; width:100%; height:100%; }
+.motif__cap{ padding:var(--s4); background:var(--ink-raise); border-top:1px solid var(--ink-line); display:flex; flex-direction:column; gap:var(--s2); }
+.motif__cap h4{ font-size:.9375rem; font-weight:700; letter-spacing:-.01em; }
+.motif__cap p{ font-size:.8125rem; line-height:1.55; }
+
+.demo-grid{
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size:38px 38px;
+  mask-image:radial-gradient(70% 70% at 50% 50%, #000, transparent);
+  -webkit-mask-image:radial-gradient(70% 70% at 50% 50%, #000, transparent);
+}
+.demo-eq{ position:absolute; left:0; right:0; top:50%; height:1px; background:linear-gradient(90deg,transparent,var(--cs-orange),transparent); }
+.demo-eq::after{ content:"0°00′00″"; position:absolute; left:50%; transform:translateX(-50%); top:10px; font-family:var(--f-mono); font-size:10px; letter-spacing:.16em; color:var(--cs-orange); }
+.demo-glow{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(50% 60% at 30% 40%, rgba(0,98,155,.55), transparent 70%),
+    radial-gradient(40% 50% at 72% 62%, rgba(255,163,0,.28), transparent 70%);
+  filter:blur(6px);
+}
+
+/* ---------- maqueta de la landing ---------- */
+.mock{
+  border:1px solid var(--ink-line-2); border-radius:5px; overflow:hidden;
+  background:var(--ink); box-shadow:0 40px 90px -50px rgba(0,0,0,.95);
+}
+.mock__bar{
+  display:flex; align-items:center; gap:var(--s3);
+  padding:10px var(--s4); border-bottom:1px solid var(--ink-line); background:var(--ink-plate);
+}
+.mock__dots{ display:flex; gap:6px; }
+.mock__dots i{ width:8px; height:8px; border-radius:50%; background:var(--ink-line-2); }
+.mock__url{ font-family:var(--f-mono); font-size:10px; color:var(--paper-3); letter-spacing:.04em; }
+
+.mock__viewport{ position:relative; padding:var(--s5) clamp(16px,4vw,44px) var(--s7); overflow:hidden; }
+.mock__glow{
+  position:absolute; inset:-40% -20% auto -20%; height:200%;
+  background:
+    radial-gradient(48% 44% at 24% 26%, rgba(0,98,155,.42), transparent 72%),
+    radial-gradient(38% 36% at 80% 12%, rgba(255,163,0,.16), transparent 70%),
+    radial-gradient(60% 50% at 55% 96%, rgba(0,40,85,.5), transparent 74%);
+  filter:blur(6px); pointer-events:none;
+}
+.mock__field{ position:absolute; inset:0; width:100%; height:100%; opacity:.45; pointer-events:none; }
+.mock__in{ position:relative; }
+
+.mock__nav{ display:flex; align-items:center; justify-content:space-between; gap:var(--s4); padding-bottom:var(--s7); }
+.mock__nav-logo{ width:132px; }
+.mock__nav-logo svg{ width:100%; height:auto; display:block; }
+.mock__links{ display:flex; gap:var(--s5); }
+.mock__links span{ font-family:var(--f-display); font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--paper-2); }
+@media (max-width:720px){ .mock__links{ display:none; } }
+
+.badge{
+  display:inline-flex; align-items:center; gap:var(--s3);
+  border:1px solid rgba(255,163,0,.32); background:rgba(255,163,0,.07);
+  border-radius:999px; padding:6px 14px 6px 10px;
+}
+.badge__dot{ width:5px; height:5px; border-radius:50%; background:var(--cs-orange); flex:none; }
+.badge__t{ font-family:var(--f-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--cs-orange); }
+
+.mock__h1{
+  font-family:var(--f-display); font-weight:900;
+  font-size:clamp(2rem,6.4vw,4.25rem); line-height:.94; letter-spacing:-.04em;
+  margin:var(--s5) 0 0; max-width:13ch; color:var(--paper);
+}
+.mock__h1 em{ font-style:normal; color:var(--cs-orange); }
+.mock__sub{ margin-top:var(--s5); font-size:.9375rem; color:var(--paper-2); max-width:46ch; line-height:1.62; }
+
+.mock__meta{ display:flex; flex-wrap:wrap; gap:var(--s5); margin-top:var(--s6); }
+.mock__meta div{ border-left:1px solid var(--ink-line-2); padding-left:var(--s4); }
+.mock__meta b{ display:block; font-family:var(--f-display); font-weight:700; font-size:.9375rem; color:var(--paper); letter-spacing:-.01em; }
+
+.cta-row{ display:flex; flex-wrap:wrap; gap:var(--s3); margin-top:var(--s7); }
+.btn{
+  display:inline-flex; align-items:center; gap:var(--s2);
+  font-family:var(--f-display); font-weight:700; font-size:.8125rem; letter-spacing:.02em;
+  padding:13px 22px; border-radius:3px; border:1px solid transparent;
+  text-decoration:none; cursor:default; transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.btn--primary{ background:var(--cs-orange); color:#05070B; }
+.btn--primary:hover{ background:var(--cs-orange-h); }
+.btn--ghost{ border-color:var(--ink-line-2); color:var(--paper); }
+.btn--ghost:hover{ border-color:var(--paper-3); }
+
+.mock__strip{
+  display:flex; flex-wrap:wrap; gap:var(--s6); align-items:center;
+  margin-top:var(--s8); padding-top:var(--s5); border-top:1px solid var(--ink-line);
+}
+.mock__strip .micro{ color:var(--paper-3); }
+
+/* ---------- decisiones abiertas ---------- */
+.qs{ display:flex; flex-direction:column; gap:0; border-top:1px solid var(--ink-line); }
+.q{ display:grid; grid-template-columns:46px minmax(0,1fr); gap:var(--s4); padding:var(--s5) 0; border-bottom:1px solid var(--ink-line); }
+.q__n{ font-family:var(--f-mono); font-size:.75rem; font-weight:600; color:var(--cs-orange); letter-spacing:.08em; padding-top:3px; }
+.q h4{ font-size:.9375rem; font-weight:700; letter-spacing:-.01em; margin-bottom:var(--s2); }
+.q p{ font-size:.875rem; line-height:1.6; }
+
+/* ---------- pie ---------- */
+footer{ border-top:1px solid var(--ink-line); padding-block:var(--s7) var(--s8); }
+.foot{ display:flex; flex-wrap:wrap; gap:var(--s5); justify-content:space-between; align-items:flex-end; }
+
+/* ---------- utilidades ---------- */
+.stack-sm{ display:flex; flex-direction:column; gap:var(--s3); }
+.stack-md{ display:flex; flex-direction:column; gap:var(--s5); }
+.note{
+  border-left:2px solid var(--cs-orange); padding:var(--s3) 0 var(--s3) var(--s5);
+  font-size:.875rem; line-height:1.6; color:var(--paper-2);
+}
+.note b{ color:var(--paper); }
+</style>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <div class="masthead__logo"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#FFFFFF" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04 l0.58-0.13l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#FFFFFF" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1 l0.1,1.96l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#FFFFFF" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8l-1.1,1.44L372.8,6.53z"/><path fill="#FFFFFF" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69 L382.27,7.39z"/><path fill="#FFFFFF" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63 l1.87-2.08L388.26,12.32z"/><path fill="#FFFFFF" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#FFFFFF" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#FFFFFF" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32 l-0.66-2.24l-0.92,0.27L392.71,29.15z"/><path fill="#FFFFFF" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#FFFFFF" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9 c0.83,0.1,0.59-2.94,2.53-2.7c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59 c0.33-0.47,0.53-0.94,0.58-1.4c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52 C391.91,37.83,392.25,37.01,392.65,36.56z"/><path fill="#FFFFFF" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#FFFFFF" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#FFFFFF" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46 z"/></g><path fill="#FFFFFF" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#FFFFFF" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#FFFFFF" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#FFFFFF" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#FFFFFF" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#FFFFFF" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 s-1.49,1.17-1.97,2.02c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05 c0.84,0.5,1.76,0.76,2.77,0.76c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36 c-1.29,0.58-2.58,0.87-3.88,0.87c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74 c0-1.73,0.42-3.29,1.26-4.69c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81 c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#FFFFFF" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#FFFFFF" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61 l-5.13-10.3v12.12h-3.64V30.13z"/><path fill="#FFFFFF" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#FFFFFF" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#FFFFFF" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#FFFFFF" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#FFFFFF" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79 c2.34,0,4.15,0.54,5.43,1.63c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92 H244.12z M237.14,39.56h3.74c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24 c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#FFFFFF" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#FFFFFF" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#FFFFFF" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#FFFFFF" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#FFFFFF" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#FFFFFF" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#FFFFFF" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05 H205.21z"/><g><g><path fill="#FFFFFF" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FFFFFF" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#FFFFFF;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#FFFFFF" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23 c-0.47-0.57-1.05-0.88-1.77-0.88c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23 c-0.73,0.91-1.85,1.42-3.24,1.42C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#FFFFFF" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#FFFFFF" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#FFFFFF" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#FFFFFF" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97 c0,0.72-0.37,1.3-1.01,1.63C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73 c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79 C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#FFFFFF" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37 h-2.28L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#FFFFFF" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41 l-0.97,2.41H366.68z"/><path fill="#FFFFFF" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#FFFFFF" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#FFFFFF" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#FFFFFF" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FFFFFF" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FFFFFF" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FFFFFF" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.22-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FFFFFF" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+    <div class="masthead__meta">
+      <span class="micro">Propuesta de identidad · v1</span>
+      <span class="micro micro--orange">Ago 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <canvas class="hero__field" id="fieldHero" aria-hidden="true"></canvas>
+  <div class="shell hero__in">
+    <span class="micro">CS Tech Week · Ecuador · 2026</span>
+    <h1>Latitud cero.<br>Ochenta años.<br><span class="dim">Una</span> <em>semana</em>.</h1>
+    <p class="lede">
+      Una identidad construida sobre dos ceros que ya son nuestros: el paralelo 0° que
+      le da nombre a Ecuador, y el <strong>bug 1/0</strong> que es el corazón del logo de
+      IEEE Computer Society. Negro de base, naranja como recurso escaso, y precisión de
+      hoja técnica en cada detalle.
+    </p>
+
+    <div class="signature">
+      <div class="signature__cell">
+        <div class="signature__n"><span>0</span>°</div>
+        <div class="signature__t">Ecuador es el único país nombrado por una línea. Esa línea es un cero.</div>
+      </div>
+      <div class="signature__cell">
+        <div class="signature__n">80</div>
+        <div class="signature__t">2026 es el 80.º aniversario de IEEE Computer Society. El logo que tenemos ya lo dice.</div>
+      </div>
+      <div class="signature__cell">
+        <div class="signature__n">1</div>
+        <div class="signature__t">Una semana. Varios capítulos CS del Ecuador, un solo frente.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="shell"><div class="equator"><span class="equator__label">0°00′00″</span></div></div>
+
+<!-- ============ 01 CONCEPTO ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">01</span>
+      <span class="sect__label">Concepto</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">El cero es el activo que nadie más puede copiar.</h2>
+      <p class="lede">
+        Cualquier capítulo del mundo puede hacer una semana de tecnología. Ninguno puede
+        hacerla sobre el paralelo cero. Ese es el ángulo: no decorar la marca con folclore,
+        sino tomar el único dato geográfico que es simultáneamente <strong>identidad nacional</strong>
+        y <strong>vocabulario de computación</strong>.
+      </p>
+
+      <div class="grid2">
+        <div class="plate stack-sm">
+          <span class="micro micro--orange">Anclaje 1 — geográfico</span>
+          <h3>La línea ecuatorial</h3>
+          <p style="font-size:.9375rem">
+            0°00′00″. Una línea horizontal, infinita, que atraviesa el país.
+            En la web se convierte en un recurso estructural: <strong>la regla que separa
+            cada sección de la landing es esa línea</strong>, con su tick naranja y su
+            coordenada. El divisor deja de ser decoración y pasa a significar algo.
+          </p>
+        </div>
+        <div class="plate stack-sm">
+          <span class="micro micro--orange">Anclaje 2 — de marca</span>
+          <h3>El bug 1/0</h3>
+          <p style="font-size:.9375rem">
+            El ícono del logo de IEEE CS es literalmente un <strong>1 y un 0</strong>. Y
+            «Binary» aparece como atributo físico en el Brand Identity Prism del manual de
+            marca. Usar binario como textura no es una licencia creativa: es citar el manual.
+            Eso hace la propuesta <strong>defendible ante revisión de marca IEEE</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="plate stack-md">
+        <div class="plate__hd" style="margin:0">
+          <h3>Nombre y bajada</h3>
+          <span class="micro">Para decidir en §08</span>
+        </div>
+        <div class="scroller">
+          <table>
+            <thead>
+              <tr><th>Elemento</th><th>Propuesta</th><th>Uso</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nombre</td>
+                <td style="color:var(--paper);font-weight:600">CS Tech Week Ecuador</td>
+                <td>Siempre completo la primera vez. «CS Tech Week» a secas dentro de la página.</td>
+              </tr>
+              <tr>
+                <td>Firma numérica</td>
+                <td class="mono" style="color:var(--cs-orange)">0° · 80 · 1</td>
+                <td>Recurso gráfico recurrente: hero, redes, cierre de video, backdrop del escenario.</td>
+              </tr>
+              <tr>
+                <td>Bajada (ES)</td>
+                <td>Latitud cero. Ochenta años. Una semana.</td>
+                <td>Titular del hero y de las piezas de lanzamiento.</td>
+              </tr>
+              <tr>
+                <td>Bajada (EN)</td>
+                <td>Latitude zero. Eighty years. One week.</td>
+                <td>Versión para sponsors internacionales y reporte a IEEE CS.</td>
+              </tr>
+              <tr>
+                <td>Hashtag</td>
+                <td class="mono">#CSTechWeekEC &nbsp;·&nbsp; #ieeecs</td>
+                <td><span class="mono" style="color:var(--paper-3)">#ieeecs</span> es el hashtag estándar obligatorio según el manual.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="equator"><span class="equator__label">01 → 02</span></div></div>
+
+<!-- ============ 02 LOGOTIPO ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">02</span>
+      <span class="sect__label">Logotipo</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">Cuatro versiones, una sola regla: nunca se toca.</h2>
+      <p class="lede">
+        Los archivos que enviaste son el <strong>logo conmemorativo del 80.º aniversario</strong>
+        de IEEE CS. Es una pieza institucional: no se recolorea, no se redibuja, no se le
+        quita el <span class="mono" style="font-size:.85em">TM</span>. Lo que sí decidimos es
+        <em style="font-style:normal;color:var(--paper)">sobre qué fondo va cada una</em>.
+      </p>
+
+      <div class="grid4">
+        <div class="logoplate">
+          <div class="logoplate__stage bg-ink"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#FFFFFF" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04 l0.58-0.13l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#FFFFFF" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1 l0.1,1.96l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#FFFFFF" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8l-1.1,1.44L372.8,6.53z"/><path fill="#FFFFFF" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69 L382.27,7.39z"/><path fill="#FFFFFF" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63 l1.87-2.08L388.26,12.32z"/><path fill="#FFFFFF" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#FFFFFF" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#FFFFFF" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32 l-0.66-2.24l-0.92,0.27L392.71,29.15z"/><path fill="#FFFFFF" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#FFFFFF" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9 c0.83,0.1,0.59-2.94,2.53-2.7c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59 c0.33-0.47,0.53-0.94,0.58-1.4c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52 C391.91,37.83,392.25,37.01,392.65,36.56z"/><path fill="#FFFFFF" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#FFFFFF" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#FFFFFF" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46 z"/></g><path fill="#FFFFFF" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#FFFFFF" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#FFFFFF" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#FFFFFF" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#FFFFFF" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#FFFFFF" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 s-1.49,1.17-1.97,2.02c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05 c0.84,0.5,1.76,0.76,2.77,0.76c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36 c-1.29,0.58-2.58,0.87-3.88,0.87c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74 c0-1.73,0.42-3.29,1.26-4.69c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81 c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#FFFFFF" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#FFFFFF" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61 l-5.13-10.3v12.12h-3.64V30.13z"/><path fill="#FFFFFF" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#FFFFFF" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#FFFFFF" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#FFFFFF" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#FFFFFF" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79 c2.34,0,4.15,0.54,5.43,1.63c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92 H244.12z M237.14,39.56h3.74c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24 c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#FFFFFF" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#FFFFFF" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#FFFFFF" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#FFFFFF" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#FFFFFF" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#FFFFFF" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#FFFFFF" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05 H205.21z"/><g><g><path fill="#FFFFFF" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FFFFFF" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#FFFFFF;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#FFFFFF" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23 c-0.47-0.57-1.05-0.88-1.77-0.88c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23 c-0.73,0.91-1.85,1.42-3.24,1.42C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#FFFFFF" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#FFFFFF" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#FFFFFF" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#FFFFFF" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97 c0,0.72-0.37,1.3-1.01,1.63C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73 c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79 C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#FFFFFF" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37 h-2.28L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#FFFFFF" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41 l-0.97,2.41H366.68z"/><path fill="#FFFFFF" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#FFFFFF" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#FFFFFF" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#FFFFFF" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FFFFFF" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FFFFFF" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FFFFFF" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.22-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FFFFFF" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+          <div class="logoplate__cap">
+            <span class="micro">Blanco</span>
+            <span class="micro micro--orange">Principal web</span>
+          </div>
+        </div>
+        <div class="logoplate">
+          <div class="logoplate__stage bg-abyss"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#FFFFFF" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04 l0.58-0.13l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#FFFFFF" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1 l0.1,1.96l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#FFFFFF" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8l-1.1,1.44L372.8,6.53z"/><path fill="#FFFFFF" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69 L382.27,7.39z"/><path fill="#FFFFFF" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63 l1.87-2.08L388.26,12.32z"/><path fill="#FFFFFF" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#FFFFFF" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#FFFFFF" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32 l-0.66-2.24l-0.92,0.27L392.71,29.15z"/><path fill="#FFFFFF" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#FFFFFF" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9 c0.83,0.1,0.59-2.94,2.53-2.7c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59 c0.33-0.47,0.53-0.94,0.58-1.4c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52 C391.91,37.83,392.25,37.01,392.65,36.56z"/><path fill="#FFFFFF" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#FFFFFF" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#FFFFFF" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46 z"/></g><path fill="#FFFFFF" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#FFFFFF" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#FFFFFF" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#FFFFFF" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#FFFFFF" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#FFFFFF" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 s-1.49,1.17-1.97,2.02c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05 c0.84,0.5,1.76,0.76,2.77,0.76c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36 c-1.29,0.58-2.58,0.87-3.88,0.87c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74 c0-1.73,0.42-3.29,1.26-4.69c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81 c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#FFFFFF" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#FFFFFF" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61 l-5.13-10.3v12.12h-3.64V30.13z"/><path fill="#FFFFFF" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#FFFFFF" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#FFFFFF" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#FFFFFF" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#FFFFFF" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79 c2.34,0,4.15,0.54,5.43,1.63c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92 H244.12z M237.14,39.56h3.74c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24 c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#FFFFFF" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#FFFFFF" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#FFFFFF" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#FFFFFF" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#FFFFFF" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#FFFFFF" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#FFFFFF" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05 H205.21z"/><g><g><path fill="#FAA41A" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.54,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FAA41A" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#FFFFFF;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#FFFFFF" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23 c-0.47-0.57-1.05-0.88-1.77-0.88c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23 c-0.73,0.91-1.85,1.42-3.24,1.42C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#FFFFFF" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#FFFFFF" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#FFFFFF" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#FFFFFF" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97 c0,0.72-0.37,1.3-1.01,1.63C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73 c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79 C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#FFFFFF" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37 h-2.28L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#FFFFFF" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41 l-0.97,2.41H366.68z"/><path fill="#FFFFFF" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#FFFFFF" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#FFFFFF" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#FFFFFF" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FAA41A" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FAA41A" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FAA41A" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.31,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.77,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.23-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FAA41A" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+          <div class="logoplate__cap">
+            <span class="micro">Naranja + blanco</span>
+            <span class="micro">Fondo azul CS</span>
+          </div>
+        </div>
+        <div class="logoplate">
+          <div class="logoplate__stage bg-paper"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#000000" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04l0.58-0.13 l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#000000" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1l0.1,1.96 l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#000000" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8 l-1.1,1.44L372.8,6.53z"/><path fill="#000000" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69L382.27,7.39z"/><path fill="#000000" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63l1.87-2.08 L388.26,12.32z"/><path fill="#000000" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#000000" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#000000" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32l-0.66-2.24 l-0.92,0.27L392.71,29.15z"/><path fill="#000000" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#000000" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9c0.83,0.1,0.59-2.94,2.53-2.7 c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59c0.33-0.47,0.53-0.94,0.58-1.4 c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52C391.91,37.83,392.25,37.01,392.65,36.56 z"/><path fill="#000000" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79 l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#000000" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#000000" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46z"/></g><path fill="#A7A9AC" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#000000" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#000000" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#000000" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#000000" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#000000" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74s-1.49,1.17-1.97,2.02 c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#000000" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#000000" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61l-5.13-10.3 v12.12h-3.64V30.13z"/><path fill="#000000" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#000000" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#000000" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#000000" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#000000" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79c2.34,0,4.15,0.54,5.43,1.63 c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92H244.12z M237.14,39.56h3.74 c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#000000" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#000000" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#000000" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#000000" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#000000" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#000000" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#000000" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05H205.21z"/><g><g><path fill="#FAA41A" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FAA41A" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#A7A9AC;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#000000" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23c-0.47-0.57-1.05-0.88-1.77-0.88 c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23c-0.73,0.91-1.85,1.42-3.24,1.42 C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#000000" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#000000" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#000000" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#000000" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97c0,0.72-0.37,1.3-1.01,1.63 C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#000000" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37h-2.28 L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#000000" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41l-0.97,2.41 H366.68z"/><path fill="#000000" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#000000" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#000000" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#000000" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FAA41A" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FAA41A" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FAA41A" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.23-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FAA41A" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+          <div class="logoplate__cap">
+            <span class="micro">Color (primario)</span>
+            <span class="micro">Impreso / certificados</span>
+          </div>
+        </div>
+        <div class="logoplate">
+          <div class="logoplate__stage bg-paper"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#000000" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04l0.58-0.13 l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#000000" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1l0.1,1.96 l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#000000" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8 l-1.1,1.44L372.8,6.53z"/><path fill="#000000" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57l1.34-2.46L382.27,7.39z" /><path fill="#000000" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63l1.87-2.08 L388.26,12.32z"/><path fill="#000000" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#000000" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#000000" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32l-0.66-2.24 l-0.92,0.27L392.71,29.15z"/><path fill="#000000" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#000000" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9c0.83,0.1,0.59-2.94,2.53-2.7 c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59c0.33-0.47,0.53-0.94,0.58-1.4 c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52C391.91,37.83,392.25,37.01,392.65,36.56 z"/><path fill="#000000" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79 l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#000000" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#000000" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46z"/></g><path fill="#000000" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#000000" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#000000" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#000000" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#000000" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#000000" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74s-1.49,1.17-1.97,2.02 c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#000000" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#000000" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61l-5.13-10.3 v12.12h-3.64V30.13z"/><path fill="#000000" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#000000" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#000000" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#000000" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#000000" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79c2.34,0,4.15,0.54,5.43,1.63 c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92H244.12z M237.14,39.56h3.74 c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#000000" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#000000" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#000000" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#000000" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#000000" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#000000" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#000000" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05H205.21z"/><g><g><path fill="#000000" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16c19.42,0,35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#000000" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89l1.48,3.05 l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#A7A9AC;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#000000" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23c-0.47-0.57-1.05-0.88-1.77-0.88 c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23c-0.73,0.91-1.85,1.42-3.24,1.42 C317.78,76.2,316.03,74.58,316.03,72.29z"/><path fill="#000000" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#000000" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#000000" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#000000" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97c0,0.72-0.37,1.3-1.01,1.63 C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#000000" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37h-2.28 L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#000000" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41l-0.97,2.41 H366.68z"/><path fill="#000000" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#000000" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#000000" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#000000" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#000000" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#000000" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#000000" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.04-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.23-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#000000" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6h-0.25v-1.22 l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+          <div class="logoplate__cap">
+            <span class="micro">Negro sólido</span>
+            <span class="micro">1 tinta / grabado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>Hallazgo técnico ya resuelto.</b> Los cuatro SVG originales venían exportados de
+        Illustrator con <span class="mono" style="font-size:.85em">display:none</span> en la
+        raíz — se incrustan en una web y no se ve absolutamente nada. Ya dejé versiones
+        corregidas y con clases CSS aisladas en
+        <span class="mono" style="font-size:.85em;color:var(--cs-cyan)">brand/assets/logo/</span>.
+        Los que ves aquí arriba son esos archivos, en vivo.
+      </div>
+
+      <div class="grid2">
+        <div class="plate plate--flush">
+          <div class="clearspace"><div class="clearspace__box"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#FFFFFF" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04 l0.58-0.13l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#FFFFFF" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1 l0.1,1.96l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#FFFFFF" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8l-1.1,1.44L372.8,6.53z"/><path fill="#FFFFFF" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69 L382.27,7.39z"/><path fill="#FFFFFF" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63 l1.87-2.08L388.26,12.32z"/><path fill="#FFFFFF" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#FFFFFF" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#FFFFFF" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32 l-0.66-2.24l-0.92,0.27L392.71,29.15z"/><path fill="#FFFFFF" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#FFFFFF" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9 c0.83,0.1,0.59-2.94,2.53-2.7c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59 c0.33-0.47,0.53-0.94,0.58-1.4c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52 C391.91,37.83,392.25,37.01,392.65,36.56z"/><path fill="#FFFFFF" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#FFFFFF" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#FFFFFF" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46 z"/></g><path fill="#FFFFFF" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#FFFFFF" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#FFFFFF" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#FFFFFF" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#FFFFFF" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#FFFFFF" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 s-1.49,1.17-1.97,2.02c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05 c0.84,0.5,1.76,0.76,2.77,0.76c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36 c-1.29,0.58-2.58,0.87-3.88,0.87c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74 c0-1.73,0.42-3.29,1.26-4.69c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81 c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#FFFFFF" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#FFFFFF" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61 l-5.13-10.3v12.12h-3.64V30.13z"/><path fill="#FFFFFF" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#FFFFFF" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#FFFFFF" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#FFFFFF" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#FFFFFF" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79 c2.34,0,4.15,0.54,5.43,1.63c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92 H244.12z M237.14,39.56h3.74c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24 c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#FFFFFF" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#FFFFFF" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#FFFFFF" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#FFFFFF" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#FFFFFF" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#FFFFFF" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#FFFFFF" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05 H205.21z"/><g><g><path fill="#FFFFFF" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FFFFFF" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#FFFFFF;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#FFFFFF" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23 c-0.47-0.57-1.05-0.88-1.77-0.88c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23 c-0.73,0.91-1.85,1.42-3.24,1.42C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#FFFFFF" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#FFFFFF" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#FFFFFF" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#FFFFFF" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97 c0,0.72-0.37,1.3-1.01,1.63C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73 c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79 C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#FFFFFF" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37 h-2.28L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#FFFFFF" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41 l-0.97,2.41H366.68z"/><path fill="#FFFFFF" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#FFFFFF" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#FFFFFF" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#FFFFFF" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FFFFFF" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FFFFFF" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FFFFFF" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.22-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FFFFFF" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div></div>
+          <div class="logoplate__cap">
+            <span class="micro">Espacio de respeto</span>
+            <span class="micro micro--orange">0.3 × altura, los 4 lados</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="rules">
+            <div class="stack-sm">
+              <span class="micro micro--orange">Se puede</span>
+              <ul class="rules--do">
+                <li>Blanco puro sobre el negro de la marca.</li>
+                <li>Naranja + blanco sobre azul CS o fotografía oscura y limpia.</li>
+                <li>Lockup de capítulo: logo + nombre completo del capítulo, en Montserrat.</li>
+                <li>Tamaño mínimo cómodo en web: 160&nbsp;px de ancho.</li>
+              </ul>
+            </div>
+            <div class="stack-sm">
+              <span class="micro" style="color:#E8556B">No se puede</span>
+              <ul class="rules--dont">
+                <li>Meterlo dentro de un titular o de una frase.</li>
+                <li>Inclinarlo, deformarlo, tramarlo o quitarle elementos.</li>
+                <li>Ponerlo sobre foto cargada o patrón denso.</li>
+                <li>Usar siglas en un sub-logo (salvo IEEE, TC, STC, comités).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="equator"><span class="equator__label">02 → 03</span></div></div>
+
+<!-- ============ 03 COLOR ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">03</span>
+      <span class="sect__label">Color</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">Sí al negro. Pero no a <span class="mono" style="font-size:.6em;letter-spacing:0;color:var(--paper-3)">#000000</span>.</h2>
+      <p class="lede">
+        Tu intuición es correcta y además está avalada por el manual: <strong>PMS Process
+        Black está en la paleta primaria</strong> y la guía dice explícitamente «para fondos
+        negros, usa el logo totalmente blanco». El negro es territorio legítimo de IEEE CS.
+      </p>
+      <p class="lede">
+        El matiz importa: el negro puro con texto blanco puro produce halación, cansa la
+        vista y — paradójicamente — se lee barato. Lo premium es un <strong>negro sesgado
+        hacia el azul profundo de CS</strong> (matiz ≈213°). Así los negros pertenecen a la
+        marca en vez de ser un negro genérico, y el naranja se siente más cálido por contraste.
+      </p>
+
+      <div class="stack-sm">
+        <span class="micro micro--orange">Rampa de fondos — derivada de PMS 295 #002855</span>
+        <div class="ramp">
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#05070B"></div><div class="ramp__meta"><div class="ramp__hex">#05070B</div><div class="ramp__role">Base</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#0B111A"></div><div class="ramp__meta"><div class="ramp__hex">#0B111A</div><div class="ramp__role">Superficie</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#10171F"></div><div class="ramp__meta"><div class="ramp__hex">#10171F</div><div class="ramp__role">Elevado</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#1B2430"></div><div class="ramp__meta"><div class="ramp__hex">#1B2430</div><div class="ramp__role">Línea</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#2A3746"></div><div class="ramp__meta"><div class="ramp__hex">#2A3746</div><div class="ramp__role">Borde+</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#5A6779"></div><div class="ramp__meta"><div class="ramp__hex">#5A6779</div><div class="ramp__role">Texto 3</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#94A3B4"></div><div class="ramp__meta"><div class="ramp__hex">#94A3B4</div><div class="ramp__role">Texto 2</div></div></div>
+          <div class="ramp__seg"><div class="ramp__chip" style="background:#EEF2F6"></div><div class="ramp__meta"><div class="ramp__hex">#EEF2F6</div><div class="ramp__role">Texto 1</div></div></div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="swatch">
+          <div class="swatch__fill" style="background:#FFA300"><span style="color:#05070B">EL ACENTO</span></div>
+          <div class="swatch__data">
+            <div class="swatch__name">CS Orange</div>
+            <div class="swatch__spec">#FFA300<br>PMS 137 C<br>RGB 255 · 163 · 0</div>
+            <div class="swatch__use">CTA principal, una palabra del H1, ticks, estados activos, contador. <strong>Escaso a propósito.</strong></div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__fill" style="background:#002855"><span style="color:#EEF2F6">ATMÓSFERA</span></div>
+          <div class="swatch__data">
+            <div class="swatch__name">Abyss Blue</div>
+            <div class="swatch__spec">#002855<br>PMS 295<br>RGB 0 · 40 · 85</div>
+            <div class="swatch__use">Nunca como bloque plano: solo como resplandor y degradado detrás del hero y de secciones clave.</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__fill" style="background:#00B5E2"><span style="color:#05070B">DATO</span></div>
+          <div class="swatch__data">
+            <div class="swatch__name">Signal Cyan</div>
+            <div class="swatch__spec">#00B5E2<br>PMS Process Cyan<br>RGB 0 · 181 · 226</div>
+            <div class="swatch__use">Terciario. Enlaces en hover, números de estadísticas, fin del degradado. Nunca compite con el naranja.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plate stack-md">
+        <div class="plate__hd" style="margin:0">
+          <h3>Proporción de uso — la regla que sostiene lo premium</h3>
+          <span class="micro">Objetivo por pantalla</span>
+        </div>
+        <div class="ratio">
+          <div class="ratio__seg" style="flex:76;background:#05070B;color:#94A3B4">76%</div>
+          <div class="ratio__seg" style="flex:14;background:#94A3B4;color:#05070B">14%</div>
+          <div class="ratio__seg" style="flex:7;background:#002855;color:#EEF2F6">7%</div>
+          <div class="ratio__seg" style="flex:3;background:#FFA300;color:#05070B">3%</div>
+        </div>
+        <div class="ratio__key">
+          <div class="ratio__k"><span class="ratio__dot" style="background:#05070B;outline:1px solid #2A3746"></span>Negro de marca y superficies</div>
+          <div class="ratio__k"><span class="ratio__dot" style="background:#94A3B4"></span>Tipografía</div>
+          <div class="ratio__k"><span class="ratio__dot" style="background:#002855"></span>Resplandor azul</div>
+          <div class="ratio__k"><span class="ratio__dot" style="background:#FFA300"></span>Naranja</div>
+        </div>
+        <p style="font-size:.9375rem">
+          Si el naranja pasa del ~5% de la pantalla, la página deja de leerse premium y
+          empieza a leerse como afiche de hackathon. La escasez es exactamente lo que le da
+          valor: cuando aparece, significa <strong>«esto es lo que tienes que hacer»</strong>.
+        </p>
+      </div>
+
+      <div class="grid2">
+        <div class="plate stack-sm">
+          <span class="micro micro--orange">Decisión pendiente — dos naranjas</span>
+          <h3>#FAA41A vs #FFA300</h3>
+          <p style="font-size:.9375rem">
+            Los SVG del 80.º usan <span class="mono" style="font-size:.85em">#FAA41A</span>;
+            el hex oficial del manual para web es
+            <span class="mono" style="font-size:.85em">#FFA300</span>. La diferencia es mínima,
+            pero dos naranjas casi idénticos juntos se leen como error.
+          </p>
+          <p style="font-size:.9375rem">
+            <strong>Mi recomendación:</strong> el logo se queda intacto con su
+            <span class="mono" style="font-size:.85em">#FAA41A</span> — no se toca nunca — y
+            todo el sistema (botones, ticks, acentos) usa
+            <span class="mono" style="font-size:.85em">#FFA300</span>. Nunca los ponemos
+            adyacentes a gran escala, así que no chocan.
+          </p>
+        </div>
+        <div class="plate stack-sm">
+          <span class="micro micro--orange">Contraparte clara</span>
+          <h3>Cuando hay que salir del negro</h3>
+          <p style="font-size:.9375rem">
+            Certificados, credenciales, dossier de sponsors y todo lo impreso van sobre
+            blanco con el logo primario a color. El sistema se invierte así:
+          </p>
+          <div class="scroller">
+            <table>
+              <thead><tr><th>Rol</th><th>Oscuro</th><th>Claro</th></tr></thead>
+              <tbody>
+                <tr><td>Fondo</td><td class="num">#05070B</td><td class="num">#FFFFFF</td></tr>
+                <tr><td>Texto</td><td class="num">#EEF2F6</td><td class="num">#05070B</td></tr>
+                <tr><td>Secundario</td><td class="num">#94A3B4</td><td class="num">#4B5563</td></tr>
+                <tr><td>Línea</td><td class="num">#1B2430</td><td class="num">#E3E8EE</td></tr>
+                <tr><td>Acento</td><td class="num">#FFA300</td><td class="num">#00629B</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:.8125rem">
+            En claro el acento pasa a azul: el naranja sobre blanco no alcanza contraste
+            accesible para texto y se ensucia.
+          </p>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>Sobre este documento.</b> Está fijado en oscuro a propósito, sin modo claro.
+        La identidad que se está proponiendo <em>es</em> negra; renderizarla en blanco
+        la representaría mal. La tabla de arriba cubre el caso impreso.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="equator"><span class="equator__label">03 → 04</span></div></div>
+
+<!-- ============ 04 TIPOGRAFÍA ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">04</span>
+      <span class="sect__label">Tipografía</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">Montserrat sí, pero apretada.</h2>
+      <p class="lede">
+        El manual manda Montserrat para títulos y Open Sans para texto largo. Ambas están en
+        Google Fonts, así que no hay costo ni licencia. El riesgo real: <strong>Montserrat con
+        sus valores por defecto se ve a bootcamp</strong>. Todo el trabajo está en el ajuste.
+      </p>
+
+      <div class="plate stack-md">
+        <div class="plate__hd" style="margin:0">
+          <span class="micro micro--orange">Display — Montserrat 900 · tracking −0.04em · interlínea 0.90</span>
+          <span class="micro">Solo titulares</span>
+        </div>
+        <div class="spec-display">TECH WEEK<br><span style="color:var(--cs-orange)">ECUADOR</span></div>
+      </div>
+
+      <div class="grid2">
+        <div class="plate stack-md">
+          <span class="micro micro--orange">Escala de pesos</span>
+          <div class="ladder">
+            <div class="ladder__row"><span class="ladder__w">900 Black</span><span class="ladder__s" style="font-weight:900;">Ochenta años</span></div>
+            <div class="ladder__row"><span class="ladder__w">800 ExtraBold</span><span class="ladder__s" style="font-weight:800;">Ochenta años</span></div>
+            <div class="ladder__row"><span class="ladder__w">600 SemiBold</span><span class="ladder__s" style="font-weight:600;">Ochenta años</span></div>
+            <div class="ladder__row"><span class="ladder__w">500 Medium</span><span class="ladder__s" style="font-weight:500;">Ochenta años</span></div>
+            <div class="ladder__row"><span class="ladder__w">300 Light</span><span class="ladder__s" style="font-weight:300;">Ochenta años</span></div>
+          </div>
+        </div>
+        <div class="plate stack-md">
+          <span class="micro micro--orange">Open Sans 400 · 17px · interlínea 1.72 · 65ch</span>
+          <p style="font-size:1.0625rem">
+            Durante una semana, los capítulos Computer Society del Ecuador abren sus puertas
+            a estudiantes, profesionales y empresas para hablar de lo que viene en computación.
+            Charlas, talleres, competencia y comunidad, en el año en que IEEE Computer Society
+            cumple ochenta.
+          </p>
+          <p class="mono" style="font-size:.8125rem;color:var(--paper-3);line-height:1.9">
+            0°00′00″ · −78°27′<br>
+            IBM Plex Mono — coordenadas, hex, contador, datos.
+          </p>
+        </div>
+      </div>
+
+      <div class="plate">
+        <div class="plate__hd">
+          <h3>Escala tipográfica</h3>
+          <span class="micro">Fija. No se improvisan tamaños.</span>
+        </div>
+        <div class="scroller">
+          <table>
+            <thead>
+              <tr><th>Rol</th><th>Familia / peso</th><th>Tamaño</th><th>Tracking</th><th>Interlínea</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Display</td><td>Montserrat 900</td><td class="num">clamp(2.75 – 6.75rem)</td><td class="num">−0.040em</td><td class="num">0.92</td></tr>
+              <tr><td>H1 sección</td><td>Montserrat 800</td><td class="num">clamp(2 – 3.25rem)</td><td class="num">−0.030em</td><td class="num">1.04</td></tr>
+              <tr><td>H2</td><td>Montserrat 700</td><td class="num">clamp(1.45 – 2rem)</td><td class="num">−0.020em</td><td class="num">1.12</td></tr>
+              <tr><td>H3 / tarjeta</td><td>Montserrat 700</td><td class="num">1.0625rem</td><td class="num">−0.010em</td><td class="num">1.35</td></tr>
+              <tr><td>Cuerpo</td><td>Open Sans 400</td><td class="num">1.0625rem</td><td class="num">0</td><td class="num">1.72</td></tr>
+              <tr><td>Entradilla</td><td>Open Sans 400</td><td class="num">1.1875rem</td><td class="num">0</td><td class="num">1.62</td></tr>
+              <tr><td>Etiqueta</td><td>IBM Plex Mono 500 · MAYÚS</td><td class="num">0.6875rem</td><td class="num">+0.160em</td><td class="num">1.4</td></tr>
+              <tr><td>Dato / cifra</td><td>IBM Plex Mono 500</td><td class="num">0.75 – 0.875rem</td><td class="num">+0.020em</td><td class="num">1.6</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>La tercera familia.</b> El manual solo nombra Montserrat y Open Sans. Propongo sumar
+        <strong>IBM Plex Mono</strong> exclusivamente para micro-datos: coordenadas, hex,
+        contador, numeración de sesiones. Nunca en titulares. Es una decisión defendible —
+        una monoespaciada de herencia computacional en el aniversario 80 de una sociedad de
+        computación — pero <strong>es opcional</strong>: si prefieres cero riesgo con revisión
+        de marca IEEE, se reemplaza por Montserrat 600 en mayúsculas con tracking amplio y el
+        sistema sigue en pie.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="equator"><span class="equator__label">04 → 05</span></div></div>
+
+<!-- ============ 05 LENGUAJE GRÁFICO ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">05</span>
+      <span class="sect__label">Lenguaje</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">Cuatro recursos. Ni uno más.</h2>
+      <p class="lede">
+        Lo que separa una landing premium de una cargada no es cuántos efectos tiene, sino
+        cuántos <strong>no</strong> tiene. Estos cuatro se combinan entre sí y cubren todo el
+        sitio, redes y señalética.
+      </p>
+
+      <div class="grid2">
+        <div class="motif">
+          <div class="motif__stage"><div class="demo-eq"></div></div>
+          <div class="motif__cap">
+            <h4>La regla ecuatorial</h4>
+            <p>Línea de 1&nbsp;px con tick naranja y coordenada. Separa toda sección. Es el divisor y el concepto al mismo tiempo — el mismo recurso que estás viendo entre las secciones de este documento.</p>
+          </div>
+        </div>
+        <div class="motif">
+          <div class="motif__stage"><canvas id="fieldDemo" aria-hidden="true"></canvas></div>
+          <div class="motif__cap">
+            <h4>Campo binario</h4>
+            <p>Unos y ceros a muy baja opacidad, con deriva lenta. Cita directa al bug 1/0 y al atributo «Binary» del manual. Debe percibirse como textura, jamás como fondo animado.</p>
+          </div>
+        </div>
+        <div class="motif">
+          <div class="motif__stage"><div class="demo-glow"></div></div>
+          <div class="motif__cap">
+            <h4>Resplandor de abismo</h4>
+            <p>Degradados radiales de PMS 295 y un toque de naranja, difuminados y sin bordes visibles. Es lo que hace que el negro tenga profundidad en vez de parecer un vacío.</p>
+          </div>
+        </div>
+        <div class="motif">
+          <div class="motif__stage"><div class="demo-grid"></div></div>
+          <div class="motif__cap">
+            <h4>Retícula técnica</h4>
+            <p>Cuadrícula de 1&nbsp;px al 5% de opacidad, desvanecida en los bordes. Aporta la sensación de hoja de especificación. Aparece solo detrás del hero y del bloque de sponsors.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="plate stack-md">
+        <div class="plate__hd" style="margin:0">
+          <h3>Movimiento</h3>
+          <span class="micro">Presupuesto total: bajo</span>
+        </div>
+        <div class="scroller">
+          <table>
+            <thead><tr><th>Momento</th><th>Qué hace</th><th>Duración</th></tr></thead>
+            <tbody>
+              <tr><td>Carga del hero</td><td>La línea ecuatorial se traza de izquierda a derecha; el titular sube 12&nbsp;px con opacidad escalonada</td><td class="num">900 ms</td></tr>
+              <tr><td>Scroll</td><td>Cada sección aparece una sola vez, 8&nbsp;px de subida</td><td class="num">450 ms</td></tr>
+              <tr><td>Ambiente</td><td>Campo binario a la deriva, muy lento</td><td class="num">continuo</td></tr>
+              <tr><td>Hover</td><td>Borde de tarjeta pasa a naranja al 40%; botón aclara</td><td class="num">200 ms</td></tr>
+              <tr><td>Reduced motion</td><td>Todo lo anterior se apaga; el campo binario se renderiza estático</td><td class="num">0 ms</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="equator"><span class="equator__label">05 → 06</span></div></div>
+
+<!-- ============ 06 VISTA PREVIA ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">06</span>
+      <span class="sect__label">Vista previa</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">Todo junto, en el hero real.</h2>
+      <p class="lede">
+        Así se ve el sistema aplicado. Los datos entre líneas punteadas naranjas son los que
+        todavía necesito de tu lado.
+      </p>
+
+      <div class="mock">
+        <div class="mock__bar">
+          <div class="mock__dots"><i></i><i></i><i></i></div>
+          <span class="mock__url">cstechweek.ec</span>
+        </div>
+        <div class="mock__viewport">
+          <div class="mock__glow" aria-hidden="true"></div>
+          <canvas class="mock__field" id="fieldMock" aria-hidden="true"></canvas>
+          <div class="mock__in">
+            <div class="mock__nav">
+              <div class="mock__nav-logo"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#FFFFFF" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04 l0.58-0.13l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#FFFFFF" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1 l0.1,1.96l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#FFFFFF" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8l-1.1,1.44L372.8,6.53z"/><path fill="#FFFFFF" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69 L382.27,7.39z"/><path fill="#FFFFFF" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63 l1.87-2.08L388.26,12.32z"/><path fill="#FFFFFF" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#FFFFFF" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#FFFFFF" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32 l-0.66-2.24l-0.92,0.27L392.71,29.15z"/><path fill="#FFFFFF" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#FFFFFF" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9 c0.83,0.1,0.59-2.94,2.53-2.7c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59 c0.33-0.47,0.53-0.94,0.58-1.4c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52 C391.91,37.83,392.25,37.01,392.65,36.56z"/><path fill="#FFFFFF" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#FFFFFF" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#FFFFFF" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46 z"/></g><path fill="#FFFFFF" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#FFFFFF" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#FFFFFF" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#FFFFFF" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#FFFFFF" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#FFFFFF" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 s-1.49,1.17-1.97,2.02c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05 c0.84,0.5,1.76,0.76,2.77,0.76c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36 c-1.29,0.58-2.58,0.87-3.88,0.87c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74 c0-1.73,0.42-3.29,1.26-4.69c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81 c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#FFFFFF" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#FFFFFF" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61 l-5.13-10.3v12.12h-3.64V30.13z"/><path fill="#FFFFFF" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#FFFFFF" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#FFFFFF" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#FFFFFF" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#FFFFFF" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79 c2.34,0,4.15,0.54,5.43,1.63c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92 H244.12z M237.14,39.56h3.74c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24 c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#FFFFFF" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#FFFFFF" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#FFFFFF" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#FFFFFF" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#FFFFFF" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#FFFFFF" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#FFFFFF" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05 H205.21z"/><g><g><path fill="#FFFFFF" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FFFFFF" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#FFFFFF;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#FFFFFF" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23 c-0.47-0.57-1.05-0.88-1.77-0.88c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23 c-0.73,0.91-1.85,1.42-3.24,1.42C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#FFFFFF" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#FFFFFF" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#FFFFFF" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#FFFFFF" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97 c0,0.72-0.37,1.3-1.01,1.63C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73 c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79 C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#FFFFFF" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37 h-2.28L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#FFFFFF" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41 l-0.97,2.41H366.68z"/><path fill="#FFFFFF" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#FFFFFF" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#FFFFFF" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#FFFFFF" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FFFFFF" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FFFFFF" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FFFFFF" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.22-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FFFFFF" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+              <div class="mock__links">
+                <span>Programa</span><span>Speakers</span><span>Sponsors</span><span>Capítulos</span>
+              </div>
+              <a class="btn btn--primary" style="padding:9px 16px;font-size:11px">Registrarme</a>
+            </div>
+
+            <div class="badge">
+              <span class="badge__dot"></span>
+              <span class="badge__t">IEEE CS · 80 años construyendo comunidad</span>
+            </div>
+
+            <h1 class="mock__h1">CS Tech<br>Week <em>Ecuador</em></h1>
+
+            <p class="mock__sub">
+              Una semana de charlas, talleres y competencia organizada por los capítulos
+              Computer Society del Ecuador, en el año del 80.º aniversario de IEEE CS.
+            </p>
+
+            <div class="mock__meta">
+              <div><span class="micro">Fechas</span><b><span class="tbd">POR CONFIRMAR</span></b></div>
+              <div><span class="micro">Sede</span><b><span class="tbd">POR CONFIRMAR</span></b></div>
+              <div><span class="micro">Formato</span><b><span class="tbd">PRESENCIAL / HÍBRIDO</span></b></div>
+              <div><span class="micro">Latitud</span><b class="mono" style="color:var(--cs-orange)">0°00′00″</b></div>
+            </div>
+
+            <div class="cta-row">
+              <a class="btn btn--primary">Registro gratuito &nbsp;→</a>
+              <a class="btn btn--ghost">Quiero ser sponsor</a>
+            </div>
+
+            <div class="mock__strip">
+              <span class="micro">Organizan</span>
+              <span class="micro" style="color:var(--paper-2)"><span class="tbd">CAPÍTULO 1</span></span>
+              <span class="micro" style="color:var(--paper-2)"><span class="tbd">CAPÍTULO 2</span></span>
+              <span class="micro" style="color:var(--paper-2)"><span class="tbd">CAPÍTULO 3</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plate stack-md">
+        <div class="plate__hd" style="margin:0">
+          <h3>Arquitectura propuesta de la landing</h3>
+          <span class="micro">11 bloques</span>
+        </div>
+        <div class="scroller">
+          <table>
+            <thead><tr><th>#</th><th>Bloque</th><th>Trabajo que hace</th></tr></thead>
+            <tbody>
+              <tr><td class="num">01</td><td>Hero</td><td>Nombre, fechas, sede, doble CTA, sello del 80.º</td></tr>
+              <tr><td class="num">02</td><td>Contador</td><td>Días para el arranque. Cifras en mono tabular.</td></tr>
+              <tr><td class="num">03</td><td>Qué es</td><td>Párrafo + 4 cifras: días, sesiones, capítulos, asistentes esperados</td></tr>
+              <tr><td class="num">04</td><td>Programa</td><td>Los 5 días como pestañas. Hoy en estado «en construcción» honesto.</td></tr>
+              <tr><td class="num">05</td><td>Speakers</td><td>Grilla con siluetas y «Anuncio pronto». Se puebla por etapas.</td></tr>
+              <tr><td class="num">06</td><td>Sponsors</td><td>Niveles + beneficios + CTA a dossier</td></tr>
+              <tr><td class="num">07</td><td>Capítulos</td><td>Quiénes organizan. Da legitimidad institucional.</td></tr>
+              <tr><td class="num">08</td><td>Sede</td><td>Mapa oscuro, cómo llegar</td></tr>
+              <tr><td class="num">09</td><td>FAQ</td><td>Costo, certificado, requisitos, idioma</td></tr>
+              <tr><td class="num">10</td><td>CTA final</td><td>Registro a pantalla completa, único, sin distracción</td></tr>
+              <tr><td class="num">11</td><td>Footer</td><td>Legales IEEE, redes, contacto, código de conducta</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:.9375rem">
+          <strong>Cómo manejamos que el programa no exista todavía.</strong> No dejamos cajas
+          vacías ni «Lorem». El bloque de programa muestra los <em>tracks</em> temáticos y un
+          captador de correo — «Sé el primero en enterarte» —. Eso convierte el vacío en
+          una lista de contactos, que es justamente lo que necesitas antes del lanzamiento.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="equator"><span class="equator__label">06 → 07</span></div></div>
+
+<!-- ============ 07 DECISIONES ABIERTAS ============ -->
+<section>
+  <div class="shell sect">
+    <div class="sect__rail">
+      <span class="sect__num">07</span>
+      <span class="sect__label">Necesito</span>
+    </div>
+    <div class="sect__body">
+      <h2 class="head">Lo que necesito de ti para cerrar el branding.</h2>
+      <p class="lede">
+        Nada de esto bloquea el diseño — puedo seguir construyendo con supuestos. Pero
+        mientras antes lleguen, menos rehacemos.
+      </p>
+
+      <div class="qs">
+        <div class="q"><div class="q__n">01</div><div>
+          <h4>Fechas exactas y sede</h4>
+          <p>Dijiste que ya las tienen. Definen el contador, el hero y si el programa se estructura en 5 o 7 días.</p>
+        </div></div>
+        <div class="q"><div class="q__n">02</div><div>
+          <h4>Qué capítulos organizan, con nombre oficial</h4>
+          <p>El manual exige el <em>nombre completo</em> del capítulo en el lockup — sin siglas. Necesito la lista tal cual va escrita, y si hay una sede anfitriona principal.</p>
+        </div></div>
+        <div class="q"><div class="q__n">03</div><div>
+          <h4>¿Es evento nacional o de una ciudad?</h4>
+          <p>Cambia el concepto de fondo: si es multiciudad, la línea ecuatorial pasa a conectar sedes y eso se vuelve un recurso mucho más potente.</p>
+        </div></div>
+        <div class="q"><div class="q__n">04</div><div>
+          <h4>Idioma de la landing</h4>
+          <p>¿Solo español, o bilingüe? Los sponsors internacionales y el reporte a IEEE CS suelen pedir inglés. Afecta la estructura, no solo el texto.</p>
+        </div></div>
+        <div class="q"><div class="q__n">05</div><div>
+          <h4>Niveles de sponsor</h4>
+          <p>¿Ya tienen definida la estructura de niveles y montos? Aunque sea borrador, define cuántos tamaños de logo hay que soportar en la grilla.</p>
+        </div></div>
+        <div class="q"><div class="q__n">06</div><div>
+          <h4>Dónde vive el registro</h4>
+          <p>¿vTools Events, un formulario propio, Luma? El CTA principal apunta ahí y condiciona si necesitamos captura de correo en la página.</p>
+        </div></div>
+        <div class="q"><div class="q__n">07</div><div>
+          <h4>Dominio y stack</h4>
+          <p>¿Hay dominio ya? ¿Y prefieres HTML/CSS estático desplegable en Netlify o GitHub Pages, o Astro/Next? Yo recomendaría estático: es un sitio de campaña, no una app.</p>
+        </div></div>
+        <div class="q"><div class="q__n">08</div><div>
+          <h4>Visto bueno de marca</h4>
+          <p>¿Alguien de IEEE Sección Ecuador o de CS revisa las piezas antes de publicar? Si sí, la mono opcional de §04 es lo primero que conviene consultar.</p>
+        </div></div>
+      </div>
+
+      <div class="note">
+        <b>Mientras tanto sigo.</b> Con tu visto bueno a esta dirección arranco la landing
+        completa usando marcadores para lo pendiente — exactamente como se ven en la vista
+        previa — para que reemplazar datos después sea un cambio de texto, no un rediseño.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="shell foot">
+    <div class="stack-sm">
+      <div style="width:200px"><svg data-logo role="img" aria-label="IEEE Computer Society 80th Anniversary" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 399.6 82.8" xml:space="preserve"><g><path fill="#FFFFFF" d="M359.53,7.59c-0.21,0.21-0.55,0.36-0.92,0.45c-1.02,0.23-1.72-0.13-1.96-1.15l-0.3-1.33l-0.58,0.13l-0.24-1.04 l0.58-0.13l-0.23-1.03l1.39-0.32l0.23,1.03L358.42,4l0.24,1.04l-0.91,0.21l0.3,1.32c0.07,0.29,0.27,0.42,0.52,0.36 c0.15-0.04,0.3-0.11,0.4-0.22L359.53,7.59z"/><path fill="#FFFFFF" d="M364.86,5.01l0.12,2.32l-1.43,0.07l-0.11-2.09c-0.03-0.58-0.3-0.82-0.71-0.8c-0.46,0.02-0.8,0.33-0.76,1 l0.1,1.96l-1.43,0.07l-0.28-5.56l1.43-0.07l0.09,1.87c0.3-0.31,0.72-0.48,1.2-0.5C364.04,3.24,364.79,3.75,364.86,5.01z"/><path fill="#FFFFFF" d="M372.93,7.7l-2.15-0.59l-0.67,0.88l-1.46-0.4l3.63-4.45l1.41,0.39l0.86,5.68l-1.49-0.41L372.93,7.7z M372.8,6.53l-0.21-1.8l-1.1,1.44L372.8,6.53z"/><path fill="#FFFFFF" d="M382.27,7.39L379.76,12l-1.07-0.59l-0.7-3.57l-1.34,2.46l-1.28-0.7l2.51-4.61l1.07,0.59l0.7,3.57L381,6.69 L382.27,7.39z"/><path fill="#FFFFFF" d="M388.26,12.32l-3.51,3.91l-0.91-0.82l0.15-3.63l-1.87,2.08l-1.08-0.97l3.51-3.91l0.91,0.82l-0.15,3.63 l1.87-2.08L388.26,12.32z"/><path fill="#FFFFFF" d="M389.86,14.26l0.92,1.17l-4.13,3.25l-0.92-1.17L389.86,14.26z"/><path fill="#FFFFFF" d="M394.81,22.14l-5.69,0.52l-0.7-1.29l3.54-4.47l0.77,1.41l-2.32,2.88l3.7-0.35L394.81,22.14z"/><path fill="#FFFFFF" d="M392.71,29.15l-1.1,0.33l-1.2-4.05l5.03-1.5l1.17,3.95l-1.1,0.33l-0.75-2.54l-0.85,0.25l0.66,2.24l-1.06,0.32 l-0.66-2.24l-0.92,0.27L392.71,29.15z"/><path fill="#FFFFFF" d="M393.43,33l-0.06-0.81l-1.39,0.11l-0.11-1.48l5.23-0.41l0.19,2.4c0.11,1.43-0.56,2.39-1.76,2.48 c-0.77,0.06-1.37-0.27-1.73-0.9l-1.56,1.26l-0.12-1.59L393.43,33z M396.1,32.81l-0.06-0.82l-1.53,0.12l0.06,0.82 c0.05,0.61,0.36,0.9,0.83,0.86C395.89,33.75,396.15,33.43,396.1,32.81z"/><path fill="#FFFFFF" d="M392.65,36.56l1.03,0.62c-0.36,0.42-0.65,1.06-0.73,1.66c-0.08,0.61,0.07,0.87,0.32,0.9 c0.83,0.1,0.59-2.94,2.53-2.7c0.93,0.12,1.6,0.97,1.4,2.52c-0.08,0.68-0.33,1.36-0.69,1.84l-1.04-0.59 c0.33-0.47,0.53-0.94,0.58-1.4c0.08-0.62-0.1-0.87-0.36-0.9c-0.8-0.1-0.57,2.94-2.49,2.7c-0.91-0.11-1.59-0.97-1.39-2.52 C391.91,37.83,392.25,37.01,392.65,36.56z"/><path fill="#FFFFFF" d="M391.16,45.84l0.74-2.1l-0.83-0.73l0.5-1.43l4.19,3.93l-0.49,1.38l-5.73,0.46l0.51-1.46L391.16,45.84z M392.33,45.79l1.81-0.08l-1.36-1.2L392.33,45.79z"/><path fill="#FFFFFF" d="M389.02,50.83l0.43-0.69l-1.18-0.74l0.79-1.26l4.44,2.8l-1.28,2.04c-0.76,1.21-1.87,1.58-2.89,0.94 c-0.65-0.41-0.94-1.03-0.86-1.76l-2,0.08l0.85-1.35L389.02,50.83z M391.28,52.27l0.44-0.7l-1.3-0.82l-0.44,0.7 c-0.33,0.52-0.25,0.93,0.16,1.19C390.55,52.9,390.95,52.8,391.28,52.27z"/><path fill="#FFFFFF" d="M385.11,56.46l-1.35-1.31l1.04-1.07l1.37,1.33l3.8,0.88l-1.09,1.13l-2.37-0.55l0.63,2.35l-1,1.04L385.11,56.46 z"/></g><path fill="#FFFFFF" d="M76.68,79.63c-0.05,0-0.1,0-0.15-0.02c-0.39-0.08-0.64-0.47-0.56-0.86l15.7-73.71 c0.08-0.39,0.47-0.65,0.86-0.56c0.39,0.08,0.64,0.47,0.56,0.86L77.4,79.06C77.32,79.4,77.02,79.63,76.68,79.63z"/><path fill="#FFFFFF" d="M110.13,23.34c-1.77-0.02-2.22-0.02-4.06,0.06L106,23.3c0-1.68,0.02-3.34,0.04-5 c0.02-1.06,0.04-2.13,0.04-3.19c0-1.64-0.04-2.85-0.11-4.85l0.09-0.09c1.83,0.02,2.22,0.02,4.05-0.06l0.07,0.09 c-0.06,1.86-0.09,2.98-0.09,5.13c0,2.63,0.06,5.3,0.13,7.91L110.13,23.34z"/><path fill="#FFFFFF" d="M116.99,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13L121,17.78l-0.13,0.11H116.99z"/><path fill="#FFFFFF" d="M127.86,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H127.86z"/><path fill="#FFFFFF" d="M138.72,17.89v2.57c1.45,0,2.82-0.04,4.74-0.11l0.11,0.11l-0.19,2.76l-0.17,0.11 c-2.55,0-2.98-0.02-3.54-0.02c-2.05,0-3.11,0.04-4.89,0.07l-0.09-0.13c0.06-2.14,0.07-3.3,0.07-5.84c0-4.47-0.04-5.24-0.13-7.14 l0.11-0.11h8.39l0.09,0.08l-0.13,2.57l-0.11,0.09h-4.31v2.37l4.08-0.07l0.11,0.13l-0.15,2.44l-0.13,0.11H138.72z"/><path fill="#FFFFFF" d="M110.74,34.02c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 s-1.49,1.17-1.97,2.02c-0.48,0.85-0.72,1.8-0.72,2.84c0,1.04,0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05 c0.84,0.5,1.76,0.76,2.77,0.76c0.8,0,1.62-0.19,2.45-0.58s1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36 c-1.29,0.58-2.58,0.87-3.88,0.87c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74 c0-1.73,0.42-3.29,1.26-4.69c0.84-1.4,1.99-2.5,3.45-3.31s3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81 c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9C112.29,35.01,111.57,34.43,110.74,34.02z"/><path fill="#FFFFFF" d="M130.87,31.06c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.73,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C127.77,29.85,129.4,30.25,130.87,31.06z M123.26,34.14c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76c0.83-0.5,1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C125.04,33.39,124.12,33.64,123.26,34.14z"/><path fill="#FFFFFF" d="M138.53,30.13h4.51l5.59,11.02l5.54-11.02h4.49v17.94h-3.64V35.95l-5.1,10.3h-2.61 l-5.13-10.3v12.12h-3.64V30.13z"/><path fill="#FFFFFF" d="M175.8,31.76c1.25,1.09,1.87,2.62,1.87,4.6c0,2.08-0.63,3.7-1.88,4.86 c-1.26,1.15-3.02,1.73-5.29,1.73h-3.56v5.13h-4.05V30.13h7.61C172.78,30.13,174.55,30.68,175.8,31.76z M172.91,38.78 c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24c-0.61-0.5-1.48-0.76-2.63-0.76h-3.36v6.07h3.36 C171.43,39.56,172.31,39.3,172.91,38.78z"/><path fill="#FFFFFF" d="M185.34,43.7c0.73,0.74,1.7,1.11,2.91,1.11c1.18,0,2.12-0.37,2.82-1.1 c0.7-0.73,1.05-1.75,1.05-3.05V30.13h4.05v10.53c0,1.57-0.32,2.93-0.96,4.09c-0.64,1.15-1.56,2.04-2.76,2.66 c-1.2,0.62-2.61,0.94-4.23,0.94c-1.62,0-3.04-0.31-4.25-0.94c-1.21-0.62-2.14-1.51-2.79-2.66c-0.65-1.15-0.97-2.52-0.97-4.09V30.13 h4.05v10.53C184.25,41.95,184.62,42.96,185.34,43.7z"/><path fill="#FFFFFF" d="M198.3,30.13h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V30.13z"/><path fill="#FFFFFF" d="M215.72,30.13h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V30.13z"/><path fill="#FFFFFF" d="M244.12,48.07l-2.85-5.13h-0.38h-3.74v5.13h-4.05V30.13h7.79 c2.34,0,4.15,0.54,5.43,1.63c1.28,1.09,1.92,2.62,1.92,4.6c0,1.38-0.29,2.57-0.86,3.55c-0.57,0.98-1.41,1.73-2.5,2.24l3.82,5.92 H244.12z M237.14,39.56h3.74c1.13,0,1.99-0.26,2.6-0.78c0.61-0.52,0.91-1.29,0.91-2.29c0-0.99-0.3-1.74-0.91-2.24 c-0.61-0.5-1.47-0.76-2.6-0.76h-3.74V39.56z"/><path fill="#FFFFFF" d="M102.54,59.41c-1.03-0.33-1.92-0.5-2.65-0.5c-0.7,0-1.26,0.13-1.67,0.38 c-0.41,0.26-0.61,0.63-0.61,1.13c0,0.63,0.29,1.11,0.88,1.45c0.59,0.33,1.5,0.68,2.73,1.04c1.23,0.36,2.24,0.72,3.04,1.08 c0.79,0.36,1.47,0.9,2.04,1.61c0.56,0.72,0.85,1.67,0.85,2.84c0,1.14-0.3,2.13-0.91,2.96c-0.61,0.83-1.44,1.46-2.5,1.88 c-1.06,0.43-2.26,0.64-3.61,0.64c-1.45,0-2.88-0.26-4.28-0.77c-1.4-0.51-2.61-1.21-3.64-2.1l1.61-3.31c0.9,0.82,1.95,1.48,3.13,1.97 c1.18,0.5,2.26,0.74,3.23,0.74c0.84,0,1.49-0.15,1.96-0.46c0.47-0.31,0.7-0.75,0.7-1.33c0-0.46-0.16-0.84-0.47-1.14 c-0.32-0.3-0.72-0.54-1.2-0.73c-0.49-0.19-1.16-0.4-2.01-0.64c-1.23-0.34-2.23-0.68-3.01-1.03c-0.78-0.34-1.45-0.86-2.01-1.56 c-0.56-0.7-0.85-1.63-0.85-2.79c0-1.08,0.29-2.02,0.87-2.83c0.58-0.81,1.39-1.43,2.43-1.87c1.04-0.44,2.26-0.65,3.64-0.65 c1.23,0,2.44,0.18,3.64,0.54c1.2,0.36,2.26,0.84,3.18,1.44l-1.56,3.36C104.55,60.19,103.58,59.74,102.54,59.41z"/><path fill="#FFFFFF" d="M123.49,56.68c1.47,0.8,2.63,1.91,3.47,3.32c0.85,1.41,1.27,2.98,1.27,4.7 c0,1.73-0.42,3.3-1.27,4.72c-0.85,1.42-2,2.53-3.47,3.34c-1.47,0.81-3.1,1.22-4.89,1.22c-1.79,0-3.43-0.41-4.89-1.22 c-1.47-0.81-2.63-1.92-3.47-3.33c-0.85-1.41-1.27-2.99-1.27-4.73c0-1.72,0.42-3.29,1.27-4.7c0.85-1.41,2-2.52,3.46-3.32 c1.46-0.8,3.1-1.2,4.91-1.2C120.39,55.48,122.02,55.88,123.49,56.68z M115.88,59.77c-0.85,0.5-1.53,1.19-2.02,2.06 c-0.5,0.87-0.74,1.83-0.74,2.87c0,1.06,0.25,2.02,0.76,2.9c0.5,0.87,1.18,1.56,2.02,2.08c0.85,0.51,1.76,0.77,2.76,0.77 c0.99,0,1.9-0.25,2.73-0.76s1.49-1.2,1.97-2.08c0.49-0.88,0.73-1.85,0.73-2.91c0-1.04-0.24-2-0.73-2.87 c-0.49-0.87-1.14-1.56-1.97-2.06c-0.83-0.5-1.74-0.76-2.73-0.76C117.66,59.01,116.73,59.27,115.88,59.77z"/><path fill="#FFFFFF" d="M141.52,59.64c-0.83-0.42-1.66-0.63-2.5-0.63c-1.01,0-1.93,0.25-2.77,0.74 c-0.84,0.49-1.49,1.17-1.97,2.02s-0.72,1.8-0.72,2.84s0.24,2,0.72,2.86c0.48,0.86,1.14,1.55,1.97,2.05c0.84,0.5,1.76,0.76,2.77,0.76 c0.8,0,1.62-0.19,2.45-0.58c0.83-0.38,1.57-0.9,2.22-1.55l2.38,2.59c-0.96,0.99-2.08,1.78-3.37,2.36c-1.29,0.58-2.58,0.87-3.88,0.87 c-1.76,0-3.36-0.41-4.79-1.22c-1.44-0.81-2.56-1.93-3.38-3.34c-0.82-1.42-1.23-3-1.23-4.74c0-1.73,0.42-3.29,1.26-4.69 c0.84-1.4,1.99-2.5,3.45-3.31c1.46-0.8,3.08-1.2,4.86-1.2c1.3,0,2.58,0.27,3.84,0.81c1.26,0.54,2.34,1.27,3.23,2.19l-2.36,2.9 C143.07,60.64,142.35,60.06,141.52,59.64z"/><path fill="#FFFFFF" d="M148.73,55.76h4.05V73.7h-4.05V55.76z"/><path fill="#FFFFFF" d="M157.01,55.76h13.66v3.36h-9.61v3.9h8.64v3.36h-8.64v3.97h9.89v3.36h-13.94V55.76z"/><path fill="#FFFFFF" d="M172.62,55.76h14.99v3.43h-5.48v14.5h-4.05v-14.5h-5.46V55.76z"/><path fill="#FFFFFF" d="M205.21,55.76l-6.54,12.15v5.79h-4.05v-5.69l-6.64-12.25h4.07l4.59,8.05l4.48-8.05 H205.21z"/><g><g><path fill="#FFFFFF" d="M38.19,8.74c-19.42,0-35.17,14.4-35.17,32.16c0,17.76,15.74,32.16,35.17,32.16s35.17-14.4,35.17-32.16 C73.36,23.14,57.61,8.74,38.19,8.74z M43.56,56.37c0.01,4.22,0.3,4.36,3.24,4.56l3.03,0.18l0.13,0.07 c0.65,0.35,0.86,1.18,0.77,1.85c-0.09,0.72-0.5,1.25-1.07,1.39l-0.09,0.02l-0.1,0c-2.38-0.11-6.54-0.17-11.11-0.17 c-4.82,0-8.97,0.06-11.39,0.17l-0.1,0l-0.09-0.02c-0.57-0.14-0.98-0.67-1.07-1.39c-0.09-0.67,0.12-1.5,0.77-1.85l0.13-0.07 l3.04-0.18c2.94-0.19,3.23-0.34,3.24-4.57c-11.58-1.3-18.8-6.91-18.8-15.02c0-8.17,6.22-13.4,17.3-14.88 c0.04,1.06,0.07,2.47,0.09,4.1c-0.68,0.17-1.32,0.36-1.9,0.59l-0.29,0.11c-2.31,0.86-3.88,2.48-4.58,4.69l-0.03,0.07 c-0.4,0.97-0.62,2.79-0.62,5.13l0,0.1l0,0.1c0,2.35,0.22,4.17,0.62,5.13l0.03,0.09c0.53,1.7,1.61,3.05,3.12,3.97 c2.18,1.45,6.34,2.2,10.48,2.2c4.52,0,9.08-0.9,11.04-2.63c1.19-0.9,2.04-2.09,2.5-3.55l0.03-0.08c0.4-0.96,0.62-2.79,0.62-5.13 l0-0.09l0-0.1c0-2.35-0.22-4.17-0.62-5.13l-0.03-0.07c-0.69-2.21-2.27-3.82-4.55-4.68l-0.3-0.11c-1.01-0.4-2.19-0.71-3.47-0.94 V50.8c-1.49,0.28-3.24,0.45-5.22,0.45c-2.08,0-3.91-0.19-5.44-0.49v-4.77c0.09-4.44,0.19-11.48,0.08-16.46l0,0 c0-0.12-0.08-3.49-0.08-3.6c-0.02-3.26-0.33-3.61-2.78-3.87l-3.45-0.4c-0.52-0.23-0.87-0.83-0.92-1.55 c-0.04-0.72,0.23-1.35,0.7-1.64l0.13-0.08l0.15-0.02c2.52-0.3,5.7-0.86,8.96-1.58c1.71-0.41,3.31-0.93,4.47-1.31 c1.16-0.38,1.64-0.53,1.95-0.53c0.64,0,1.4,0.34,1.63,1.1l0.04,0.13l-0.02,0.14c-0.13,1.2-0.21,3.71-0.21,6.7v3.24 c12.07,1.17,18.87,6.52,18.87,15.07C62.44,49.47,55.19,55.08,43.56,56.37z"/></g></g><path fill="#FFFFFF" d="M58.61,71.09h3.48v0.67h-1.36v3.84h-0.76v-3.84h-1.35V71.09z M62.75,71.09h0.89 l1.48,3.05l1.47-3.05h0.9v4.51h-0.7v-3.43l-1.43,2.96h-0.49l-1.43-2.96v3.43h-0.7V71.09z"/><line style="display:inline;fill:none;stroke:#FFFFFF;stroke-width:1.15;stroke-miterlimit:10;" x1="284.1" y1="18.12" x2="284.1" y2="62.77"/><g><path fill="#FFFFFF" d="M316.03,72.29c0-2.29,1.75-3.92,4.14-3.92c1.39,0,2.51,0.51,3.24,1.42l-1.36,1.23 c-0.47-0.57-1.05-0.88-1.77-0.88c-1.24,0-2.1,0.86-2.1,2.15c0,1.29,0.86,2.15,2.1,2.15c0.72,0,1.3-0.31,1.77-0.88l1.36,1.23 c-0.73,0.91-1.85,1.42-3.24,1.42C317.79,76.2,316.03,74.58,316.03,72.29z"/><path fill="#FFFFFF" d="M330.51,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H330.51z"/><path fill="#FFFFFF" d="M331.8,68.52h2.13v5.84h3.59v1.69h-5.72V68.52z"/><path fill="#FFFFFF" d="M344.52,74.4v1.65h-6.05v-7.53h5.91v1.65h-3.8v1.27h3.35v1.59h-3.35v1.38H344.52z"/><path fill="#FFFFFF" d="M352.98,73.98c0,1.3-1.08,2.07-3.1,2.07h-4.07v-7.53h3.85c1.98,0,2.95,0.81,2.95,1.97 c0,0.72-0.37,1.3-1.01,1.63C352.45,72.43,352.98,73.07,352.98,73.98z M347.92,70.06v1.45h1.46c0.71,0,1.08-0.25,1.08-0.73 c0-0.47-0.37-0.72-1.08-0.72H347.92z M350.82,73.75c0-0.52-0.39-0.76-1.12-0.76h-1.79v1.53h1.79 C350.44,74.51,350.82,74.26,350.82,73.75z"/><path fill="#FFFFFF" d="M357.48,74.05h-1.16v2h-2.13v-7.53h3.44c2.05,0,3.35,1.07,3.35,2.79c0,1.11-0.54,1.93-1.47,2.38l1.62,2.37 h-2.28L357.48,74.05z M357.51,70.2h-1.18v2.21h1.18c0.88,0,1.32-0.41,1.32-1.1C358.83,70.61,358.39,70.2,357.51,70.2z"/><path fill="#FFFFFF" d="M367.31,74.59h-3.18l-0.59,1.46h-2.17l3.32-7.53h2.1l3.33,7.53h-2.22L367.31,74.59z M366.68,73.02l-0.97-2.41 l-0.97,2.41H366.68z"/><path fill="#FFFFFF" d="M372.05,70.21h-2.31v-1.69h6.75v1.69h-2.3v5.84h-2.13V70.21z"/><path fill="#FFFFFF" d="M377.39,68.52h2.13v7.53h-2.13V68.52z"/><path fill="#FFFFFF" d="M380.76,72.29c0-2.26,1.77-3.92,4.18-3.92c2.41,0,4.18,1.66,4.18,3.92c0,2.26-1.78,3.92-4.18,3.92 C382.53,76.2,380.76,74.54,380.76,72.29z M386.97,72.29c0-1.3-0.89-2.15-2.03-2.15c-1.14,0-2.03,0.85-2.03,2.15 c0,1.3,0.89,2.15,2.03,2.15C386.08,74.44,386.97,73.59,386.97,72.29z"/><path fill="#FFFFFF" d="M397.52,68.52v7.53h-1.75l-3.32-4.01v4.01h-2.09v-7.53h1.75l3.32,4.01v-4.01H397.52z"/></g><g><path fill="#FFFFFF" d="M364.49,9.42c-5.91,0-11.35,2-15.69,5.35c1.48,2.49,2.34,5.38,2.34,8.48c0,0.3-0.01,0.59-0.03,0.88 c3.17-3.86,7.99-6.33,13.37-6.33c9.55,0,17.3,7.75,17.3,17.3c0,9.55-7.75,17.3-17.3,17.3c-4.29,0-8.21-1.57-11.23-4.16 c-0.56,2.92-1.78,5.6-3.5,7.89c4.17,2.93,9.25,4.65,14.74,4.65c14.19,0,25.69-11.5,25.69-25.69S378.68,9.42,364.49,9.42z"/><path fill="#FFFFFF" d="M345.17,32.22c2.03-2.42,3.26-5.55,3.26-8.96c0-7.68-6.23-13.93-13.89-13.93c-7.66,0-13.89,6.25-13.89,13.93 c0,3.41,1.23,6.54,3.26,8.96c-3.5,3.01-5.72,7.48-5.72,12.45c0,9.05,7.33,16.4,16.35,16.4c9.02,0,16.35-7.36,16.35-16.4 C350.89,39.7,348.67,35.23,345.17,32.22z M329.57,23.26c0-2.76,2.23-5.01,4.97-5.01c2.74,0,4.97,2.25,4.97,5.01 c0,2.76-2.23,5.01-4.97,5.01C331.8,28.27,329.57,26.02,329.57,23.26z M334.54,52.15c-4.1,0-7.43-3.36-7.43-7.48 s3.33-7.48,7.43-7.48c4.1,0,7.43,3.36,7.43,7.48S338.63,52.15,334.54,52.15z"/><g><g><g><g><path fill="#FFFFFF" d="M364.59,23.73c-6.91,0-12.5,5.12-12.5,11.44c0,6.32,5.6,11.44,12.5,11.44c6.91,0,12.5-5.12,12.5-11.44 C377.09,28.85,371.49,23.73,364.59,23.73z M366.5,40.67c0,1.5,0.11,1.55,1.15,1.62l1.08,0.06l0.05,0.02 c0.23,0.13,0.3,0.42,0.27,0.66c-0.03,0.26-0.18,0.45-0.38,0.49l-0.03,0.01l-0.03,0c-0.85-0.04-2.32-0.06-3.95-0.06 c-1.71,0-3.19,0.02-4.05,0.06l-0.03,0l-0.03-0.01c-0.2-0.05-0.35-0.24-0.38-0.49c-0.03-0.24,0.04-0.53,0.27-0.66l0.05-0.02 l1.08-0.06c1.05-0.07,1.15-0.12,1.15-1.62c-4.12-0.46-6.68-2.46-6.68-5.34c0-2.91,2.21-4.77,6.15-5.29 c0.01,0.38,0.03,0.88,0.03,1.46c-0.24,0.06-0.47,0.13-0.68,0.21l-0.1,0.04c-0.82,0.31-1.38,0.88-1.63,1.67l-0.01,0.03 c-0.14,0.34-0.22,0.99-0.22,1.83l0,0.03l0,0.03c0,0.83,0.08,1.48,0.22,1.83l0.01,0.03c0.19,0.6,0.57,1.08,1.11,1.41 c0.78,0.52,2.26,0.78,3.73,0.78c1.61,0,3.23-0.32,3.92-0.93c0.42-0.32,0.73-0.74,0.89-1.26l0.01-0.03 c0.14-0.34,0.22-0.99,0.22-1.83l0-0.03l0-0.04c0-0.83-0.08-1.48-0.22-1.83l-0.01-0.03c-0.25-0.78-0.81-1.36-1.62-1.66 l-0.11-0.04c-0.36-0.14-0.78-0.25-1.23-0.34v7.32c-0.53,0.1-1.15,0.16-1.86,0.16c-0.74,0-1.39-0.07-1.93-0.17v-1.69 c0.03-1.58,0.07-4.08,0.03-5.85l0,0c0-0.04-0.03-1.24-0.03-1.28c-0.01-1.16-0.12-1.28-0.99-1.38l-1.22-0.14 c-0.19-0.08-0.31-0.29-0.33-0.55c-0.02-0.26,0.08-0.48,0.25-0.58l0.04-0.03l0.05-0.01c0.9-0.11,2.03-0.31,3.18-0.56 c0.61-0.15,1.18-0.33,1.59-0.46c0.41-0.13,0.58-0.19,0.69-0.19c0.23,0,0.5,0.12,0.58,0.39l0.01,0.05l-0.01,0.05 c-0.05,0.43-0.07,1.32-0.07,2.38v1.15c4.29,0.42,6.71,2.32,6.71,5.36C373.21,38.21,370.63,40.21,366.5,40.67z"/></g></g></g><g><path fill="#FFFFFF" d="M371.85,45.9h1.24v0.24h-0.48v1.37h-0.27v-1.37h-0.48V45.9z M373.32,45.9h0.32l0.53,1.08l0.52-1.08H375v1.6 h-0.25v-1.22l-0.51,1.05h-0.18l-0.51-1.05v1.22h-0.25V45.9z"/></g></g></g></svg></div>
+      <span class="micro">CS Tech Week Ecuador · Propuesta de identidad visual v1</span>
+    </div>
+    <div class="stack-sm" style="text-align:right">
+      <span class="micro micro--orange">0°00′00″ · −78°27′</span>
+      <span class="micro">IEEE CS · 80 años construyendo comunidad</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Campo binario: unos y ceros a muy baja opacidad, deriva lenta.
+  function binaryField(canvas, opts) {
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    var cfg = opts || {};
+    var cell = cfg.cell || 22;
+    var alpha = cfg.alpha || 0.05;
+    var speed = cfg.speed || 4; // px por segundo
+    var cols = 0, rows = 0, bits = [], dpr = 1, w = 0, h = 0;
+
+    function seed() {
+      var r = canvas.getBoundingClientRect();
+      w = Math.max(1, Math.round(r.width));
+      h = Math.max(1, Math.round(r.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      cols = Math.ceil(w / cell) + 1;
+      rows = Math.ceil(h / cell) + 2;
+      bits = [];
+      for (var i = 0; i < cols * rows; i++) {
+        bits.push(Math.random() > 0.5 ? '1' : '0');
+      }
+      ctx.font = '500 11px "IBM Plex Mono", monospace';
+      ctx.textBaseline = 'top';
+    }
+
+    function draw(offset) {
+      ctx.clearRect(0, 0, w, h);
+      for (var y = 0; y < rows; y++) {
+        for (var x = 0; x < cols; x++) {
+          var bit = bits[y * cols + x];
+          // el 1 apenas más presente que el 0: da vibración sin ruido
+          ctx.fillStyle = 'rgba(238,242,246,' + (bit === '1' ? alpha * 1.5 : alpha) + ')';
+          ctx.fillText(bit, x * cell, y * cell - cell + (offset % cell));
+        }
+      }
+    }
+
+    var start = null;
+    function frame(ts) {
+      if (start === null) start = ts;
+      draw(((ts - start) / 1000) * speed);
+      raf = window.requestAnimationFrame(frame);
+    }
+
+    var raf = null;
+    seed();
+
+    if (reduce) {
+      draw(0);
+    } else {
+      raf = window.requestAnimationFrame(frame);
+    }
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        seed();
+        if (reduce) draw(0);
+      }, 180);
+    });
+  }
+
+  ['fieldHero', 'fieldMock', 'fieldDemo'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    binaryField(el, id === 'fieldDemo'
+      ? { cell: 20, alpha: 0.10, speed: 5 }
+      : { cell: 24, alpha: 0.05, speed: 3.5 });
+  });
+}());
+</script>
