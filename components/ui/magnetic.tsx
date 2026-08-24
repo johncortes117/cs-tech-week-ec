@@ -17,8 +17,9 @@ import { cn } from '@/lib/utils'
 
 export function Magnetic({
   children,
-  radius = 90,
-  strength = 0.32,
+  radius = 40,
+  strength = 0.18,
+  maxOffset = 7,
   className,
 }: {
   children: React.ReactNode
@@ -26,6 +27,8 @@ export function Magnetic({
   radius?: number
   /** How far it moves relative to the cursor distance (0–1). */
   strength?: number
+  /** Maximum displacement allowed in pixels. */
+  maxOffset?: number
   className?: string
 }) {
   const ref = React.useRef<HTMLSpanElement>(null)
@@ -33,7 +36,7 @@ export function Magnetic({
 
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const spring = { stiffness: 260, damping: 20, mass: 0.55 }
+  const spring = { stiffness: 350, damping: 25, mass: 0.4 }
   const sx = useSpring(x, spring)
   const sy = useSpring(y, spring)
 
@@ -62,8 +65,15 @@ export function Magnetic({
         const inside =
           Math.abs(dx) < r.width / 2 + radius && Math.abs(dy) < r.height / 2 + radius
 
-        x.set(inside ? dx * strength : 0)
-        y.set(inside ? dy * strength : 0)
+        if (inside) {
+          const targetX = Math.max(-maxOffset, Math.min(maxOffset, dx * strength))
+          const targetY = Math.max(-maxOffset, Math.min(maxOffset, dy * strength))
+          x.set(targetX)
+          y.set(targetY)
+        } else {
+          x.set(0)
+          y.set(0)
+        }
       })
     }
 
@@ -72,7 +82,7 @@ export function Magnetic({
       cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', onMove)
     }
-  }, [radius, strength, reduce, x, y])
+  }, [radius, strength, maxOffset, reduce, x, y])
 
   if (reduce) return <span className={cn('inline-flex', className)}>{children}</span>
 

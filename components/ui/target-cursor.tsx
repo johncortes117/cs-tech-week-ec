@@ -17,8 +17,8 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
      comfortably without a caret
    ============================================================ */
 
-const SPRING_DOT = { stiffness: 900, damping: 44, mass: 0.35 }
-const SPRING_FRAME = { stiffness: 320, damping: 30, mass: 0.6 }
+const SPRING_DOT = { stiffness: 1000, damping: 48, mass: 0.3 }
+const SPRING_FRAME = { stiffness: 550, damping: 40, mass: 0.3 }
 
 export function TargetCursor() {
   const reduce = useReducedMotion()
@@ -29,8 +29,8 @@ export function TargetCursor() {
   const y = useMotionValue(-100)
   const fx = useMotionValue(-100)
   const fy = useMotionValue(-100)
-  const fw = useMotionValue(26)
-  const fh = useMotionValue(26)
+  const fw = useMotionValue(24)
+  const fh = useMotionValue(24)
   const fr = useMotionValue(99)
 
   const dotX = useSpring(x, SPRING_DOT)
@@ -77,7 +77,7 @@ export function TargetCursor() {
 
       if (el) {
         const r = el.getBoundingClientRect()
-        const pad = 7
+        const pad = 4
         fx.set(r.left + r.width / 2)
         fy.set(r.top + r.height / 2)
         fw.set(r.width + pad * 2)
@@ -87,8 +87,8 @@ export function TargetCursor() {
       } else {
         fx.set(e.clientX)
         fy.set(e.clientY)
-        fw.set(26)
-        fh.set(26)
+        fw.set(24)
+        fh.set(24)
         fr.set(99)
         setLocked(false)
       }
@@ -132,28 +132,24 @@ export function TargetCursor() {
           borderRadius: fr,
           translateX: '-50%',
           translateY: '-50%',
-          /* explicit starting value: Motion cannot interpolate from the
-             `transparent` keyword that the computed style would
-             hand it */
-          backgroundColor: 'hsl(38 100% 50% / 0)',
-          borderColor: 'hsl(210 30% 95% / 0.32)',
+          backgroundColor: 'transparent',
+          borderColor: 'hsl(210 30% 95% / 0.28)',
         }}
         animate={{
-          borderColor: locked ? 'hsl(38 100% 50% / 0.9)' : 'hsl(210 30% 95% / 0.32)',
-          /* the destination has to be a colour with alpha 0, not the
-             `transparent` keyword: Motion cannot interpolate
-             towards a keyword */
-          backgroundColor: locked ? 'hsl(38 100% 50% / 0.06)' : 'hsl(38 100% 50% / 0)',
+          borderColor: locked ? 'hsl(38 100% 50% / 0.85)' : 'hsl(210 30% 95% / 0.28)',
+          boxShadow: locked
+            ? '0 0 12px hsl(38 100% 50% / 0.18)'
+            : '0 0 0px transparent',
         }}
-        transition={{ duration: 0.22 }}
+        transition={{ duration: 0.18 }}
         className="absolute left-0 top-0 border"
       />
       {/* dot */}
       <motion.div
         style={{ x: dotX, y: dotY, translateX: '-50%', translateY: '-50%' }}
         animate={{ scale: locked ? 0 : 1 }}
-        transition={{ duration: 0.18 }}
-        className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_12px_hsl(38_100%_50%_/_0.7)]"
+        transition={{ duration: 0.15 }}
+        className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_hsl(38_100%_50%_/_0.8)]"
       />
     </div>
   )

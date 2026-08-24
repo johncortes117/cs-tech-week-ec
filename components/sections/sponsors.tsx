@@ -109,8 +109,8 @@ export function Sponsors() {
               ))}
             </ul>
 
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Magnetic radius={64} strength={0.24}>
+            <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
+              <Magnetic radius={35} strength={0.16} maxOffset={6}>
                 <Btn
                   href={`mailto:${event.social.email}?subject=Sponsor%20CS%20Tech%20Week%20Ecuador`}
                   size="lg"
@@ -119,7 +119,7 @@ export function Sponsors() {
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
                 </Btn>
               </Magnetic>
-              <Magnetic radius={64} strength={0.18}>
+              <Magnetic radius={35} strength={0.16} maxOffset={6}>
                 <Btn href="#registro" size="lg" variant="ghost">
                   Hablar con el comité
                 </Btn>

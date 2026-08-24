@@ -109,7 +109,7 @@ export function Equator({ label, className }: { label?: string; className?: stri
         transition={{ duration: 1, ease: EASE }}
       />
       {label ? (
-        <span className="absolute left-[calc(34%+12px)] -top-2 font-mono text-[10px] tracking-[0.14em] text-subtle">
+        <span className="absolute left-6 sm:left-[calc(34%+12px)] -top-2.5 bg-ink px-1.5 font-mono text-[10px] tracking-[0.14em] text-subtle">
           {label}
         </span>
       ) : null}
@@ -240,11 +240,12 @@ export function Btn({
       {...props}
       className={cn(
         'group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-[6px]',
-        'font-display font-bold tracking-[0.01em] transition-colors duration-300',
+        'font-display font-bold tracking-[0.01em] transition-all duration-300 hover:z-10',
         size === 'lg' ? 'px-7 py-4 text-[0.9375rem]' : 'px-5 py-3 text-[0.8125rem]',
-        variant === 'primary' && 'bg-primary text-primary-foreground hover:bg-[#FFB733]',
+        variant === 'primary' &&
+          'bg-primary text-primary-foreground shadow-[0_2px_14px_rgba(255,163,0,0.22)] hover:bg-[#FFB733] hover:shadow-[0_4px_22px_rgba(255,163,0,0.35)]',
         variant === 'ghost' &&
-          'border border-line-strong text-foreground hover:border-primary/60 hover:text-primary',
+          'border border-line-strong bg-ink-raise/40 text-foreground hover:border-primary/60 hover:bg-ink-raise hover:text-primary',
         variant === 'quiet' && 'text-muted-foreground hover:text-foreground',
         className
       )}

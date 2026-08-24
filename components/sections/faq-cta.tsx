@@ -195,15 +195,15 @@ export function FinalCta() {
           data-reveal
           viewport={VIEWPORT}
           transition={{ duration: 0.6, ease: EASE, delay: 0.32 }}
-          className="mt-12 flex flex-wrap justify-center gap-3"
+          className="mt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-5"
         >
-          <Magnetic radius={76} strength={0.28}>
+          <Magnetic radius={35} strength={0.16} maxOffset={6}>
             <Btn href={event.registerUrl} size="lg">
               Registrarme gratis
               <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
             </Btn>
           </Magnetic>
-          <Magnetic radius={76} strength={0.2}>
+          <Magnetic radius={35} strength={0.16} maxOffset={6}>
             <Btn href={event.agendaUrl} size="lg" variant="ghost">
               Ver la agenda
             </Btn>

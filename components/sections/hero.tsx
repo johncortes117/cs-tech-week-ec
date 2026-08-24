@@ -199,15 +199,15 @@ export function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.78 }}
-              className="mt-8 flex flex-wrap gap-3 lg:mt-10"
+              className="mt-8 flex flex-wrap items-center gap-4 sm:gap-5 lg:mt-10"
             >
-              <Magnetic radius={70} strength={0.26}>
+              <Magnetic radius={35} strength={0.16} maxOffset={6}>
                 <Btn href={event.registerUrl} size="lg">
                   Registro gratuito
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
                 </Btn>
               </Magnetic>
-              <Magnetic radius={70} strength={0.2}>
+              <Magnetic radius={35} strength={0.16} maxOffset={6}>
                 <Btn href={event.sponsorUrl} size="lg" variant="ghost">
                   Quiero ser sponsor
                 </Btn>
@@ -219,9 +219,9 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, ease: EASE, delay: 0.95 }}
-              className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-2.5 border-t border-line/70 pt-6"
+              className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-2.5 border-t border-line/70 pt-6"
             >
-              <span className="label mr-2">Organizan</span>
+              <span className="label mr-1">Organizan</span>
               {chapters.length > 0
                 ? chapters.map((c) => (
                     <a
@@ -230,8 +230,9 @@ export function Hero() {
                       target="_blank"
                       rel="noopener noreferrer"
                       title={`Visitar Instagram de ${c.name}`}
-                      className="inline-flex items-center gap-1 rounded-pill border border-line/70 bg-ink-raise/60 px-2.5 py-1 font-display text-[11px] font-semibold text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-ink-plate hover:text-foreground"
+                      className="inline-flex items-center gap-1 rounded-pill border border-line/80 bg-ink-raise/80 px-2.5 py-1 font-display text-[11px] font-semibold text-muted-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-ink-plate hover:text-foreground hover:shadow-[0_2px_10px_rgba(255,163,0,0.15)]"
                     >
+                      <span className="h-1 w-1 rounded-full bg-primary" aria-hidden="true" />
                       <span>{c.name.replace('IEEE CS ', '')}</span>
                     </a>
                   ))

@@ -17,7 +17,7 @@ import { lockScroll, unlockScroll } from '@/components/ui/smooth-scroll'
 function CountUnit({ value, unit }: { value: string; unit: string }) {
   return (
     <span className="inline-flex items-baseline gap-0.5">
-      <span className="rounded-[4px] bg-ink/85 px-1.5 py-0.5 font-mono text-[11px] font-semibold tabular text-primary">
+      <span className="inline-block min-w-[1.35rem] rounded-[4px] bg-ink/85 px-1 py-0.5 text-center font-mono text-[11px] font-semibold tabular text-primary">
         {value}
       </span>
       <span className="font-mono text-[9px] uppercase text-ink/70">{unit}</span>
