@@ -47,16 +47,6 @@ export const ThreeDMarquee = ({
         className
       )}
     >
-      {/* Central atmosphere glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            'radial-gradient(50% 50% at 50% 50%, hsl(var(--deep) / 0.32), hsl(var(--orange) / 0.08) 45%, transparent 75%)',
-        }}
-      />
-
       {/* 3D Isometric Viewport */}
       <div className="relative flex items-center justify-center">
         <div
