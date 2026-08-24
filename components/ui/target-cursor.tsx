@@ -73,7 +73,10 @@ export function TargetCursor() {
       x.set(e.clientX)
       y.set(e.clientY)
 
-      const el = (e.target as HTMLElement)?.closest?.(SELECTOR) as HTMLElement | null
+      const targetEl = e.target as HTMLElement | null
+      const isExcluded = targetEl?.closest?.('[data-no-cursor], [data-no-target-cursor]')
+
+      const el = !isExcluded ? (targetEl?.closest?.(SELECTOR) as HTMLElement | null) : null
 
       if (el) {
         const r = el.getBoundingClientRect()
