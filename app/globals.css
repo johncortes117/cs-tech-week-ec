@@ -197,6 +197,7 @@
     mask-image: radial-gradient(65% 65% at 50% 50%, #000, transparent);
   }
   .tabular { font-variant-numeric: tabular-nums; }
+  .transform-3d { transform-style: preserve-3d; }
 }
 
 /* Absolute respect for reduced-motion: Motion handles it through
