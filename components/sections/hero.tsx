@@ -255,7 +255,7 @@ export function Hero() {
              share of viewport height (via the aspect ratio) so the
              whole logo always fits the first screen, and cap it so
              it never dominates on very tall windows. */
-          className="order-first mx-auto w-[min(56vw,248px)] lg:order-last lg:-mt-16 lg:w-[calc(52vh*776/990)] lg:max-w-[420px] xl:-mt-24"
+          className="order-first mx-auto w-[min(56vw,248px)] lg:order-last lg:w-[calc(52vh*776/990)] lg:max-w-[420px] lg:self-start"
         >
           <div className="relative aspect-[776/990] w-full">
             <PixelatedCanvas
