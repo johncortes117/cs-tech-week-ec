@@ -219,17 +219,21 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, ease: EASE, delay: 0.95 }}
-              className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line/70 pt-6"
+              className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-2.5 border-t border-line/70 pt-6"
             >
-              <span className="label">Organizan</span>
+              <span className="label mr-2">Organizan</span>
               {chapters.length > 0
                 ? chapters.map((c) => (
-                    <span
+                    <a
                       key={c.name}
-                      className="font-display text-[12px] font-semibold text-muted-foreground"
+                      href={c.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Visitar Instagram de ${c.name}`}
+                      className="inline-flex items-center gap-1 rounded-pill border border-line/70 bg-ink-raise/60 px-2.5 py-1 font-display text-[11px] font-semibold text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-ink-plate hover:text-foreground"
                     >
-                      {c.name}
-                    </span>
+                      <span>{c.name.replace('IEEE CS ', '')}</span>
+                    </a>
                   ))
                 : Array.from({ length: Math.min(chapterSlots, 4) }).map((_, i) => (
                     <span

@@ -49,7 +49,7 @@ export const event = {
   agendaUrl: '#agenda',
 
   social: {
-    instagram: 'https://www.instagram.com/ieee.ecuador.cs',
+    instagram: 'https://www.instagram.com/ecu.cs.week.2026',
     linkedin: 'https://www.linkedin.com/company/ieee-computer-society',
     email: 'cstechweek@ieee.ec',
   },
@@ -137,7 +137,7 @@ export const trackByKey = Object.fromEntries(tracks.map((t) => [t.key, t])) as R
 export const stats = [
   { value: '6', label: 'Días', detail: 'Lunes a sábado, sin pausa' },
   { value: '6', label: 'Tracks', detail: 'De IA a computación cuántica' },
-  { value: tbd('—'), label: 'Capítulos', detail: 'Organizando en conjunto' },
+  { value: '10', label: 'Capítulos', detail: 'Organizando en conjunto' },
   { value: tbd('—'), label: 'Sedes', detail: 'Presenciales y virtuales' },
 ] as const
 
@@ -246,12 +246,111 @@ export const venues: Venue[] = []
 /* The brand guide requires the full name, no acronyms.         */
 /* ---------------------------------------------------------- */
 
-export type Chapter = { name: string; city: string }
+export type Chapter = {
+  name: string
+  fullName: string
+  university: string
+  city: string
+  logo: string
+  instagram: string
+  handle?: string
+}
 
-export const chapters: Chapter[] = []
+export const chapters: Chapter[] = [
+  {
+    name: 'IEEE CS ESPOL',
+    fullName: 'IEEE Computer Society ESPOL',
+    university: 'Escuela Superior Politécnica del Litoral',
+    city: 'Guayaquil',
+    logo: '/chapters/CS_ESPOL.png',
+    instagram: 'https://www.instagram.com/ieee.espol.computer',
+    handle: '@ieee.espol.computer',
+  },
+  {
+    name: 'IEEE CS UTN',
+    fullName: 'IEEE Computer Society UTN',
+    university: 'Universidad Técnica del Norte',
+    city: 'Ibarra',
+    logo: '/chapters/CS_UTN.png',
+    instagram: 'https://www.instagram.com/ieee_utncs',
+    handle: '@ieee_utncs',
+  },
+  {
+    name: 'IEEE CS USFQ',
+    fullName: 'IEEE Computer Society USFQ',
+    university: 'Universidad San Francisco de Quito',
+    city: 'Quito',
+    logo: '/chapters/CS_USFQ.png',
+    instagram: 'https://www.instagram.com/ieee_usfq_cs',
+    handle: '@ieee_usfq_cs',
+  },
+  {
+    name: 'IEEE CS UPS Cuenca',
+    fullName: 'IEEE Computer Society UPS Cuenca',
+    university: 'Universidad Politécnica Salesiana',
+    city: 'Cuenca',
+    logo: '/chapters/CS_UPS_CUENCA.png',
+    instagram: 'https://www.instagram.com/cs.ieee.ups.cuenca',
+    handle: '@cs.ieee.ups.cuenca',
+  },
+  {
+    name: 'IEEE CS UIDE',
+    fullName: 'IEEE Computer Society UIDE',
+    university: 'Universidad Internacional del Ecuador',
+    city: 'Quito',
+    logo: '/chapters/CS_UIDE.png',
+    instagram: 'https://www.instagram.com/ieee_uide',
+    handle: '@ieee_uide',
+  },
+  {
+    name: 'IEEE CS UCACUE',
+    fullName: 'IEEE Computer Society UCACUE',
+    university: 'Universidad Católica de Cuenca',
+    city: 'Cuenca',
+    logo: '/chapters/CS_UCACUE.png',
+    instagram: 'https://www.instagram.com/ieee.uc',
+    handle: '@ieee.uc',
+  },
+  {
+    name: 'IEEE CS EPN',
+    fullName: 'IEEE Computer Society EPN',
+    university: 'Escuela Politécnica Nacional',
+    city: 'Quito',
+    logo: '/chapters/CS_EPN.png',
+    instagram: 'https://www.instagram.com/computer_society.epn',
+    handle: '@computer_society.epn',
+  },
+  {
+    name: 'IEEE CS UPEC',
+    fullName: 'IEEE Computer Society UPEC',
+    university: 'Universidad Politécnica Estatal del Carchi',
+    city: 'Tulcán',
+    logo: '/chapters/CS_UPEC.png',
+    instagram: 'https://www.instagram.com/ieee.upec',
+    handle: '@ieee.upec',
+  },
+  {
+    name: 'IEEE CS Yachay Tech',
+    fullName: 'IEEE Computer Society Yachay Tech',
+    university: 'Universidad Yachay Tech',
+    city: 'Urcuquí',
+    logo: '/chapters/CS_YACHAY.png',
+    instagram: 'https://www.instagram.com/ramaieeeyt',
+    handle: '@ramaieeeyt',
+  },
+  {
+    name: 'IEEE CS ESPOCH',
+    fullName: 'IEEE Computer Society ESPOCH',
+    university: 'Escuela Superior Politécnica de Chimborazo',
+    city: 'Riobamba',
+    logo: '/chapters/CS_ESPOCH.png',
+    instagram: 'https://www.instagram.com/ieee_espoch_cs',
+    handle: '@ieee_espoch_cs',
+  },
+]
 
 /* Slots to show while the list is being confirmed. */
-export const chapterSlots = 6
+export const chapterSlots = 10
 
 /* ---------------------------------------------------------- */
 /* SPONSORS                                                     */

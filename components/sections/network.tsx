@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Building2, MapPin, Video } from 'lucide-react'
+import { ArrowUpRight, Building2, ExternalLink, Instagram, MapPin, Video } from 'lucide-react'
 import { EASE, VIEWPORT } from '@/lib/motion'
 import { chapters, chapterSlots, globeCities, modalityLabels, venues } from '@/lib/content'
 import { Card, Equator, Pill, SectionHead, Tbd } from '@/components/ui/primitives'
@@ -186,45 +186,85 @@ export function Chapters() {
           align="center"
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {items.map((c, i) => (
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
+              key={c ? c.name : i}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               data-reveal
               viewport={VIEWPORT}
-              transition={{ duration: 0.5, ease: EASE, delay: i * 0.05 }}
-              className="group relative flex min-h-[128px] flex-col justify-center gap-2 overflow-hidden bg-ink-raise p-6 transition-colors duration-500 ease-cs hover:bg-ink-plate"
-              data-cursor
+              transition={{ duration: 0.5, ease: EASE, delay: i * 0.04 }}
+              className="h-full"
             >
-              {/* halo that follows the cursor inside the cell */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-cs group-hover:opacity-100"
-                style={{
-                  background:
-                    'radial-gradient(110% 90% at 50% 0%, hsl(var(--orange) / 0.09), transparent 65%)',
-                }}
-              />
-              <span className="relative font-mono text-[10px] tabular text-subtle">
-                {String(i + 1).padStart(2, '0')}
-              </span>
               {c ? (
-                <>
-                  <span className="relative font-display text-[0.9375rem] font-bold leading-snug tracking-[-0.01em]">
-                    {c.name}
-                  </span>
-                  <span className="label relative">{c.city}</span>
-                </>
+                <a
+                  href={c.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visitar Instagram de ${c.name} (${c.handle || '@instagram'})`}
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-card border border-line bg-ink-raise p-5 transition-all duration-300 ease-cs hover:-translate-y-1 hover:border-primary/40 hover:bg-ink-plate hover:shadow-[0_12px_32px_rgba(255,163,0,0.1)]"
+                  data-cursor
+                >
+                  {/* Subtle top ambient glow */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 -top-24 h-32 opacity-0 transition-opacity duration-500 ease-cs group-hover:opacity-100"
+                    style={{
+                      background:
+                        'radial-gradient(ellipse at 50% 0%, hsl(var(--orange) / 0.18), transparent 70%)',
+                    }}
+                  />
+
+                  {/* Top: index + city badge */}
+                  <div className="relative flex items-center justify-between gap-2">
+                    <span className="font-mono text-[10px] tabular text-subtle">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-pill border border-line/80 bg-ink/60 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground transition-colors group-hover:border-primary/30 group-hover:text-primary">
+                      <MapPin className="h-2.5 w-2.5 text-primary" aria-hidden="true" />
+                      {c.city}
+                    </span>
+                  </div>
+
+                  {/* Center: Logo display box */}
+                  <div className="relative my-4 flex h-24 items-center justify-center rounded-lg border border-line/50 bg-ink/70 p-3 transition-all duration-300 group-hover:border-line-strong group-hover:bg-ink">
+                    <img
+                      src={c.logo}
+                      alt={`Logo de ${c.name}`}
+                      className="max-h-full max-w-full object-contain transition-transform duration-300 ease-cs group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Bottom: Info & Instagram link indicator */}
+                  <div className="relative flex flex-col gap-1.5 pt-1">
+                    <h3 className="font-display text-[0.9375rem] font-bold leading-tight tracking-[-0.01em] text-foreground transition-colors duration-200 group-hover:text-primary">
+                      {c.name}
+                    </h3>
+                    <p className="line-clamp-2 text-[0.75rem] leading-relaxed text-muted-foreground">
+                      {c.university}
+                    </p>
+
+                    <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2.5 text-subtle transition-colors">
+                      <span className="flex items-center gap-1.5 font-mono text-[10.5px]">
+                        <Instagram className="h-3.5 w-3.5 text-primary/80 transition-transform duration-300 group-hover:scale-110" />
+                        <span className="truncate font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+                          {c.handle}
+                        </span>
+                      </span>
+                      <ArrowUpRight className="h-3.5 w-3.5 flex-none text-subtle transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+                    </div>
+                  </div>
+                </a>
               ) : (
-                <>
+                <div className="relative flex h-full min-h-[160px] flex-col justify-center gap-2 overflow-hidden rounded-card border border-line bg-ink-raise p-6">
                   <span className="relative h-2.5 w-3/4 rounded-full bg-line" />
                   <span className="relative h-2 w-1/3 rounded-full bg-line/70" />
                   <span className="relative mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-primary/60">
                     Por confirmar
                   </span>
-                </>
+                </div>
               )}
             </motion.div>
           ))}
