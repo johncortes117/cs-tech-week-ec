@@ -180,8 +180,8 @@ export function Chapters() {
       <div className="shell">
         <SectionHead
           eyebrow="Capítulos IEEE CS"
-          title="Diez universidades, un solo frente."
-          lede="CS Tech Week Ecuador reúne a los capítulos estudiantiles Computer Society del país. Haz clic sobre cualquier logo para visitar su perfil oficial en Instagram."
+          title="10 Universidades"
+          lede="CS Tech Week Ecuador reúne a los capítulos estudiantiles Computer Society del Ecuador"
           align="center"
         />
 

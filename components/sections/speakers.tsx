@@ -79,8 +79,8 @@ export function Speakers() {
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHead
             eyebrow="Speakers"
-            title="Quiénes vienen a hablar."
-            lede="Perfiles de industria y academia, seleccionados por lo que hacen todos los días, no por su cargo. Los anuncios salen por tandas."
+            title="Perfiles de industria y academia."
+            lede="Profesionales destacados del Ecuador en áreas de tecnología, innovación e IEEE CS."
             className="flex-1"
           />
           <Btn href="#registro" variant="ghost" className="w-fit flex-none">
@@ -92,50 +92,50 @@ export function Speakers() {
         <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {speakers.length > 0
             ? speakers.map((sp, i) => (
-                <motion.div
-                  key={sp.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  data-reveal
-                  viewport={VIEWPORT}
-                  transition={{ duration: 0.55, ease: EASE, delay: i * 0.05 }}
-                >
-                  <CometCard rotateDepth={10} translateDepth={9}>
-                    <Card className="group h-full overflow-hidden" data-cursor>
-                      <div className="relative aspect-[4/5] overflow-hidden bg-ink-plate">
-                        {sp.photo ? (
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          <img
-                            src={sp.photo}
-                            alt={sp.name}
-                            className="h-full w-full object-cover transition-transform duration-700 ease-cs group-hover:scale-105"
-                          />
-                        ) : null}
-                        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-raise via-ink-raise/70 to-transparent" />
-                      </div>
-                      <div className="relative -mt-14 flex flex-col gap-1.5 p-5">
-                        {sp.track ? (
-                          <Pill hex={trackByKey[sp.track].hex} className="w-fit">
-                            {trackByKey[sp.track].name}
-                          </Pill>
-                        ) : null}
-                        <h3 className="mt-1 font-display text-[0.9375rem] font-bold leading-snug tracking-[-0.01em]">
-                          {sp.name}
-                        </h3>
-                        <p className="text-[0.8125rem] leading-snug text-muted-foreground">
-                          {sp.role}
-                        </p>
-                        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-subtle">
-                          {sp.org}
-                        </p>
-                      </div>
-                    </Card>
-                  </CometCard>
-                </motion.div>
-              ))
+              <motion.div
+                key={sp.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                data-reveal
+                viewport={VIEWPORT}
+                transition={{ duration: 0.55, ease: EASE, delay: i * 0.05 }}
+              >
+                <CometCard rotateDepth={10} translateDepth={9}>
+                  <Card className="group h-full overflow-hidden" data-cursor>
+                    <div className="relative aspect-[4/5] overflow-hidden bg-ink-plate">
+                      {sp.photo ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={sp.photo}
+                          alt={sp.name}
+                          className="h-full w-full object-cover transition-transform duration-700 ease-cs group-hover:scale-105"
+                        />
+                      ) : null}
+                      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-raise via-ink-raise/70 to-transparent" />
+                    </div>
+                    <div className="relative -mt-14 flex flex-col gap-1.5 p-5">
+                      {sp.track ? (
+                        <Pill hex={trackByKey[sp.track].hex} className="w-fit">
+                          {trackByKey[sp.track].name}
+                        </Pill>
+                      ) : null}
+                      <h3 className="mt-1 font-display text-[0.9375rem] font-bold leading-snug tracking-[-0.01em]">
+                        {sp.name}
+                      </h3>
+                      <p className="text-[0.8125rem] leading-snug text-muted-foreground">
+                        {sp.role}
+                      </p>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-subtle">
+                        {sp.org}
+                      </p>
+                    </div>
+                  </Card>
+                </CometCard>
+              </motion.div>
+            ))
             : Array.from({ length: speakerSlots }).map((_, i) => (
-                <GhostSpeaker key={i} index={i} />
-              ))}
+              <GhostSpeaker key={i} index={i} />
+            ))}
         </div>
 
         <p className="mt-8 text-[0.875rem] text-subtle">

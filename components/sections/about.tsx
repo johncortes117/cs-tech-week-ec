@@ -82,7 +82,7 @@ export function About() {
               Una semana entera dedicada a <span className="grad-text">computación</span>.
             </>
           }
-          lede="Seis días de charlas, talleres y retos técnicos, abiertos y gratuitos, organizados en conjunto por los capítulos Computer Society del Ecuador. Presencial donde se pueda llegar, virtual para todo el resto del país."
+          lede="Seis días de charlas, talleres y retos técnicos, abiertos y gratuitos, organizados en conjunto por los capítulos Computer Society del Ecuador."
         />
 
         {/* figures */}
