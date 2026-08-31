@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Montserrat, Open_Sans, IBM_Plex_Mono } from 'next/font/google'
+import { Montserrat, Open_Sans, IBM_Plex_Mono, Press_Start_2P } from 'next/font/google'
 import './globals.css'
 import { MotionProvider } from '@/components/ui/motion-provider'
 import { SmoothScroll } from '@/components/ui/smooth-scroll'
@@ -8,7 +8,12 @@ import { ClickSpark } from '@/components/ui/click-spark'
 
 /* Montserrat and Open Sans are the families required by the IEEE
    Computer Society brand guide. IBM Plex Mono joins only for
-   micro-data (coordinates, countdown, schedules). */
+   micro-data (coordinates, countdown, schedules).
+
+   Press Start 2P is loaded for exactly one thing: the Minecraft
+   tournament card, whose poster is set in a pixel face. It is a
+   single weight over a latin subset, and nothing else on the site
+   is allowed to use it. */
 
 const montserrat = Montserrat({
   subsets: ['latin', 'latin-ext'],
@@ -28,6 +33,13 @@ const plexMono = IBM_Plex_Mono({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600'],
   variable: '--font-plex-mono',
+  display: 'swap',
+})
+
+const pressStart = Press_Start_2P({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-pixel',
   display: 'swap',
 })
 
@@ -61,7 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className="dark">
       <body
-        className={`${montserrat.variable} ${openSans.variable} ${plexMono.variable} font-sans antialiased`}
+        className={`${montserrat.variable} ${openSans.variable} ${plexMono.variable} ${pressStart.variable} font-sans antialiased`}
       >
         {/* MotionProvider is what honours prefers-reduced-motion across
             the site: it disables transform and layout and lets

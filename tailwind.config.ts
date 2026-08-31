@@ -52,6 +52,8 @@ const config: Config = {
         display: ['var(--font-montserrat)', 'system-ui', 'sans-serif'],
         sans: ['var(--font-open-sans)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-plex-mono)', 'ui-monospace', 'monospace'],
+        /* Minecraft card only — see app/layout.tsx */
+        pixel: ['var(--font-pixel)', 'ui-monospace', 'monospace'],
       },
       letterSpacing: {
         display: '-0.04em',

@@ -506,6 +506,8 @@ export type Activity = {
   kind: string
   /** Public name. Omitted while `revealed` is false. */
   name?: string
+  /** One line in the activity's own voice, taken from its poster. */
+  tagline?: string
   blurb: string
   price: Price
   /** Short practical facts, rendered as a meta row. */
@@ -514,50 +516,51 @@ export type Activity = {
   revealed: boolean
   /** Details announced but not yet defined, listed as pending. */
   pending?: string[]
-  /** Looping clip, blurred as the ground of the card. */
+  /** Looping clip shown inside the card. */
   video?: string
   /** Only used while `revealed` is false: when the name goes public. */
   revealAt?: string
-  /** Gets the wide card at the top of the section. */
-  featured?: boolean
 }
 
+/* The order here is the order on the page, and it is deliberate:
+   the talks are the week, the two competitions hang off it. */
 export const activities: Activity[] = [
-  {
-    key: 'hackathon',
-    kind: 'Mini hackathon',
-    name: 'CSS Battle',
-    blurb:
-      'Un duelo de CSS: dos personas, el mismo objetivo visual y el menor código posible para llegar a él. Se juega en vivo, por rondas, y gana quien resuelve con más precisión y menos caracteres.',
-    price: { member: 3, general: 5 },
-    meta: [
-      { label: 'Modalidad', value: 'Virtual' },
-      { label: 'Batallas en', value: 'Discord' },
-      { label: 'Formato', value: 'Duelos 1 vs 1' },
-    ],
-    revealed: true,
-    /* What the poster still lists as coming. */
-    pending: ['Fecha', 'Horario', 'Inscripciones'],
-    video: '/teaser/mini-hackathon.mp4',
-    featured: true,
-  },
   {
     key: 'charlas',
     kind: 'Programa principal',
     name: 'Charlas y ponencias',
+    tagline: 'El eje de la semana.',
     blurb:
-      'El eje de la semana: perfiles de industria y academia contando lo que hacen todos los días, repartidos por los seis tracks.',
+      'Perfiles de industria y academia contando lo que hacen todos los días, repartidos por los seis tracks. Es el cuerpo del evento: todo lo demás gira alrededor.',
     price: { member: 1, general: 3 },
     meta: [
       { label: 'Acceso', value: 'Toda la semana' },
+      { label: 'Tracks', value: 'Seis' },
       { label: 'Certificado', value: 'Digital' },
     ],
     revealed: true,
   },
   {
+    key: 'hackathon',
+    kind: 'Mini hackathon',
+    name: 'CSS Battle',
+    tagline: 'Demuestra tus habilidades en CSS.',
+    blurb:
+      'Un duelo de CSS: dos personas, el mismo objetivo visual y el menor código posible para llegar a él. Se juega por rondas y gana quien resuelve con más precisión y menos caracteres.',
+    price: { member: 3, general: 5 },
+    meta: [
+      { label: 'Modalidad', value: 'Virtual' },
+      { label: 'Batallas en', value: 'Discord' },
+    ],
+    revealed: true,
+    pending: ['Fecha', 'Horario', 'Inscripciones'],
+    video: '/teaser/css-battle.mp4',
+  },
+  {
     key: 'minecraft',
-    kind: 'Concurso',
-    name: 'Torneo de Minecraft',
+    kind: 'Torneo',
+    name: 'Minecraft',
+    tagline: 'Un nuevo mundo está por abrir sus puertas…',
     blurb:
       'La competencia más desenfadada de la semana, y la que menos requisitos técnicos pide: solo ganas de jugar en equipo.',
     price: { member: 3, general: 5 },
@@ -566,6 +569,7 @@ export const activities: Activity[] = [
       { label: 'Cupos', value: 'Limitados' },
     ],
     revealed: true,
+    pending: ['Fecha', 'Servidor', 'Inscripciones'],
   },
 ]
 
