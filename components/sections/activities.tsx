@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Lock, Ticket } from 'lucide-react'
+import { Lock, Swords, Ticket } from 'lucide-react'
 import { EASE, VIEWPORT } from '@/lib/motion'
 import { activities, priceNote, type Activity, type Price } from '@/lib/content'
 import { useCountdown } from '@/lib/use-countdown'
@@ -20,11 +20,11 @@ import { Redacted } from '@/components/ui/text-fx'
    is the page's strongest argument for joining the society, so
    it leads rather than hiding in a footnote.
 
-   An activity with `revealed: false` gets the wide card at the
-   top: its clip plays blurred underneath, its name is redacted,
-   and a countdown runs to the reveal. The format, the price and
-   the practical facts are still shown — the point is to build
-   expectation, not to withhold everything.
+   The featured activity gets the wide card at the top, with its
+   clip playing blurred underneath. While `revealed` is false the
+   name is redacted and a countdown runs to the announcement;
+   once it flips, the name takes its place and whatever is still
+   undefined is listed as pending rather than invented.
 
    The visual language follows the tournament poster: black
    ground, monospaced micro-labels, an outlined "coming soon"
@@ -83,11 +83,11 @@ function MetaRow({ meta }: { meta: NonNullable<Activity['meta']> }) {
   )
 }
 
-/* ---------- the one still under wraps ---------- */
+/* ---------- the headline activity ---------- */
 
-function ClassifiedActivity({ activity }: { activity: Activity }) {
+function FeaturedActivity({ activity }: { activity: Activity }) {
   const c = useCountdown(activity.revealAt ?? '')
-  const showCountdown = Boolean(activity.revealAt) && !c.done
+  const showCountdown = !activity.revealed && Boolean(activity.revealAt) && !c.done
 
   return (
     <motion.div
@@ -141,19 +141,29 @@ function ClassifiedActivity({ activity }: { activity: Activity }) {
         <div className="relative grid gap-10 p-8 md:p-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           {/* ---------- left: what it is ---------- */}
           <div className="flex flex-col gap-6">
-            <span className="inline-flex w-fit items-center gap-2 rounded-pill border border-line bg-ink/70 px-3 py-1.5">
-              <Lock className="h-3 w-3 text-primary" aria-hidden="true" />
-              <span className="label text-primary">Reto por revelar</span>
+            <span className="inline-flex w-fit items-center gap-2 rounded-pill border border-primary/40 bg-ink/70 px-3 py-1.5">
+              {activity.revealed ? (
+                <Swords className="h-3 w-3 text-primary" aria-hidden="true" />
+              ) : (
+                <Lock className="h-3 w-3 text-primary" aria-hidden="true" />
+              )}
+              <span className="label text-primary">
+                {activity.revealed ? 'Ya anunciado' : 'Reto por revelar'}
+              </span>
             </span>
 
             <div>
               <span className="label block">{activity.kind}</span>
               {/* the brackets are the poster's, kept as a quote */}
-              <h3 className="mt-3 flex items-center gap-3 font-display text-[clamp(1.6rem,4vw,2.6rem)] font-black leading-none tracking-head">
+              <h3 className="mt-3 flex items-center gap-3 font-display text-[clamp(1.6rem,4vw,2.6rem)] font-black uppercase leading-none tracking-head">
                 <span className="text-primary" aria-hidden="true">
                   &lt;
                 </span>
-                <Redacted length={11} label="Nombre por revelar" className="text-foreground/80" />
+                {activity.revealed ? (
+                  <span>{activity.name}</span>
+                ) : (
+                  <Redacted length={11} label="Nombre por revelar" className="text-foreground/80" />
+                )}
                 <span className="text-primary" aria-hidden="true">
                   /&gt;
                 </span>
@@ -192,9 +202,26 @@ function ClassifiedActivity({ activity }: { activity: Activity }) {
                   ))}
                 </div>
               </div>
-            ) : (
-              <span className="label text-primary">Anuncio inminente</span>
-            )}
+            ) : activity.pending ? (
+              /* The poster promises these and does not have them yet.
+                 Listing them as reserved beats inventing a date. */
+              <div className="flex flex-col gap-3">
+                <span className="label">Por anunciar</span>
+                <ul className="flex flex-col gap-2">
+                  {activity.pending.map((item) => (
+                    <li key={item} className="flex items-center gap-2.5">
+                      <span
+                        className="h-1.5 w-1.5 flex-none rounded-full border border-dashed border-primary/60"
+                        aria-hidden="true"
+                      />
+                      <span className="font-display text-[0.9375rem] font-bold tracking-[-0.01em] text-muted-foreground">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
             <div className="flex flex-col gap-3">
               <span className="label">Inscripción</span>
@@ -245,7 +272,7 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
 }
 
 export function Activities() {
-  const featured = activities.find((a) => a.featured && !a.revealed)
+  const featured = activities.find((a) => a.featured)
   const rest = activities.filter((a) => a !== featured)
 
   return (
@@ -257,7 +284,7 @@ export function Activities() {
           lede="Cada actividad se inscribe por separado y tiene su propio valor. Ser miembro de IEEE Computer Society siempre cuesta menos."
         />
 
-        {featured ? <ClassifiedActivity activity={featured} /> : null}
+        {featured ? <FeaturedActivity activity={featured} /> : null}
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {rest.map((a, i) => (

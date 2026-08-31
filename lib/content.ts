@@ -510,11 +510,13 @@ export type Activity = {
   price: Price
   /** Short practical facts, rendered as a meta row. */
   meta?: { label: string; value: string }[]
-  /** false = classified: no name, teaser treatment, countdown. */
+  /** false = under wraps: no name, redacted title, countdown. */
   revealed: boolean
-  /** Looping clip. Heavily blurred while the activity is under wraps. */
+  /** Details announced but not yet defined, listed as pending. */
+  pending?: string[]
+  /** Looping clip, blurred as the ground of the card. */
   video?: string
-  /** When it goes public (ISO, Ecuador time UTC−5). */
+  /** Only used while `revealed` is false: when the name goes public. */
   revealAt?: string
   /** Gets the wide card at the top of the section. */
   featured?: boolean
@@ -524,19 +526,19 @@ export const activities: Activity[] = [
   {
     key: 'hackathon',
     kind: 'Mini hackathon',
-    // name: intentionally absent — see revealed
+    name: 'CSS Battle',
     blurb:
-      'Un reto de front-end en formato de duelo: dos soluciones, un mismo objetivo visual y el menor código posible. El enunciado exacto se revela el día del anuncio.',
+      'Un duelo de CSS: dos personas, el mismo objetivo visual y el menor código posible para llegar a él. Se juega en vivo, por rondas, y gana quien resuelve con más precisión y menos caracteres.',
     price: { member: 3, general: 5 },
     meta: [
       { label: 'Modalidad', value: 'Virtual' },
       { label: 'Batallas en', value: 'Discord' },
       { label: 'Formato', value: 'Duelos 1 vs 1' },
     ],
-    revealed: false,
+    revealed: true,
+    /* What the poster still lists as coming. */
+    pending: ['Fecha', 'Horario', 'Inscripciones'],
     video: '/teaser/mini-hackathon.mp4',
-    /* PLACEHOLDER — replace with the real reveal date. */
-    revealAt: '2026-09-05T19:00:00-05:00',
     featured: true,
   },
   {
