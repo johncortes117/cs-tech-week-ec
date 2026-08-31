@@ -82,8 +82,7 @@ export function Hero() {
   const logoY = useTransform(py, [-1, 1], [-PLANES.logo * 0.5, PLANES.logo * 0.5])
 
   const meta = [
-    { label: 'Fechas', value: event.dates },
-    { label: 'Sede', value: event.venue },
+    { label: 'Fecha', value: event.dates },
     { label: 'Formato', value: event.format },
   ]
 

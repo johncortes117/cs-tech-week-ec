@@ -34,9 +34,8 @@ export const event = {
   dates: '14 de septiembre, 2026',
   datesShort: '14 SEP 2026',
 
-  // TBD — to confirm with the committee
-  venue: tbd('Sede por confirmar'),
-  format: tbd('Presencial + virtual'),
+  /** The whole week runs online, so it is stated once, here. */
+  format: 'Virtual',
 
   /** Countdown target date (ISO, Ecuador time UTC−5). */
   startsAt: '2026-09-14T09:00:00-05:00',
@@ -64,7 +63,6 @@ export const navLinks = [
   { label: 'Actividades', href: '#actividades' },
   { label: 'Agenda', href: '#agenda' },
   { label: 'Speakers', href: '#speakers' },
-  { label: 'Sedes', href: '#sedes' },
   { label: 'Sponsors', href: '#sponsors' },
   { label: 'Capítulos', href: '#capitulos' },
 ] as const
@@ -136,10 +134,10 @@ export const trackByKey = Object.fromEntries(tracks.map((t) => [t.key, t])) as R
 /* ---------------------------------------------------------- */
 
 export const stats = [
-  { value: '6', label: 'Días', detail: 'Lunes a sábado, sin pausa' },
+  { value: '6', label: 'Días', detail: 'Del lunes al sábado' },
   { value: '6', label: 'Tracks', detail: 'De IA a computación cuántica' },
-  { value: '10', label: 'Capítulos', detail: 'Organizando en conjunto' },
-  { value: tbd('—'), label: 'Sedes', detail: 'Presenciales y virtuales' },
+  { value: '3', label: 'Actividades', detail: 'Charlas, duelo y torneo' },
+  { value: '10', label: 'Capítulos', detail: 'Organizan en conjunto' },
 ] as const
 
 /* ---------------------------------------------------------- */
@@ -172,7 +170,6 @@ export const orbitNodes = [
 /* switches to "under construction" mode with email capture.    */
 /* ---------------------------------------------------------- */
 
-export type Modality = 'presencial' | 'virtual' | 'hibrido'
 export type SessionType = 'ponencia' | 'panel' | 'workshop' | 'reto'
 
 export type Session = {
@@ -181,9 +178,7 @@ export type Session = {
   title: string
   speaker?: string
   track: TrackKey
-  modality: Modality
   type: SessionType
-  venue?: string
 }
 
 export type Day = {
@@ -195,12 +190,6 @@ export type Day = {
 
 /** Empty on purpose: the programme is not defined yet. */
 export const days: Day[] = []
-
-export const modalityLabels: Record<Modality, string> = {
-  presencial: 'Presencial',
-  virtual: 'Virtual',
-  hibrido: 'Híbrido',
-}
 
 export const typeLabels: Record<SessionType, string> = {
   ponencia: 'Ponencia',
@@ -226,21 +215,6 @@ export const speakers: Speaker[] = []
 
 /** How many slots to show while no speakers are confirmed. */
 export const speakerSlots = 4
-
-/* ---------------------------------------------------------- */
-/* VENUES                                                       */
-/* ---------------------------------------------------------- */
-
-export type Venue = {
-  city: string
-  name: string
-  chapter: string
-  modality: Modality
-  capacity?: string
-  schedule?: string
-}
-
-export const venues: Venue[] = []
 
 /* ---------------------------------------------------------- */
 /* ORGANISING CHAPTERS                                          */
@@ -369,20 +343,20 @@ export const sponsorTiers: SponsorTier[] = [
   {
     key: 'diamante',
     name: 'Diamante',
-    blurb: 'Marca en el escenario principal, keynote propia y presencia en toda la campaña.',
+    blurb: 'Keynote propia y presencia en toda la campaña.',
     slots: 1,
     featured: true,
   },
   {
     key: 'oro',
     name: 'Oro',
-    blurb: 'Workshop propio, stand en sede principal y logo en agenda y certificados.',
+    blurb: 'Workshop propio y logo en agenda y certificados.',
     slots: 3,
   },
   {
     key: 'plata',
     name: 'Plata',
-    blurb: 'Presencia en sitio web y redes, y espacio en la feria de empleabilidad.',
+    blurb: 'Presencia en sitio web y redes durante toda la semana.',
     slots: 6,
   },
   {
@@ -394,12 +368,12 @@ export const sponsorTiers: SponsorTier[] = [
 ]
 
 export const sponsorPitch = {
-  title: 'Tu marca frente a quienes van a construir la próxima década de software en Ecuador',
+  title: 'Tu marca frente a estudiantes y profesionales de computación del Ecuador.',
   points: [
-    'Audiencia técnica real: estudiantes de últimos semestres y profesionales en ejercicio.',
-    'Una semana completa de exposición, no una charla suelta.',
-    'Respaldo institucional de IEEE Computer Society en su 80.º aniversario.',
-    'Contenido co-creado: tu equipo puede dictar workshop o participar en panel.',
+    'Estudiantes de últimos semestres y profesionales en ejercicio.',
+    'Una semana de exposición, no una charla suelta.',
+    'Respaldo de IEEE Computer Society en su 80.º aniversario.',
+    'Tu equipo puede dictar un workshop o participar en un panel.',
   ],
 }
 
@@ -421,12 +395,12 @@ export const faq = [
     a: tbd('Medios de pago por confirmar'),
   },
   {
-    q: '¿Puedo participar desde otra ciudad?',
-    a: tbd('Depende del formato final — por confirmar'),
+    q: '¿Dónde se realiza?',
+    a: 'Todo el evento es virtual, así que puedes participar desde cualquier ciudad. Los enlaces de acceso llegan al correo con el que te inscribas.',
   },
   {
     q: '¿Dan certificado?',
-    a: 'Sí. Se emite certificado digital verificable para quienes cumplan el mínimo de asistencia. El detalle exacto se publica junto con la agenda.',
+    a: 'Sí, certificado digital verificable para quienes cumplan el mínimo de asistencia. El detalle se publica junto con la agenda.',
   },
   {
     q: '¿En qué idioma son las sesiones?',
@@ -434,7 +408,7 @@ export const faq = [
   },
   {
     q: 'Quiero dictar una charla o workshop, ¿cómo postulo?',
-    a: 'La convocatoria de ponentes se abre junto con el programa. Déjanos tu correo y te avisamos apenas esté disponible.',
+    a: 'La convocatoria de ponentes se abre junto con el programa. Déjanos tu correo y te avisamos.',
   },
 ]
 
@@ -443,30 +417,7 @@ export const faq = [
 /* ---------------------------------------------------------- */
 
 export const footerNote =
-  'CS Tech Week Ecuador es una iniciativa de los capítulos IEEE Computer Society del Ecuador. IEEE, el logo de IEEE y el logo de IEEE Computer Society son marcas registradas de sus respectivos titulares.'
-
-/* ---------------------------------------------------------- */
-/* GLOBE — Ecuador on the zero parallel                         */
-/* These are cities of the country, NOT confirmed venues. The    */
-/* section says so explicitly, to promise nothing that isn't set. */
-/* ---------------------------------------------------------- */
-
-export type GeoCity = { name: string; location: [number, number]; size?: number }
-
-/* The sizes are deliberately small: the whole country fits in a
-   few degrees, and with large markers the nine cities merge into
-   a single orange blob. */
-export const globeCities: GeoCity[] = [
-  { name: 'Quito', location: [-0.1807, -78.4678], size: 0.045 },
-  { name: 'Guayaquil', location: [-2.1709, -79.9224], size: 0.04 },
-  { name: 'Cuenca', location: [-2.9006, -79.0045], size: 0.032 },
-  { name: 'Ambato', location: [-1.2491, -78.6168], size: 0.026 },
-  { name: 'Loja', location: [-3.9931, -79.2042], size: 0.026 },
-  { name: 'Manta', location: [-0.9677, -80.7089], size: 0.026 },
-  { name: 'Ibarra', location: [0.3517, -78.1223], size: 0.024 },
-  { name: 'Riobamba', location: [-1.6635, -78.6546], size: 0.024 },
-  { name: 'Portoviejo', location: [-1.0546, -80.4545], size: 0.024 },
-]
+  'CS Tech Week Ecuador es una iniciativa de los capítulos IEEE Computer Society del Ecuador. IEEE, el logo de IEEE y el logo de IEEE Computer Society son marcas registradas de sus respectivos titulares. Minecraft es una marca de Mojang Studios; este torneo no está afiliado a Mojang ni a Microsoft.'
 
 /* ---------------------------------------------------------- */
 /* TICKER — text band between the hero and the rest              */
@@ -531,7 +482,7 @@ export const activities: Activity[] = [
     name: 'Charlas y ponencias',
     tagline: 'El eje de la semana.',
     blurb:
-      'Perfiles de industria y academia contando lo que hacen todos los días, repartidos por los seis tracks. Es el cuerpo del evento: todo lo demás gira alrededor.',
+      'Perfiles de industria y academia contando lo que hacen todos los días, repartidos por los seis tracks.',
     price: { member: 1, general: 3 },
     meta: [
       { label: 'Acceso', value: 'Toda la semana' },
@@ -544,13 +495,12 @@ export const activities: Activity[] = [
     key: 'hackathon',
     kind: 'Mini hackathon',
     name: 'CSS Battle',
-    tagline: 'Demuestra tus habilidades en CSS.',
     blurb:
-      'Un duelo de CSS: dos personas, el mismo objetivo visual y el menor código posible para llegar a él. Se juega por rondas y gana quien resuelve con más precisión y menos caracteres.',
+      'Dos personas, el mismo objetivo visual y el menor código posible para llegar a él. Gana quien resuelve con más precisión y menos caracteres.',
     price: { member: 3, general: 5 },
     meta: [
-      { label: 'Modalidad', value: 'Virtual' },
       { label: 'Batallas en', value: 'Discord' },
+      { label: 'Formato', value: 'Duelos 1 vs 1' },
     ],
     revealed: true,
     pending: ['Fecha', 'Horario', 'Inscripciones'],
@@ -561,11 +511,10 @@ export const activities: Activity[] = [
     kind: 'Torneo',
     name: 'Minecraft',
     tagline: 'Un nuevo mundo está por abrir sus puertas…',
-    blurb:
-      'La competencia más desenfadada de la semana, y la que menos requisitos técnicos pide: solo ganas de jugar en equipo.',
+    blurb: 'Por equipos, en un servidor propio. El único requisito es tener el juego.',
     price: { member: 3, general: 5 },
     meta: [
-      { label: 'Modalidad', value: 'Virtual' },
+      { label: 'Juego', value: 'Por equipos' },
       { label: 'Cupos', value: 'Limitados' },
     ],
     revealed: true,

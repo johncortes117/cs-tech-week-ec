@@ -79,10 +79,10 @@ export function About() {
           eyebrow="Sobre el evento"
           title={
             <>
-              Una semana entera dedicada a <span className="grad-text">computación</span>.
+              Una semana dedicada a la <span className="grad-text">computación</span>.
             </>
           }
-          lede="Seis días de charlas, talleres y retos técnicos, organizados en conjunto por los capítulos Computer Society del Ecuador. Cada actividad se inscribe por separado, con tarifa reducida para miembros de IEEE Computer Society."
+          lede="Seis días de charlas, talleres y retos, organizados por los capítulos Computer Society del Ecuador."
         />
 
         {/* figures */}
@@ -130,7 +130,7 @@ export function About() {
         <SectionHead
           eyebrow="Seis tracks"
           title="Elige por dónde entrar."
-          lede="Cada track tiene su propio color, tomado de la paleta oficial de IEEE Computer Society. Ese color te acompaña en toda la agenda: sabes de qué trata una sesión antes de leer el título."
+          lede="Cada track lleva su color en toda la agenda."
         />
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

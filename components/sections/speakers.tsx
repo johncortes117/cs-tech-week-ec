@@ -79,8 +79,8 @@ export function Speakers() {
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHead
             eyebrow="Speakers"
-            title="Perfiles de industria y academia."
-            lede="Profesionales destacados del Ecuador en áreas de tecnología, innovación e IEEE CS."
+            title="Quiénes hablan."
+            lede="Perfiles de industria y academia del Ecuador."
             className="flex-1"
           />
           <Btn href="#registro" variant="ghost" className="w-fit flex-none">
@@ -151,7 +151,7 @@ export function Speakers() {
       </div>
 
       <div className="shell mt-24">
-        <Equator label="SPEAKERS → SEDES" />
+        <Equator label="SPEAKERS → SPONSORS" />
       </div>
     </section>
   )

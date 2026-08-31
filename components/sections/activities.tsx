@@ -6,7 +6,6 @@ import { EASE, VIEWPORT } from '@/lib/motion'
 import { activities, priceNote, tracks, type Activity, type Price } from '@/lib/content'
 import { cn } from '@/lib/utils'
 import { Equator, SectionHead } from '@/components/ui/primitives'
-import { GlowingEffect } from '@/components/ui/glowing-effect'
 import { TeaserVideo } from '@/components/ui/teaser-video'
 
 /* ============================================================
@@ -190,11 +189,8 @@ function CardShell({
 function TalksCard({ activity }: { activity: Activity }) {
   return (
     <CardShell>
-      <GlowingEffect color="#FFA300" accent="#00B5E2" spread={46} proximity={72} className="rounded-card" />
-
       <div
         className="relative overflow-hidden rounded-card border border-line bg-ink-raise"
-        data-cursor
       >
         <div
           aria-hidden="true"
@@ -277,11 +273,8 @@ function CodeWindow({ children }: { children: React.ReactNode }) {
 function CssBattleCard({ activity }: { activity: Activity }) {
   return (
     <CardShell delay={0.05}>
-      <GlowingEffect color="#00B5E2" accent="#FFA300" spread={46} proximity={72} className="rounded-card" />
-
       <div
         className="relative overflow-hidden rounded-card border border-line bg-ink"
-        data-cursor
       >
         {/* the corner glow the poster has behind its title */}
         <div
@@ -355,33 +348,11 @@ function CssBattleCard({ activity }: { activity: Activity }) {
 
 /* ---------- 3 · the Minecraft tournament ---------- */
 
-/** Isometric cube: top rhombus plus two side faces. */
-function IsoBlock({
-  top,
-  left,
-  right,
-  className,
-}: {
-  top: string
-  left: string
-  right: string
-  className?: string
-}) {
-  return (
-    <svg viewBox="0 0 100 100" className={className} aria-hidden="true">
-      <path d="M50 4 L96 30 L50 56 L4 30 Z" fill={top} />
-      <path d="M4 30 L50 56 L50 96 L4 70 Z" fill={left} />
-      <path d="M96 30 L50 56 L50 96 L96 70 Z" fill={right} />
-    </svg>
-  )
-}
-
 function MinecraftCard({ activity }: { activity: Activity }) {
   return (
     <CardShell delay={0.1}>
       <div
         className="relative overflow-hidden rounded-card bg-primary text-ink"
-        data-cursor
       >
         {/* the poster's pixel field, fading out to the right */}
         <div
@@ -440,45 +411,25 @@ function MinecraftCard({ activity }: { activity: Activity }) {
             </div>
           </div>
 
-          {/* three blocks, floating out of step with each other */}
-          <div className="relative hidden min-h-[260px] items-center justify-center lg:flex">
-            {[
-              {
-                top: '#7CB342',
-                left: '#6D4C41',
-                right: '#5D4037',
-                cls: 'left-[6%] top-[10%] w-[38%]',
-                d: 0,
-              },
-              {
-                top: '#FFD54F',
-                left: '#F9A825',
-                right: '#EF6C00',
-                cls: 'right-[10%] top-[26%] w-[46%]',
-                d: 0.6,
-              },
-              {
-                top: '#4DD0E1',
-                left: '#0097A7',
-                right: '#00695C',
-                cls: 'bottom-[8%] left-[26%] w-[30%]',
-                d: 1.2,
-              },
-            ].map((b, i) => (
-              <motion.div
-                key={i}
-                className={cn('absolute drop-shadow-[0_16px_20px_rgba(0,0,0,0.25)]', b.cls)}
-                animate={{ y: [0, -12, 0] }}
-                transition={{
-                  duration: 5.5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: b.d,
-                }}
-              >
-                <IsoBlock top={b.top} left={b.left} right={b.right} className="h-auto w-full" />
-              </motion.div>
-            ))}
+          {/* Steve and a creeper, drifting out of step with each
+              other. Renders of the default skins — the same figure
+              the tournament poster uses. */}
+          <div className="relative flex min-h-[240px] items-end justify-center lg:min-h-[300px]">
+            <motion.img
+              src="/minecraft/creeper.png"
+              alt=""
+              aria-hidden="true"
+              className="absolute bottom-[18%] left-[10%] w-[26%] max-w-[130px] drop-shadow-[0_18px_22px_rgba(0,0,0,0.28)]"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+            />
+            <motion.img
+              src="/minecraft/steve.png"
+              alt="Personaje de Minecraft"
+              className="relative w-[38%] max-w-[210px] drop-shadow-[0_26px_30px_rgba(0,0,0,0.3)]"
+              animate={{ y: [0, -18, 0] }}
+              transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut' }}
+            />
           </div>
         </div>
       </div>
@@ -501,7 +452,7 @@ export function Activities() {
         <SectionHead
           eyebrow="Actividades"
           title="Charlas, un duelo y un torneo."
-          lede="Cada actividad se inscribe por separado y tiene su propio valor. Ser miembro de IEEE Computer Society siempre cuesta menos."
+          lede="Cada actividad se inscribe por separado. Ser miembro de IEEE Computer Society cuesta menos."
         />
 
         <div className="mt-14 flex flex-col gap-5">

@@ -2,16 +2,14 @@
 
 import * as React from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Bell, Check, Clock, MapPin, Video } from 'lucide-react'
+import { Bell, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EASE, SPRING_SNAP, VIEWPORT } from '@/lib/motion'
 import {
   days,
-  modalityLabels,
   tracks,
   trackByKey,
   typeLabels,
-  type Modality,
   type SessionType,
   type TrackKey,
 } from '@/lib/content'
@@ -187,9 +185,8 @@ function AgendaEmpty() {
           </h3>
 
           <p className="max-w-[46ch] text-[0.9375rem] leading-relaxed text-muted-foreground">
-            Preferimos no publicar horarios que después cambien. Lo que sí está definido son los
-            seis tracks. Déjanos tu correo y te escribimos el día que se publique la agenda
-            completa — sin spam, un solo mensaje.
+            Los seis tracks ya están definidos; los horarios todavía no. Déjanos tu correo y te
+            escribimos cuando se publique la agenda.
           </p>
 
           <NotifyForm />
@@ -255,14 +252,6 @@ function SessionRow({ s, index }: { s: (typeof days)[number]['sessions'][number]
       <Card className="p-5">
         <div className="flex flex-wrap items-center gap-2">
           <Pill hex={track.hex}>{track.name}</Pill>
-          <Pill className="border-line text-muted-foreground">
-            {s.modality === 'virtual' ? (
-              <Video className="h-3 w-3" />
-            ) : (
-              <MapPin className="h-3 w-3" />
-            )}
-            {modalityLabels[s.modality]}
-          </Pill>
           <Pill className="border-line text-muted-foreground">{typeLabels[s.type]}</Pill>
         </div>
         <h4 className="mt-3 font-display text-[1rem] font-bold leading-snug tracking-[-0.01em]">
@@ -271,11 +260,6 @@ function SessionRow({ s, index }: { s: (typeof days)[number]['sessions'][number]
         {s.speaker ? (
           <p className="mt-1 text-[0.875rem] text-muted-foreground">{s.speaker}</p>
         ) : null}
-        {s.venue ? (
-          <p className="mt-2 inline-flex items-center gap-1.5 font-mono text-[11px] text-subtle">
-            <Clock className="h-3 w-3" /> {s.venue}
-          </p>
-        ) : null}
       </Card>
     </motion.li>
   )
@@ -283,7 +267,6 @@ function SessionRow({ s, index }: { s: (typeof days)[number]['sessions'][number]
 
 export function Agenda() {
   const [track, setTrack] = React.useState<Filter<TrackKey>>('todos')
-  const [modality, setModality] = React.useState<Filter<Modality>>('todos')
   const [type, setType] = React.useState<Filter<SessionType>>('todos')
   const [dayKey, setDayKey] = React.useState(days[0]?.key ?? '')
 
@@ -294,18 +277,17 @@ export function Agenda() {
     return day.sessions.filter(
       (s) =>
         (track === 'todos' || s.track === track) &&
-        (modality === 'todos' || s.modality === modality) &&
         (type === 'todos' || s.type === type)
     )
-  }, [day, track, modality, type])
+  }, [day, track, type])
 
   return (
     <section id="agenda" className="relative scroll-mt-24 py-24 md:py-32">
       <div className="shell">
         <SectionHead
           eyebrow="Agenda"
-          title="Seis días, seis tracks, un solo calendario."
-          lede="Filtra por temática, modalidad o tipo de sesión para armar tu propia semana."
+          title="Seis días, seis tracks."
+          lede="Filtra por track o por tipo de sesión."
         />
 
         {days.length === 0 ? (
@@ -321,16 +303,6 @@ export function Agenda() {
                 value={track}
                 onChange={setTrack}
                 colorOf={(k) => trackByKey[k].hex}
-              />
-              <FilterRow
-                label="Modalidad"
-                group="f-mod"
-                options={(['presencial', 'virtual', 'hibrido'] as Modality[]).map((k) => ({
-                  key: k,
-                  name: modalityLabels[k],
-                }))}
-                value={modality}
-                onChange={setModality}
               />
               <FilterRow
                 label="Tipo"

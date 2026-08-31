@@ -5,7 +5,7 @@ import { About } from '@/components/sections/about'
 import { Activities } from '@/components/sections/activities'
 import { Agenda } from '@/components/sections/agenda'
 import { Speakers } from '@/components/sections/speakers'
-import { Venues, Chapters } from '@/components/sections/network'
+import { Chapters } from '@/components/sections/chapters'
 import { Sponsors } from '@/components/sections/sponsors'
 import { Faq, FinalCta, Footer } from '@/components/sections/faq-cta'
 import { Ticker } from '@/components/ui/ticker'
@@ -24,7 +24,6 @@ export default function Page() {
         <Activities />
         <Agenda />
         <Speakers />
-        <Venues />
         <Sponsors />
         <Chapters />
         <Faq />

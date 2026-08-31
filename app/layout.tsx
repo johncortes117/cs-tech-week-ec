@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://cstechweek.ec'),
   title: 'CS Tech Week Ecuador 2026',
   description:
-    'Una semana de charlas, talleres y retos organizada por los capítulos IEEE Computer Society del Ecuador, en el año del 80.º aniversario de IEEE CS.',
+    'Una semana dedicada a la tecnología, innovación, talento y comunidad, organizada por los capítulos IEEE Computer Society del Ecuador en el 80.º aniversario de IEEE CS. Charlas, hackathon y torneo, en formato virtual.',
   keywords: [
     'IEEE Computer Society',
     'Ecuador',

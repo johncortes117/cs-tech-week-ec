@@ -79,7 +79,7 @@ export function Faq() {
         <SectionHead
           eyebrow="Preguntas"
           title="Lo que todo el mundo pregunta."
-          lede="Si algo no está acá, escríbenos y lo respondemos — y probablemente lo agreguemos."
+          lede="Si algo no está acá, escríbenos."
         />
         <div>
           {faq.map((f, i) => (
@@ -171,7 +171,7 @@ export function FinalCta() {
           className="mt-6 max-w-[48ch] text-[1.0625rem] leading-relaxed text-muted-foreground"
         >
           Inscripción desde $1 para miembros de IEEE Computer Society. Los cupos de cada
-          actividad son limitados, así que mientras antes reserves, mejor.
+          actividad son limitados.
         </motion.p>
 
         {/* large countdown */}
@@ -218,7 +218,7 @@ export function FinalCta() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-8 font-mono text-[11px] uppercase tracking-[0.14em] text-subtle"
         >
-          <Val value={event.dates} /> · <Val value={event.venue} />
+          <Val value={event.dates} /> · <Val value={event.format} />
         </motion.p>
       </div>
     </section>
