@@ -28,7 +28,7 @@ export const event = {
   tagline: 'Latitud cero. Ochenta años. Una semana.',
   taglineEn: 'Latitude zero. Eighty years. One week.',
   intro:
-    'Una semana de charlas, talleres y retos organizada por los capítulos Computer Society del Ecuador, en el año en que IEEE Computer Society cumple ochenta.',
+    'Una semana dedicada a la tecnología, innovación, talento y comunidad, celebrando un evento de Computer Society y sus 80 años, reuniendo a estudiantes y entusiastas de la computación a través de charlas, hackathons, concursos y espacios de conexión.',
 
   /** Confirmed start date. */
   dates: '14 de septiembre, 2026',
@@ -61,6 +61,7 @@ export const event = {
 
 export const navLinks = [
   { label: 'El evento', href: '#evento' },
+  { label: 'Actividades', href: '#actividades' },
   { label: 'Agenda', href: '#agenda' },
   { label: 'Speakers', href: '#speakers' },
   { label: 'Sedes', href: '#sedes' },
@@ -409,11 +410,15 @@ export const sponsorPitch = {
 export const faq = [
   {
     q: '¿Tiene costo asistir?',
-    a: 'No. CS Tech Week Ecuador es un evento gratuito. Algunos workshops tienen cupo limitado y requieren reserva previa, pero el acceso no tiene costo.',
+    a: 'Cada actividad tiene su propio valor, y siempre hay una tarifa reducida para miembros de IEEE Computer Society. Las charlas cuestan $1 para miembros y $3 para público general; el mini hackathon y el torneo de Minecraft, $3 y $5. Los valores completos están en la sección de actividades.',
   },
   {
     q: '¿Necesito ser miembro de IEEE?',
-    a: 'No hace falta. El evento está abierto a cualquier persona interesada en computación. Ser miembro de IEEE Computer Society sí da prioridad en workshops de cupo limitado.',
+    a: 'No hace falta: todas las actividades están abiertas a cualquier persona interesada en computación. Ser miembro de IEEE Computer Society reduce el valor de la inscripción y da prioridad en las actividades de cupo limitado.',
+  },
+  {
+    q: '¿Cómo pago la inscripción?',
+    a: tbd('Medios de pago por confirmar'),
   },
   {
     q: '¿Puedo participar desde otra ciudad?',
@@ -475,3 +480,93 @@ export const ticker = [
   'IEEE Computer Society',
   'Ecuador 2026',
 ] as const
+
+/* ---------------------------------------------------------- */
+/* ACTIVITIES                                                   */
+/* Every activity carries its own price. There is always a      */
+/* reduced rate for IEEE Computer Society members — that        */
+/* difference is the strongest argument the page has for        */
+/* joining the society, so it is shown, never hidden.           */
+/*                                                              */
+/* `revealed: false` puts an activity under wraps: the page      */
+/* shows the format, the price and a countdown, but not the     */
+/* name or the brief. Flip the flag when it goes public.        */
+/* ---------------------------------------------------------- */
+
+export type Price = {
+  /** USD for IEEE Computer Society members. */
+  member: number
+  /** USD for everyone else. */
+  general: number
+}
+
+export type Activity = {
+  key: string
+  /** Format. Always safe to show, even while under wraps. */
+  kind: string
+  /** Public name. Omitted while `revealed` is false. */
+  name?: string
+  blurb: string
+  price: Price
+  /** Short practical facts, rendered as a meta row. */
+  meta?: { label: string; value: string }[]
+  /** false = classified: no name, teaser treatment, countdown. */
+  revealed: boolean
+  /** Looping clip. Heavily blurred while the activity is under wraps. */
+  video?: string
+  /** When it goes public (ISO, Ecuador time UTC−5). */
+  revealAt?: string
+  /** Gets the wide card at the top of the section. */
+  featured?: boolean
+}
+
+export const activities: Activity[] = [
+  {
+    key: 'hackathon',
+    kind: 'Mini hackathon',
+    // name: intentionally absent — see revealed
+    blurb:
+      'Un reto de front-end en formato de duelo: dos soluciones, un mismo objetivo visual y el menor código posible. El enunciado exacto se revela el día del anuncio.',
+    price: { member: 3, general: 5 },
+    meta: [
+      { label: 'Modalidad', value: 'Virtual' },
+      { label: 'Batallas en', value: 'Discord' },
+      { label: 'Formato', value: 'Duelos 1 vs 1' },
+    ],
+    revealed: false,
+    video: '/teaser/mini-hackathon.mp4',
+    /* PLACEHOLDER — replace with the real reveal date. */
+    revealAt: '2026-09-05T19:00:00-05:00',
+    featured: true,
+  },
+  {
+    key: 'charlas',
+    kind: 'Programa principal',
+    name: 'Charlas y ponencias',
+    blurb:
+      'El eje de la semana: perfiles de industria y academia contando lo que hacen todos los días, repartidos por los seis tracks.',
+    price: { member: 1, general: 3 },
+    meta: [
+      { label: 'Acceso', value: 'Toda la semana' },
+      { label: 'Certificado', value: 'Digital' },
+    ],
+    revealed: true,
+  },
+  {
+    key: 'minecraft',
+    kind: 'Concurso',
+    name: 'Torneo de Minecraft',
+    blurb:
+      'La competencia más desenfadada de la semana, y la que menos requisitos técnicos pide: solo ganas de jugar en equipo.',
+    price: { member: 3, general: 5 },
+    meta: [
+      { label: 'Modalidad', value: 'Virtual' },
+      { label: 'Cupos', value: 'Limitados' },
+    ],
+    revealed: true,
+  },
+]
+
+/** Reduced rate applies to every activity, so it is said once. */
+export const priceNote =
+  'La tarifa reducida aplica presentando tu membresía vigente de IEEE Computer Society.'

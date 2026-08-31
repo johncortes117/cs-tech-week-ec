@@ -187,3 +187,43 @@ export function SplitText({
     </Tag>
   )
 }
+
+/* ------------------------------------------------------------
+   REDACTED — text that never resolves. Same glyph alphabet as
+   Scramble, but the letters keep turning: it reads as withheld
+   rather than as loading. Used for the name of an activity that
+   has not been revealed yet.
+   ------------------------------------------------------------ */
+
+export function Redacted({
+  length = 10,
+  className,
+  label = 'Por revelar',
+  step = 90,
+}: {
+  /** How many glyphs wide the redaction is. */
+  length?: number
+  className?: string
+  /** What a screen reader announces instead of the noise. */
+  label?: string
+  step?: number
+}) {
+  const reduce = useReducedMotion()
+  const [out, setOut] = React.useState(() => '█'.repeat(length))
+
+  React.useEffect(() => {
+    if (reduce) return
+    const id = window.setInterval(() => {
+      setOut(
+        Array.from({ length }, () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)]).join('')
+      )
+    }, step)
+    return () => window.clearInterval(id)
+  }, [length, step, reduce])
+
+  return (
+    <span className={cn('tabular', className)} aria-label={label} title={label}>
+      <span aria-hidden="true">{out}</span>
+    </span>
+  )
+}

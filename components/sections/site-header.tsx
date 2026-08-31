@@ -161,7 +161,7 @@ export function SiteHeader() {
                 ))}
                 <li className="pt-4">
                   <Btn href={event.registerUrl} size="lg" className="w-full">
-                    Registrarme gratis
+                    Quiero inscribirme
                   </Btn>
                 </li>
               </ul>

@@ -82,7 +82,7 @@ export function About() {
               Una semana entera dedicada a <span className="grad-text">computación</span>.
             </>
           }
-          lede="Seis días de charlas, talleres y retos técnicos, abiertos y gratuitos, organizados en conjunto por los capítulos Computer Society del Ecuador."
+          lede="Seis días de charlas, talleres y retos técnicos, organizados en conjunto por los capítulos Computer Society del Ecuador. Cada actividad se inscribe por separado, con tarifa reducida para miembros de IEEE Computer Society."
         />
 
         {/* figures */}
@@ -141,7 +141,7 @@ export function About() {
       </div>
 
       <div className="shell mt-24">
-        <Equator label="EVENTO → AGENDA" />
+        <Equator label="EVENTO → ACTIVIDADES" />
       </div>
     </section>
   )

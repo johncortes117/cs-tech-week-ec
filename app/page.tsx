@@ -2,6 +2,7 @@ import { SiteHeader } from '@/components/sections/site-header'
 import { ScrollProgress } from '@/components/ui/scroll-progress'
 import { Hero } from '@/components/sections/hero'
 import { About } from '@/components/sections/about'
+import { Activities } from '@/components/sections/activities'
 import { Agenda } from '@/components/sections/agenda'
 import { Speakers } from '@/components/sections/speakers'
 import { Venues, Chapters } from '@/components/sections/network'
@@ -20,6 +21,7 @@ export default function Page() {
             own and speeds up with the page (ScrollVelocity, React Bits). */}
         <Ticker />
         <About />
+        <Activities />
         <Agenda />
         <Speakers />
         <Venues />

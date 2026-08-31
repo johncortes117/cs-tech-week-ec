@@ -203,7 +203,7 @@ export function Hero() {
             >
               <Magnetic radius={35} strength={0.16} maxOffset={6}>
                 <Btn href={event.registerUrl} size="lg">
-                  Registro gratuito
+                  Quiero inscribirme
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
                 </Btn>
               </Magnetic>

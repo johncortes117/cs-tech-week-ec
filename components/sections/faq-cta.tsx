@@ -170,8 +170,8 @@ export function FinalCta() {
           transition={{ duration: 0.6, ease: EASE, delay: 0.16 }}
           className="mt-6 max-w-[48ch] text-[1.0625rem] leading-relaxed text-muted-foreground"
         >
-          Registro gratuito. Cupo limitado en los workshops presenciales, así que mientras antes
-          reserves, mejor.
+          Inscripción desde $1 para miembros de IEEE Computer Society. Los cupos de cada
+          actividad son limitados, así que mientras antes reserves, mejor.
         </motion.p>
 
         {/* large countdown */}
@@ -199,7 +199,7 @@ export function FinalCta() {
         >
           <Magnetic radius={35} strength={0.16} maxOffset={6}>
             <Btn href={event.registerUrl} size="lg">
-              Registrarme gratis
+              Quiero inscribirme
               <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
             </Btn>
           </Magnetic>
