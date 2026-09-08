@@ -30,15 +30,15 @@ export const event = {
   intro:
     'Una semana dedicada a la tecnología, innovación, talento y comunidad, celebrando un evento de Computer Society y sus 80 años, reuniendo a estudiantes y entusiastas de la computación a través de charlas, hackathons, concursos y espacios de conexión.',
 
-  /** Confirmed start date. */
-  dates: '14 de septiembre, 2026',
-  datesShort: '14 SEP 2026',
+  /** Confirmed event dates. */
+  dates: 'Del 28 de septiembre al 4 de octubre de 2026',
+  datesShort: '28 SEP – 04 OCT 2026',
 
   /** The whole week runs online, so it is stated once, here. */
   format: 'Virtual',
 
   /** Countdown target date (ISO, Ecuador time UTC−5). */
-  startsAt: '2026-09-14T09:00:00-05:00',
+  startsAt: '2026-09-28T09:00:00-05:00',
 
   coords: '0°00′00″ · −78°27′',
   anniversary: 'IEEE CS · 80 años construyendo comunidad',
