@@ -1,34 +1,15 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Laptop, MessagesSquare, Ticket } from 'lucide-react'
+import { Laptop, MessagesSquare, Ticket, ExternalLink, Gamepad2 } from 'lucide-react'
 import { EASE, VIEWPORT } from '@/lib/motion'
 import { activities, priceNote, tracks, type Activity, type Price } from '@/lib/content'
 import { cn } from '@/lib/utils'
-import { Equator, SectionHead } from '@/components/ui/primitives'
+import { Btn, Equator, SectionHead } from '@/components/ui/primitives'
 import { TeaserVideo } from '@/components/ui/teaser-video'
 
 /* ============================================================
    ACTIVITIES
-
-   Three cards, in the order they matter: the talks are the week
-   itself, the two competitions hang off it. Each one carries the
-   branding of its own announcement rather than a shared template
-   — a CSS duel and a Minecraft tournament have nothing to do
-   with each other visually, and pretending otherwise would make
-   both forgettable.
-
-   · Talks — the site's own language, with the six track colours
-     doing the work.
-   · CSS Battle — the poster's typographic lockup (MINI /
-     HACKATHON / <CSS BATTLE/>) beside the announcement clip,
-     framed as an editor window.
-   · Minecraft — the poster inverted into orange, set in a pixel
-     face, with isometric blocks built in SVG.
-
-   The member price leads and is set apart in every card: the
-   discount is the strongest argument the page has for joining
-   the society.
    ============================================================ */
 
 type Tone = 'dark' | 'orange'
@@ -135,32 +116,6 @@ function MetaRow({
   )
 }
 
-/** The poster's "coming soon" line: an outlined pill plus what is still missing. */
-function PendingRow({ items, tone = 'dark' }: { items: string[]; tone?: Tone }) {
-  return (
-    <div className="flex flex-col gap-3">
-      <span
-        className={cn(
-          'inline-flex w-fit items-center rounded-pill px-5 py-2 font-mono text-[11px] uppercase tracking-[0.3em]',
-          tone === 'orange'
-            ? 'border border-ink/25 text-ink'
-            : 'grad-border text-primary'
-        )}
-      >
-        Próximamente
-      </span>
-      <p
-        className={cn(
-          'font-mono text-[10px] uppercase tracking-label',
-          tone === 'orange' ? 'text-ink/55' : 'text-subtle'
-        )}
-      >
-        {items.join('  ·  ')}
-      </p>
-    </div>
-  )
-}
-
 function CardShell({
   children,
   className,
@@ -184,14 +139,12 @@ function CardShell({
   )
 }
 
-/* ---------- 1 · the talks, which are the week ---------- */
+/* ---------- 1 · Charlas y Ponencias ---------- */
 
 function TalksCard({ activity }: { activity: Activity }) {
   return (
     <CardShell>
-      <div
-        className="relative overflow-hidden rounded-card border border-line bg-ink-raise"
-      >
+      <div className="relative overflow-hidden rounded-card border border-line bg-ink-raise">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -220,13 +173,18 @@ function TalksCard({ activity }: { activity: Activity }) {
 
             {activity.meta ? <MetaRow meta={activity.meta} /> : null}
 
-            <div className="mt-1 border-t border-line pt-6">
-              <span className="label mb-3 block">Inscripción</span>
-              <PriceTag price={activity.price} size="lg" />
+            <div className="mt-1 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-6">
+              <div>
+                <span className="label mb-3 block">Tarifa Individual (o en combo)</span>
+                <PriceTag price={activity.price} size="lg" />
+              </div>
+              <Btn href="#precios" variant="ghost" size="md">
+                Ver Combos de Entrada
+              </Btn>
             </div>
           </div>
 
-          {/* the six tracks, doing the explaining */}
+          {/* the six tracks */}
           <ul className="flex flex-col justify-center gap-2.5 lg:border-l lg:border-line lg:pl-12">
             {tracks.map((t, i) => (
               <motion.li
@@ -254,16 +212,20 @@ function TalksCard({ activity }: { activity: Activity }) {
   )
 }
 
-/* ---------- 2 · CSS Battle, following its poster ---------- */
+/* ---------- 2 · CSS Battle ---------- */
 
 function CodeWindow({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full overflow-hidden rounded-[10px] border border-line-strong bg-ink shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]">
-      {/* the poster's window chrome, traffic lights and all */}
-      <div className="flex items-center gap-1.5 border-b border-line bg-ink-plate px-3.5 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
+      <div className="flex items-center justify-between border-b border-line bg-ink-plate px-3.5 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-label text-subtle">
+          cssbattle.dev · arena
+        </span>
       </div>
       {children}
     </div>
@@ -273,10 +235,7 @@ function CodeWindow({ children }: { children: React.ReactNode }) {
 function CssBattleCard({ activity }: { activity: Activity }) {
   return (
     <CardShell delay={0.05}>
-      <div
-        className="relative overflow-hidden rounded-card border border-line bg-ink"
-      >
-        {/* the corner glow the poster has behind its title */}
+      <div className="relative overflow-hidden rounded-card border border-line bg-ink">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -288,12 +247,19 @@ function CssBattleCard({ activity }: { activity: Activity }) {
 
         <div className="relative grid gap-10 p-8 md:p-12 lg:grid-cols-[1fr_0.95fr] lg:gap-14">
           <div className="flex flex-col justify-center gap-7">
-            {/* the lockup, straight off the poster */}
             <div>
-              <p className="font-display text-[clamp(1rem,2vw,1.4rem)] font-light uppercase leading-none tracking-[0.42em] text-muted-foreground">
-                {activity.kind.replace('Mini hackathon', 'Mini')}
-              </p>
-              <h3 className="mt-1.5 font-display text-[clamp(2.3rem,6vw,4.2rem)] font-black uppercase leading-[0.86] tracking-[-0.02em]">
+              <div className="flex items-center gap-2">
+                <span className="label text-primary">Mini Hackathon · 3 y 4 de Octubre</span>
+                <a
+                  href="https://cssbattle.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded-pill border border-line px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground transition-colors hover:text-primary"
+                >
+                  cssbattle.dev <ExternalLink className="h-2.5 w-2.5" />
+                </a>
+              </div>
+              <h3 className="mt-2 font-display text-[clamp(2.3rem,6vw,4.2rem)] font-black uppercase leading-[0.86] tracking-[-0.02em]">
                 Hackathon
               </h3>
               <p className="mt-3 flex items-center gap-3 font-display text-[clamp(0.95rem,2.2vw,1.5rem)] font-semibold uppercase leading-none tracking-[0.3em]">
@@ -317,44 +283,55 @@ function CssBattleCard({ activity }: { activity: Activity }) {
                 icons={[
                   <Laptop key="l" className="h-5 w-5 text-primary" aria-hidden="true" />,
                   <MessagesSquare key="d" className="h-5 w-5 text-primary" aria-hidden="true" />,
+                  <Ticket key="t" className="h-5 w-5 text-primary" aria-hidden="true" />,
                 ]}
               />
             ) : null}
 
             <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-6">
               <div>
-                <span className="label mb-3 block">Inscripción</span>
+                <span className="label mb-3 block">Inscripción Individual (o en combo)</span>
                 <PriceTag price={activity.price} />
               </div>
-              {activity.pending ? <PendingRow items={activity.pending} /> : null}
+              <Btn href="#precios" variant="ghost" size="md">
+                Ver Combos con Hackatón
+              </Btn>
             </div>
           </div>
 
-          {/* the announcement clip, framed as an editor */}
-          {activity.video ? (
-            <div className="flex w-full items-center">
-              <CodeWindow>
-                <div className="relative aspect-[16/10] w-full bg-ink-plate">
+          {/* CSS Battle Preview / Clip */}
+          <div className="flex w-full flex-col justify-center gap-3">
+            <CodeWindow>
+              <div className="relative aspect-[16/10] w-full bg-ink-plate">
+                {activity.video ? (
                   <TeaserVideo src={activity.video} className="h-full w-full" />
-                </div>
-              </CodeWindow>
+                ) : activity.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={activity.image}
+                    alt="Plataforma CSSBattle"
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
+            </CodeWindow>
+            <div className="flex items-center justify-between px-1 text-[11px] text-subtle font-mono">
+              <span>Auspiciado por CSSBattle</span>
+              <span>Duelos 1 vs 1 en vivo</span>
             </div>
-          ) : null}
+          </div>
         </div>
       </div>
     </CardShell>
   )
 }
 
-/* ---------- 3 · the Minecraft tournament ---------- */
+/* ---------- 3 · Torneo de Minecraft ---------- */
 
 function MinecraftCard({ activity }: { activity: Activity }) {
   return (
     <CardShell delay={0.1}>
-      <div
-        className="relative overflow-hidden rounded-card bg-primary text-ink"
-      >
-        {/* the poster's pixel field, fading out to the right */}
+      <div className="relative overflow-hidden rounded-card bg-primary text-ink">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-40"
@@ -366,70 +343,95 @@ function MinecraftCard({ activity }: { activity: Activity }) {
             WebkitMaskImage: 'linear-gradient(105deg, #000 10%, transparent 70%)',
           }}
         />
-        {/* scattered blocks, the way the poster scatters pixels */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-[0.18]"
-          style={{
-            backgroundImage: 'radial-gradient(hsl(var(--ink)) 2px, transparent 2px)',
-            backgroundSize: '22px 22px',
-            maskImage: 'radial-gradient(70% 90% at 100% 60%, #000, transparent)',
-            WebkitMaskImage: 'radial-gradient(70% 90% at 100% 60%, #000, transparent)',
-          }}
-        />
 
         <div className="relative grid gap-10 p-8 md:p-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           <div className="flex flex-col justify-center gap-7">
-            <span className="font-mono text-[10px] uppercase tracking-label text-ink/60">
-              {activity.kind}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-label text-ink/75">
+                {activity.kind}
+              </span>
+              <span className="rounded-pill bg-ink/15 px-2.5 py-0.5 font-mono text-[10px] font-bold text-ink">
+                Servidor Dedicado
+              </span>
+            </div>
 
             <div>
               <h3 className="font-pixel text-[clamp(1.6rem,5vw,3rem)] leading-[1.05] text-ink">
                 {activity.name}
               </h3>
-              {/* the poster sets its line in a white band */}
               <p className="mt-5 inline-block bg-foreground px-4 py-2 font-pixel text-[clamp(0.55rem,1.5vw,0.8rem)] leading-relaxed text-primary">
                 {activity.tagline}
               </p>
             </div>
 
-            <p className="max-w-[46ch] text-[0.9375rem] font-medium leading-relaxed text-ink/75">
+            <p className="max-w-[46ch] text-[0.9375rem] font-medium leading-relaxed text-ink/85">
               {activity.blurb}
             </p>
 
-            {activity.meta ? <MetaRow meta={activity.meta} tone="orange" /> : null}
+            {activity.meta ? (
+              <MetaRow
+                meta={activity.meta}
+                tone="orange"
+                icons={[
+                  <Gamepad2 key="g" className="h-5 w-5 text-ink" aria-hidden="true" />,
+                  <Ticket key="t" className="h-5 w-5 text-ink" aria-hidden="true" />,
+                ]}
+              />
+            ) : null}
 
             <div className="flex flex-wrap items-end justify-between gap-6 border-t border-ink/20 pt-6">
               <div>
-                <span className="mb-3 block font-mono text-[10px] uppercase tracking-label text-ink/60">
-                  Inscripción
+                <span className="mb-3 block font-mono text-[10px] uppercase tracking-label text-ink/75">
+                  Inscripción Individual (o en combo)
                 </span>
                 <PriceTag price={activity.price} tone="orange" />
               </div>
-              {activity.pending ? <PendingRow items={activity.pending} tone="orange" /> : null}
+              <a
+                href="#precios"
+                className="inline-flex items-center justify-center gap-2 rounded-[6px] border border-ink/30 bg-ink px-5 py-3 font-display text-[0.875rem] font-bold text-primary transition-all duration-300 hover:bg-ink-raise"
+              >
+                Ver Combos de Entrada
+              </a>
             </div>
           </div>
 
-          {/* Steve and a creeper, drifting out of step with each
-              other. Renders of the default skins — the same figure
-              the tournament poster uses. */}
-          <div className="relative flex min-h-[240px] items-end justify-center lg:min-h-[300px]">
-            <motion.img
-              src="/minecraft/creeper.png"
-              alt=""
-              aria-hidden="true"
-              className="absolute bottom-[18%] left-[10%] w-[26%] max-w-[130px] drop-shadow-[0_18px_22px_rgba(0,0,0,0.28)]"
-              animate={{ y: [0, -14, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-            />
-            <motion.img
-              src="/minecraft/steve.png"
-              alt="Personaje de Minecraft"
-              className="relative w-[38%] max-w-[210px] drop-shadow-[0_26px_30px_rgba(0,0,0,0.3)]"
-              animate={{ y: [0, -18, 0] }}
-              transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut' }}
-            />
+          {/* Minecraft dedicated server screenshot & character renders */}
+          <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[12px] border border-ink/20 bg-ink/10 p-3 shadow-xl">
+            {activity.image ? (
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[8px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={activity.image}
+                  alt="Servidor Dedicado Minecraft CS TECH WEEK"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
+                <span className="absolute bottom-2.5 left-3 font-mono text-[10px] uppercase tracking-label text-white">
+                  Captura del Servidor Oficial CS TECH WEEK
+                </span>
+              </div>
+            ) : null}
+
+            <div className="relative mt-3 flex w-full items-center justify-around">
+              <motion.img
+                src="/minecraft/creeper.png"
+                alt=""
+                aria-hidden="true"
+                className="w-[18%] max-w-[80px] drop-shadow-md"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+              />
+              <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
+                Torneo por Equipos
+              </span>
+              <motion.img
+                src="/minecraft/steve.png"
+                alt="Steve Minecraft"
+                className="w-[22%] max-w-[100px] drop-shadow-md"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -450,9 +452,9 @@ export function Activities() {
     <section id="actividades" className="relative scroll-mt-24 py-24 md:py-32">
       <div className="shell">
         <SectionHead
-          eyebrow="Actividades"
+          eyebrow="Actividades y Competencias"
           title="Charlas, un duelo y un torneo."
-          lede="Cada actividad se inscribe por separado. Ser miembro de IEEE Computer Society cuesta menos."
+          lede="Participa en las conferencias académicas de la semana y en los concursos del fin de semana. Accede a precios especiales con tu membresía IEEE."
         />
 
         <div className="mt-14 flex flex-col gap-5">

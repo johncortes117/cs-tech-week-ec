@@ -1,26 +1,21 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, GraduationCap, Briefcase } from 'lucide-react'
 import { EASE, VIEWPORT } from '@/lib/motion'
-import { speakers, speakerSlots, trackByKey, event } from '@/lib/content'
+import { speakers, speakerSlots, trackByKey, event, speakerCategories } from '@/lib/content'
 import { Btn, Card, Equator, Pill, SectionHead } from '@/components/ui/primitives'
 import { CometCard } from '@/components/ui/comet-card'
 
 /* ============================================================
    SPEAKERS
-   While nobody is confirmed, the slots are shown as deliberately
-   empty frames — with an order number and "to be announced" —
-   instead of fake cards with invented names.
-
-   The cards sit inside Aceternity UI's "Comet Card": the card
-   tilts in perspective following the cursor and a specular
-   highlight travels across it. This is exactly where that effect
-   makes sense — a person's card feels like an object, and an
-   object is something you pick up.
+   Two categories:
+   - Industry Professionals
+   - Outstanding University Students
    ============================================================ */
 
 function GhostSpeaker({ index }: { index: number }) {
+  const isStudent = index % 2 === 1
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -34,7 +29,6 @@ function GhostSpeaker({ index }: { index: number }) {
           className="group relative aspect-[4/5] overflow-hidden rounded-card border border-dashed border-line-strong bg-ink-raise"
           data-cursor
         >
-          {/* dot pattern: the same language as the orbital dome */}
           <div
             aria-hidden="true"
             className="absolute inset-0 opacity-40 transition-opacity duration-500 ease-cs group-hover:opacity-80"
@@ -45,7 +39,6 @@ function GhostSpeaker({ index }: { index: number }) {
               WebkitMaskImage: 'radial-gradient(70% 60% at 50% 38%, #000, transparent)',
             }}
           />
-          {/* sweep: the slot is "scanning", waiting for someone */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-24 -translate-y-full opacity-0 transition-all duration-[900ms] ease-cs group-hover:translate-y-[420%] group-hover:opacity-100 motion-reduce:hidden"
@@ -55,9 +48,23 @@ function GhostSpeaker({ index }: { index: number }) {
             }}
           />
           <div className="absolute inset-0 flex flex-col justify-between p-5">
-            <span className="font-mono text-[11px] tabular text-subtle">
-              {String(index + 1).padStart(2, '0')}
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[11px] tabular text-subtle">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-label text-subtle">
+                {isStudent ? (
+                  <>
+                    <GraduationCap className="h-3 w-3 text-cyan" /> Estudiante
+                  </>
+                ) : (
+                  <>
+                    <Briefcase className="h-3 w-3 text-primary" /> Industria
+                  </>
+                )}
+              </span>
+            </div>
+
             <div>
               <div className="h-2.5 w-2/3 rounded-full bg-line" />
               <div className="mt-2 h-2 w-1/2 rounded-full bg-line/70" />
@@ -78,18 +85,42 @@ export function Speakers() {
       <div className="shell">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHead
-            eyebrow="Speakers"
+            eyebrow="Speakers & Ponencias"
             title="Quiénes hablan."
-            lede="Perfiles de industria y academia del Ecuador."
+            lede="Un espacio que une a referentes de la industria y a talentos universitarios destacados de todo el país."
             className="flex-1"
           />
-          <Btn href="#registro" variant="ghost" className="w-fit flex-none">
+          <Btn href={`mailto:${event.social.email}?subject=Postulaci%C3%B3n%20Ponente%20CS%20Tech%20Week`} variant="ghost" className="w-fit flex-none">
             Postular como ponente
             <ArrowUpRight className="h-4 w-4" />
           </Btn>
         </div>
 
-        <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {/* Categories explanation cards */}
+        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          {speakerCategories.map((cat) => (
+            <div
+              key={cat.title}
+              className="flex items-start gap-3.5 rounded-[10px] border border-line bg-ink-raise/60 p-4"
+            >
+              {cat.title.includes('Industria') ? (
+                <Briefcase className="mt-0.5 h-5 w-5 flex-none text-primary" />
+              ) : (
+                <GraduationCap className="mt-0.5 h-5 w-5 flex-none text-cyan" />
+              )}
+              <div>
+                <h4 className="font-display text-[0.9375rem] font-bold text-foreground">
+                  {cat.title}
+                </h4>
+                <p className="mt-1 text-[0.8125rem] leading-relaxed text-muted-foreground">
+                  {cat.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {speakers.length > 0
             ? speakers.map((sp, i) => (
               <motion.div
@@ -151,7 +182,7 @@ export function Speakers() {
       </div>
 
       <div className="shell mt-24">
-        <Equator label="SPEAKERS → SPONSORS" />
+        <Equator label="SPEAKERS → ENTRADAS" />
       </div>
     </section>
   )

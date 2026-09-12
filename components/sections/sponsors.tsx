@@ -136,7 +136,7 @@ export function Sponsors() {
       </div>
 
       <div className="shell mt-24">
-        <Equator label="SPONSORS → CAPÍTULOS" />
+        <Equator label="SPONSORS → FAQ" />
       </div>
     </section>
   )

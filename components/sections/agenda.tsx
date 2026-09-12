@@ -185,8 +185,7 @@ function AgendaEmpty() {
           </h3>
 
           <p className="max-w-[46ch] text-[0.9375rem] leading-relaxed text-muted-foreground">
-            Los seis tracks ya están definidos; los horarios todavía no. Déjanos tu correo y te
-            escribimos cuando se publique la agenda.
+            Las cinco temáticas oficiales y la franja horaria (17:00 a 21:00 ECT para conferencias magistrales) ya están definidas; el cronograma detallado por ponente se publicará próximamente. Déjanos tu correo y te avisamos de inmediato.
           </p>
 
           <NotifyForm />
@@ -286,8 +285,8 @@ export function Agenda() {
       <div className="shell">
         <SectionHead
           eyebrow="Agenda"
-          title="Seis días, seis tracks."
-          lede="Filtra por track o por tipo de sesión."
+          title="Cronograma y Sesiones"
+          lede="Filtra por temática o por tipo de sesión."
         />
 
         {days.length === 0 ? (
@@ -297,7 +296,7 @@ export function Agenda() {
             {/* filters */}
             <Reveal className="mt-14 flex flex-col gap-5">
               <FilterRow
-                label="Track"
+                label="Temática"
                 group="f-track"
                 options={tracks.map((t) => ({ key: t.key, name: t.name }))}
                 value={track}

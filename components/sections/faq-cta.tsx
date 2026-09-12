@@ -170,8 +170,7 @@ export function FinalCta() {
           transition={{ duration: 0.6, ease: EASE, delay: 0.16 }}
           className="mt-6 max-w-[48ch] text-[1.0625rem] leading-relaxed text-muted-foreground"
         >
-          Inscripción desde $1 para miembros de IEEE Computer Society. Los cupos de cada
-          actividad son limitados.
+          Combos de entrada desde $2 para miembros de IEEE y $3 para público general. Acceso a conferencias magistrales, hackathons, torneos y certificación digital oficial.
         </motion.p>
 
         {/* large countdown */}
