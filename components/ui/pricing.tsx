@@ -393,7 +393,7 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
             {plan.name}
           </h3>
           <span className="font-mono text-[10px] uppercase tracking-label text-subtle">
-            Combo 0{index + 1}
+            Opción 0{index + 1}
           </span>
         </div>
 
@@ -458,8 +458,8 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
 // Main PricingSection Component
 export function PricingSection({
   plans = DEFAULT_EVENT_PLANS,
-  title = "Combos de Entrada",
-  description = "Elige el combo que mejor se adapte a tus intereses",
+  title = "Charlas gratis y concursos",
+  description = "Regístrate gratis para las charlas o elige tu inscripción a los concursos",
   className = "",
 }: PricingSectionProps) {
   const [isMember, setIsMember] = useState(true);
@@ -508,7 +508,7 @@ export function PricingSection({
 
           <PricingToggle />
 
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch gap-5">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5">
             {plans.map((plan, index) => (
               <PricingCard key={plan.name} plan={plan} index={index} />
             ))}
@@ -519,7 +519,7 @@ export function PricingSection({
             <div className="flex items-start gap-3.5 rounded-card border border-line bg-ink-raise/80 p-5 text-[0.875rem] text-muted-foreground backdrop-blur-sm">
               <Ticket className="mt-0.5 h-5 w-5 flex-none text-primary" />
               <div>
-                <strong className="text-foreground">Tarifa preferencial IEEE: </strong>
+                <strong className="text-foreground">Charlas gratuitas: </strong>
                 {priceNote}
               </div>
             </div>

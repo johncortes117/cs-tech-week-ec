@@ -12,9 +12,8 @@ import { Magnetic } from '@/components/ui/magnetic'
 
 /* ============================================================
    SPONSORS
-   Two different jobs in one section: showing who is already in
-   (honest empty slots while there is nobody) and convincing who
-   is not in yet. The pitch comes first.
+   Each tier shows confirmed sponsors first; empty tiers remain
+   clearly available for future partners.
    ============================================================ */
 
 function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index: number }) {
@@ -48,7 +47,7 @@ function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index:
             {tier.name}
           </h3>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-subtle">
-            {tier.slots} {tier.slots === 1 ? 'cupo' : 'cupos'}
+            {tier.sponsors.length > 0 ? `${tier.sponsors.length} confirmados` : 'Disponible'}
           </span>
         </div>
 
@@ -56,22 +55,33 @@ function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index:
           {tier.blurb}
         </p>
 
-        {/* logo slots: they read as reserved space, not as an error */}
-        <div
-          className="mt-6 grid gap-2"
-          style={{ gridTemplateColumns: `repeat(${Math.min(tier.slots, 3)}, minmax(0, 1fr))` }}
-        >
-          {Array.from({ length: Math.min(tier.slots, 3) }).map((_, i) => (
-            <span
-              key={i}
-              className="h-9 rounded-[5px] border border-dashed border-line-strong bg-ink/60"
-              aria-hidden="true"
-            />
-          ))}
-        </div>
-        <span className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-primary/60">
-          Cupos disponibles
-        </span>
+        {tier.sponsors.length > 0 ? (
+          <div className="mt-6 grid grid-cols-1 gap-2">
+            {tier.sponsors.map((sponsor) => (
+              <div
+                key={sponsor.name}
+                className="flex min-h-14 items-center justify-center rounded-[5px] border border-line bg-ink/60 px-3 py-2"
+              >
+                {sponsor.logo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={sponsor.logo}
+                    alt={`Logo ${sponsor.name}`}
+                    className="max-h-10 max-w-full object-contain"
+                  />
+                ) : (
+                  <span className="font-display text-sm font-bold tracking-wide text-foreground">
+                    {sponsor.name}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <span className="mt-6 flex h-14 items-center justify-center rounded-[5px] border border-dashed border-line-strong bg-ink/60 font-mono text-[10px] uppercase tracking-[0.14em] text-primary/60">
+            Tier disponible
+          </span>
+        )}
         </Card>
       </GlareHover>
     </motion.div>
@@ -120,14 +130,14 @@ export function Sponsors() {
                 </Btn>
               </Magnetic>
               <Magnetic radius={35} strength={0.16} maxOffset={6}>
-                <Btn href="#registro" size="lg" variant="ghost">
+                <Btn href={`mailto:${event.social.email}`} size="lg" variant="ghost">
                   Hablar con el comité
                 </Btn>
               </Magnetic>
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4">
             {sponsorTiers.map((t, i) => (
               <TierCard key={t.key} tier={t} index={i} />
             ))}

@@ -175,11 +175,13 @@ function TalksCard({ activity }: { activity: Activity }) {
 
             <div className="mt-1 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-6">
               <div>
-                <span className="label mb-3 block">Tarifa Individual (o en combo)</span>
-                <PriceTag price={activity.price} size="lg" />
+                <span className="label mb-3 block">Acceso a las charlas</span>
+                <span className="font-display text-[clamp(2rem,4vw,2.6rem)] font-black leading-none tracking-head text-primary">
+                  Gratis
+                </span>
               </div>
               <Btn href="#precios" variant="ghost" size="md">
-                Ver Combos de Entrada
+                Ver inscripciones
               </Btn>
             </div>
           </div>
@@ -290,11 +292,11 @@ function CssBattleCard({ activity }: { activity: Activity }) {
 
             <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-6">
               <div>
-                <span className="label mb-3 block">Inscripción Individual (o en combo)</span>
+                <span className="label mb-3 block">Inscripción individual o a 2 concursos</span>
                 <PriceTag price={activity.price} />
               </div>
               <Btn href="#precios" variant="ghost" size="md">
-                Ver Combos con Hackatón
+                Ver inscripciones
               </Btn>
             </div>
           </div>
@@ -382,7 +384,7 @@ function MinecraftCard({ activity }: { activity: Activity }) {
             <div className="flex flex-wrap items-end justify-between gap-6 border-t border-ink/20 pt-6">
               <div>
                 <span className="mb-3 block font-mono text-[10px] uppercase tracking-label text-ink/75">
-                  Inscripción Individual (o en combo)
+                  Inscripción individual o a 2 concursos
                 </span>
                 <PriceTag price={activity.price} tone="orange" />
               </div>
@@ -390,7 +392,7 @@ function MinecraftCard({ activity }: { activity: Activity }) {
                 href="#precios"
                 className="inline-flex items-center justify-center gap-2 rounded-[6px] border border-ink/30 bg-ink px-5 py-3 font-display text-[0.875rem] font-bold text-primary transition-all duration-300 hover:bg-ink-raise"
               >
-                Ver Combos de Entrada
+                Ver inscripciones
               </a>
             </div>
           </div>
@@ -422,7 +424,7 @@ function MinecraftCard({ activity }: { activity: Activity }) {
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               />
               <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
-                Torneo por Equipos
+                Torneo Individual
               </span>
               <motion.img
                 src="/minecraft/steve.png"
@@ -454,7 +456,7 @@ export function Activities() {
         <SectionHead
           eyebrow="Actividades y Competencias"
           title="Charlas, un duelo y un torneo."
-          lede="Participa en las conferencias académicas de la semana y en los concursos del fin de semana. Accede a precios especiales con tu membresía IEEE."
+          lede="Las conferencias académicas de la semana son gratuitas. Inscríbete en los concursos del fin de semana con tarifa especial para miembros IEEE."
         />
 
         <div className="mt-14 flex flex-col gap-5">

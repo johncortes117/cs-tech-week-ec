@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, Instagram, Linkedin, Mail, Plus } from 'lucide-react'
+import { ArrowRight, Instagram, Mail, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EASE, VIEWPORT, collapse } from '@/lib/motion'
 import { event, faq, footerNote, navLinks, isTbd, tbdText } from '@/lib/content'
@@ -170,7 +170,7 @@ export function FinalCta() {
           transition={{ duration: 0.6, ease: EASE, delay: 0.16 }}
           className="mt-6 max-w-[48ch] text-[1.0625rem] leading-relaxed text-muted-foreground"
         >
-          Combos de entrada desde $2 para miembros de IEEE y $3 para público general. Acceso a conferencias magistrales, hackathons, torneos y certificación digital oficial.
+          Todas las charlas son gratuitas. Regístrate para participar en conferencias, concursos y la certificación digital oficial.
         </motion.p>
 
         {/* large countdown */}
@@ -259,7 +259,7 @@ export function Footer() {
 
             <div className="flex flex-col gap-3">
               <span className="label">Participar</span>
-              <a href="#registro" className="font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground">
+              <a href={event.registerUrl} className="font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground">
                 Registro
               </a>
               <a href="#sponsors" className="font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground">
@@ -276,26 +276,19 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               <span className="label">Contacto</span>
               <a
+                href={`mailto:${event.social.email}`}
+                className="inline-flex items-center gap-2 font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Mail className="h-3.5 w-3.5" /> Correo
+              </a>
+              <span className="label mt-3">Síguenos</span>
+              <a
                 href={event.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
               >
                 <Instagram className="h-3.5 w-3.5" /> Instagram
-              </a>
-              <a
-                href={event.social.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-              </a>
-              <a
-                href={`mailto:${event.social.email}`}
-                className="inline-flex items-center gap-2 font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Mail className="h-3.5 w-3.5" /> Correo
               </a>
             </div>
           </div>

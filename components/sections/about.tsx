@@ -140,7 +140,7 @@ export function About() {
               Una semana dedicada a la <span className="grad-text">computación</span>.
             </>
           }
-          lede="Siete días de conferencias magistrales, hackathons y torneos prácticos, organizados por 10 capítulos IEEE Computer Society del Ecuador."
+          lede="Siete días de conferencias magistrales, hackathons y torneos prácticos, organizados por 10 capítulos IEEE Computer Society y la Rama Estudiantil IEEE UCE."
         />
 
         {/* 4 Figures */}

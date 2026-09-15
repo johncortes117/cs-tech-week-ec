@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Bell, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EASE, SPRING_SNAP, VIEWPORT } from '@/lib/motion'
 import {
@@ -19,10 +18,8 @@ import { TracingBeam } from '@/components/ui/tracing-beam'
 
 /* ============================================================
    AGENDA
-   While `days` is empty the section switches to "under
-   construction" mode: we draw no hollow boxes and no filler
-   text, we show what we do know (the tracks) and capture emails.
-   The emptiness turns into a contact list.
+   Until sessions are published, the section shows the confirmed
+   thematic tracks without collecting visitor information.
    ============================================================ */
 
 type Filter<T extends string> = T | 'todos'
@@ -103,58 +100,7 @@ function FilterRow<T extends string>({
   )
 }
 
-/* ---------- "programme under construction" state ---------- */
-
-function NotifyForm() {
-  const [email, setEmail] = React.useState('')
-  const [sent, setSent] = React.useState(false)
-
-  // TODO: connect to the real list (Resend, Supabase or vTools).
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email.includes('@')) return
-    setSent(true)
-  }
-
-  return (
-    <form onSubmit={submit} className="flex w-full max-w-md flex-col gap-2.5 sm:flex-row">
-      <label className="sr-only" htmlFor="notify-email">
-        Tu correo
-      </label>
-      <input
-        id="notify-email"
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        disabled={sent}
-        placeholder="tu@correo.com"
-        className="min-w-0 flex-1 rounded-[6px] border border-line bg-ink px-4 py-3 font-sans text-[0.9375rem] text-foreground placeholder:text-subtle focus:border-primary/60 focus:outline-none disabled:opacity-60"
-      />
-      <button
-        type="submit"
-        disabled={sent}
-        className={cn(
-          'inline-flex items-center justify-center gap-2 rounded-[6px] px-5 py-3',
-          'font-display text-[0.8125rem] font-bold transition-colors duration-300',
-          sent
-            ? 'bg-cyan/15 text-cyan'
-            : 'bg-primary text-primary-foreground hover:bg-[#FFB733]'
-        )}
-      >
-        {sent ? (
-          <>
-            <Check className="h-4 w-4" /> Listo
-          </>
-        ) : (
-          <>
-            <Bell className="h-4 w-4" /> Avísenme
-          </>
-        )}
-      </button>
-    </form>
-  )
-}
+/* ---------- agenda preview state ---------- */
 
 function AgendaEmpty() {
   return (
@@ -177,18 +123,17 @@ function AgendaEmpty() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-cyan animate-pulse-ring" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan" />
             </span>
-            <span className="label text-cyan">Programa en construcción</span>
+            <span className="label text-cyan">Agenda</span>
           </span>
 
           <h3 className="font-display text-[clamp(1.5rem,3vw,2rem)] font-extrabold leading-[1.1] tracking-head">
-            Todavía estamos cerrando el cronograma.
+            El cronograma detallado se publicará próximamente.
           </h3>
 
           <p className="max-w-[46ch] text-[0.9375rem] leading-relaxed text-muted-foreground">
-            Las cinco temáticas oficiales y la franja horaria (17:00 a 21:00 ECT para conferencias magistrales) ya están definidas; el cronograma detallado por ponente se publicará próximamente. Déjanos tu correo y te avisamos de inmediato.
+            Las cinco temáticas oficiales y la franja horaria de las conferencias magistrales (17:00 a 21:00 ECT) ya están definidas.
           </p>
 
-          <NotifyForm />
         </div>
 
         {/* preview of the tracks as ghost timelines */}

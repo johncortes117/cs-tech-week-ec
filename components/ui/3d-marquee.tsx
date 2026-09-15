@@ -13,7 +13,7 @@ export type MarqueeItem = {
 }
 
 /*
- * Infinite 3D Marquee — 2 columns × 5 logos, truly seamless & fully responsive.
+ * Infinite 3D Marquee — two balanced logo columns, truly seamless & responsive.
  */
 
 const NUM_COPIES = 5
@@ -26,8 +26,9 @@ export const ThreeDMarquee = ({
   items: MarqueeItem[]
   className?: string
 }) => {
-  const col0 = React.useMemo(() => items.slice(0, 5), [items])
-  const col1 = React.useMemo(() => items.slice(5, 10), [items])
+  const midpoint = Math.ceil(items.length / 2)
+  const col0 = React.useMemo(() => items.slice(0, midpoint), [items, midpoint])
+  const col1 = React.useMemo(() => items.slice(midpoint), [items, midpoint])
 
   return (
     <div
@@ -73,13 +74,13 @@ function MarqueeColumn({
   const markerA = React.useRef<HTMLDivElement>(null)
   const markerB = React.useRef<HTMLDivElement>(null)
 
-  // 5 original items × NUM_COPIES
+  // Original items × NUM_COPIES
   const allItems = React.useMemo(
     () => Array.from({ length: NUM_COPIES }, () => items).flat(),
     [items]
   )
 
-  const ITEMS_PER_SET = items.length // 5
+  const ITEMS_PER_SET = items.length
 
   // Measure the exact pixel height of one set using marker refs
   React.useEffect(() => {
