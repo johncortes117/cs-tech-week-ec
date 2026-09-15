@@ -381,7 +381,6 @@ export const chapterSlots = 11
 export type SponsorTier = {
   key: string
   name: string
-  blurb: string
   sponsors: { name: string; logo?: string }[]
   featured?: boolean
 }
@@ -390,13 +389,11 @@ export const sponsorTiers: SponsorTier[] = [
   {
     key: 'silver',
     name: 'Silver',
-    blurb: 'Presencia de marca en el sitio web, dinámicas y redes durante toda la semana.',
     sponsors: [],
   },
   {
     key: 'gold',
     name: 'Gold',
-    blurb: 'Aliados con presencia destacada en agenda, transmisiones y certificados.',
     sponsors: [
       { name: 'Maxxnet', logo: '/sponsors/maxxnet_logo.png' },
       { name: 'Capia' },
@@ -407,20 +404,9 @@ export const sponsorTiers: SponsorTier[] = [
   {
     key: 'platinum',
     name: 'Platinum',
-    blurb: 'Máxima presencia de marca, espacios dedicados y participación en la experiencia del evento.',
     sponsors: [],
   },
 ]
-
-export const sponsorPitch = {
-  title: 'Tu marca frente a estudiantes y profesionales de computación del Ecuador.',
-  points: [
-    'Aportes económicos directos para fondear premios de los concursos.',
-    'Emisión de "cheques virtuales" como patrocinador de los ganadores.',
-    'Difusión masiva en comunidades universitarias y canales de 11 organizaciones.',
-    'Espacios dedicados para workshops, keynotes técnicas y captación de talento.',
-  ],
-}
 
 /* ---------------------------------------------------------- */
 /* COMMUNITY REWARDS & MERCHANDISING                            */

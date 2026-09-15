@@ -1,147 +1,122 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { ArrowRight, Check } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { ArrowRight } from 'lucide-react'
 import { EASE, VIEWPORT } from '@/lib/motion'
-import { event, sponsorPitch, sponsorTiers } from '@/lib/content'
-import { Btn, Card, Equator, SectionHead } from '@/components/ui/primitives'
-import { GlareHover } from '@/components/ui/glare-hover'
-import { GlowingEffect } from '@/components/ui/glowing-effect'
+import { event, sponsorTiers } from '@/lib/content'
+import { Btn, Equator, SectionHead } from '@/components/ui/primitives'
 import { Magnetic } from '@/components/ui/magnetic'
 
 /* ============================================================
    SPONSORS
-   Each tier shows confirmed sponsors first; empty tiers remain
-   clearly available for future partners.
+   A familiar event layout: confirmed logos get the stage, while
+   available tiers stay concise and secondary.
    ============================================================ */
 
-function TierCard({ tier, index }: { tier: (typeof sponsorTiers)[number]; index: number }) {
+function SponsorLogo({
+  sponsor,
+  index,
+}: {
+  sponsor: (typeof sponsorTiers)[number]['sponsors'][number]
+  index: number
+}) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 22 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       data-reveal
       viewport={VIEWPORT}
-      transition={{ duration: 0.6, ease: EASE, delay: index * 0.07 }}
-      className="relative h-full rounded-card"
+      transition={{ duration: 0.5, ease: EASE, delay: 0.12 + index * 0.1 }}
+      className="flex h-32 items-center justify-center rounded-[10px] border border-line bg-ink-raise px-7 py-5 sm:h-40 sm:px-10"
     >
-      {/* Only the featured tier lights the arc: if every card
-          glowed, none of them would be the featured one. */}
-      {tier.featured ? (
-        <GlowingEffect color="#FFA300" accent="#00B5E2" spread={40} className="rounded-card" />
-      ) : null}
-
-      <GlareHover className="h-full rounded-card" intensity={tier.featured ? 0.13 : 0.07}>
-        <Card
-          className={cn('flex h-full flex-col p-6', tier.featured && 'grad-border')}
-          data-cursor
-        >
-        <div className="flex items-baseline justify-between gap-3">
-          <h3
-            className={cn(
-              'font-display text-[1.125rem] font-extrabold tracking-[-0.02em]',
-              tier.featured && 'text-primary'
-            )}
-          >
-            {tier.name}
-          </h3>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-subtle">
-            {tier.sponsors.length > 0 ? `${tier.sponsors.length} confirmados` : 'Disponible'}
-          </span>
-        </div>
-
-        <p className="mt-3 flex-1 text-[0.875rem] leading-relaxed text-muted-foreground">
-          {tier.blurb}
-        </p>
-
-        {tier.sponsors.length > 0 ? (
-          <div className="mt-6 grid grid-cols-1 gap-2">
-            {tier.sponsors.map((sponsor) => (
-              <div
-                key={sponsor.name}
-                className="flex min-h-14 items-center justify-center rounded-[5px] border border-line bg-ink/60 px-3 py-2"
-              >
-                {sponsor.logo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={sponsor.logo}
-                    alt={`Logo ${sponsor.name}`}
-                    className="max-h-10 max-w-full object-contain"
-                  />
-                ) : (
-                  <span className="font-display text-sm font-bold tracking-wide text-foreground">
-                    {sponsor.name}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <span className="mt-6 flex h-14 items-center justify-center rounded-[5px] border border-dashed border-line-strong bg-ink/60 font-mono text-[10px] uppercase tracking-[0.14em] text-primary/60">
-            Tier disponible
-          </span>
-        )}
-        </Card>
-      </GlareHover>
+      {sponsor.logo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={sponsor.logo}
+          alt={'Logo ' + sponsor.name}
+          className="max-h-20 max-w-full object-contain sm:max-h-24"
+        />
+      ) : (
+        <span className="font-display text-xl font-extrabold tracking-wide text-foreground sm:text-2xl">
+          {sponsor.name}
+        </span>
+      )}
     </motion.div>
   )
 }
 
 export function Sponsors() {
+  const gold = sponsorTiers.find((tier) => tier.featured)
+  const available = sponsorTiers.filter((tier) => !tier.featured)
+
   return (
     <section id="sponsors" className="relative scroll-mt-24 py-24 md:py-32">
-      {/* technical grid only behind this block */}
       <div
-        className="tech-grid mask-fade-y pointer-events-none absolute inset-0 -z-10 opacity-50"
+        className="tech-grid mask-fade-y pointer-events-none absolute inset-0 -z-10 opacity-40"
         aria-hidden="true"
       />
 
       <div className="shell">
-        <div className="grid gap-14 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
-          <div>
-            <SectionHead eyebrow="Sponsors" title={sponsorPitch.title} />
+        <SectionHead
+          eyebrow="Sponsors"
+          title="Impulsan esta semana."
+          lede="Gracias a las organizaciones que hacen posible CS Tech Week Ecuador."
+          align="center"
+        />
 
-            <ul className="mt-8 flex flex-col gap-3.5">
-              {sponsorPitch.points.map((p, i) => (
-                <motion.li
-                  key={p}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  data-reveal
-                  viewport={VIEWPORT}
-                  transition={{ duration: 0.5, ease: EASE, delay: 0.1 + i * 0.07 }}
-                  className="flex gap-3 text-[0.9375rem] leading-relaxed text-muted-foreground"
-                >
-                  <Check className="mt-1 h-4 w-4 flex-none text-cyan" aria-hidden="true" />
-                  <span>{p}</span>
-                </motion.li>
-              ))}
-            </ul>
-
-            <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
-              <Magnetic radius={35} strength={0.16} maxOffset={6}>
-                <Btn
-                  href={`mailto:${event.social.email}?subject=Sponsor%20CS%20Tech%20Week%20Ecuador`}
-                  size="lg"
-                >
-                  Pedir el dossier
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
-                </Btn>
-              </Magnetic>
-              <Magnetic radius={35} strength={0.16} maxOffset={6}>
-                <Btn href={`mailto:${event.social.email}`} size="lg" variant="ghost">
-                  Hablar con el comité
-                </Btn>
-              </Magnetic>
+        {gold ? (
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            data-reveal
+            viewport={VIEWPORT}
+            transition={{ duration: 0.65, ease: EASE, delay: 0.08 }}
+            className="mt-14 rounded-card border border-primary/35 bg-ink/80 p-6 shadow-[0_0_50px_rgba(255,163,0,0.09)] sm:p-8 md:p-10"
+          >
+            <div className="mb-7 flex items-center gap-3">
+              <span className="h-px w-8 bg-primary" />
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+                {gold.name} Sponsors
+              </span>
+              <span className="h-px flex-1 bg-primary/25" />
             </div>
-          </div>
+            <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
+              {gold.sponsors.map((sponsor, index) => (
+                <SponsorLogo key={sponsor.name} sponsor={sponsor} index={index} />
+              ))}
+            </div>
+          </motion.div>
+        ) : null}
 
-          <div className="grid gap-4">
-            {sponsorTiers.map((t, i) => (
-              <TierCard key={t.key} tier={t} index={i} />
-            ))}
-          </div>
+        <div className="mx-auto mt-5 grid max-w-2xl gap-3 sm:grid-cols-2">
+          {available.map((tier, index) => (
+            <motion.div
+              key={tier.key}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              data-reveal
+              viewport={VIEWPORT}
+              transition={{ duration: 0.5, ease: EASE, delay: 0.1 + index * 0.08 }}
+              className="flex items-center justify-between rounded-[8px] border border-dashed border-line-strong bg-ink/50 px-5 py-4"
+            >
+              <span className="font-display text-[1rem] font-bold text-foreground">{tier.name}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-subtle">
+                Disponible
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <Magnetic radius={35} strength={0.16} maxOffset={6}>
+            <Btn
+              href={'mailto:' + event.social.email + '?subject=Sponsor%20CS%20Tech%20Week%20Ecuador'}
+              size="lg"
+            >
+              Conviértete en sponsor
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-cs group-hover:translate-x-1" />
+            </Btn>
+          </Magnetic>
         </div>
       </div>
 
