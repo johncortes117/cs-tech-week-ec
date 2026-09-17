@@ -11,16 +11,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const DEFAULT_IMAGES = [
   "/images/merch-stickers.png",
-  "/chapters/CS_ESPOL.png",
-  "/chapters/CS_EPN.png",
-  "/chapters/CS_USFQ.png",
-  "/chapters/CS_UTN.png",
-  "/chapters/CS_UPS_CUENCA.png",
-  "/chapters/CS_UIDE.png",
-  "/chapters/CS_UCACUE.png",
-  "/chapters/CS_UPEC.png",
-  "/chapters/CS_YACHAY.png",
-  "/chapters/CS_ESPOCH.png",
+  "/images/merch_usfq.png",
   "/chapters/CS_TECH_WEEK_EC_fullcolor.png",
 ];
 
@@ -186,9 +177,8 @@ export const Carousel360: React.FC<Carousel360Props> = ({
                     height={90}
                     sizes={THUMB_SIZES_ATTR}
                     onLoad={() => markThumbLoaded(index)}
-                    className={`object-contain w-auto h-auto max-h-11 sm:max-h-13 md:max-h-16 max-w-18 sm:max-w-22 md:max-w-26 transition-opacity duration-300 ${
-                      loadedThumbs[index] ? "opacity-100" : "opacity-0"
-                    }`}
+                    className={`object-contain w-auto h-auto max-h-11 sm:max-h-13 md:max-h-16 max-w-18 sm:max-w-22 md:max-w-26 transition-opacity duration-300 ${loadedThumbs[index] ? "opacity-100" : "opacity-0"
+                      }`}
                   />
                 </motion.div>
               </motion.div>
@@ -219,9 +209,8 @@ export const Carousel360: React.FC<Carousel360Props> = ({
                 sizes={CENTER_SIZES_ATTR}
                 loading="lazy"
                 onLoad={() => setCenterLoaded(true)}
-                className={`object-contain w-auto h-auto max-h-[170px] sm:max-h-[210px] md:max-h-[250px] max-w-[280px] sm:max-w-[360px] md:max-w-[400px] transition-opacity duration-300 ${
-                  centerLoaded ? "opacity-100" : "opacity-0"
-                }`}
+                className={`object-contain w-auto h-auto max-h-[170px] sm:max-h-[210px] md:max-h-[250px] max-w-[280px] sm:max-w-[360px] md:max-w-[400px] transition-opacity duration-300 ${centerLoaded ? "opacity-100" : "opacity-0"
+                  }`}
               />
             </motion.div>
           </AnimatePresence>
