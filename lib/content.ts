@@ -109,42 +109,42 @@ export const tracks: {
   hex: string
   blurb: string
 }[] = [
-  {
-    key: 'investigacion',
-    name: 'Investigación Científica',
-    pms: 'PMS Process Cyan',
-    hex: '#00B5E2',
-    blurb: 'Avances académicos, papers y proyectos de innovación científica.',
-  },
-  {
-    key: 'iot',
-    name: 'IoT (Internet de las Cosas)',
-    pms: 'PMS 109 C',
-    hex: '#FFD100',
-    blurb: 'Hardware libre, sensores, sistemas embebidos y conectividad.',
-  },
-  {
-    key: 'software',
-    name: 'Software',
-    pms: 'PMS 368 C',
-    hex: '#78BE20',
-    blurb: 'Ingeniería de software, Frontend, Backend, arquitectura y DevOps.',
-  },
-  {
-    key: 'ia',
-    name: 'Inteligencia Artificial',
-    pms: 'PMS 254 C',
-    hex: '#981D97',
-    blurb: 'Machine learning, visión computacional, agentes autónomos y LLMs.',
-  },
-  {
-    key: 'seguridad',
-    name: 'Seguridad',
-    pms: 'PMS 200 C',
-    hex: '#BA0C2F',
-    blurb: 'Ciberseguridad defensiva, hacking ético y protección de sistemas.',
-  },
-]
+    {
+      key: 'investigacion',
+      name: 'Investigación Científica',
+      pms: 'PMS Process Cyan',
+      hex: '#00B5E2',
+      blurb: 'Avances académicos, papers y proyectos de innovación científica.',
+    },
+    {
+      key: 'iot',
+      name: 'IoT (Internet de las Cosas)',
+      pms: 'PMS 109 C',
+      hex: '#FFD100',
+      blurb: 'Hardware libre, sensores, sistemas embebidos y conectividad.',
+    },
+    {
+      key: 'software',
+      name: 'Software',
+      pms: 'PMS 368 C',
+      hex: '#78BE20',
+      blurb: 'Ingeniería de software, Frontend, Backend, arquitectura y DevOps.',
+    },
+    {
+      key: 'ia',
+      name: 'Inteligencia Artificial',
+      pms: 'PMS 254 C',
+      hex: '#981D97',
+      blurb: 'Machine learning, visión computacional, agentes autónomos y LLMs.',
+    },
+    {
+      key: 'seguridad',
+      name: 'Seguridad',
+      pms: 'PMS 200 C',
+      hex: '#BA0C2F',
+      blurb: 'Ciberseguridad defensiva, hacking ético y protección de sistemas.',
+    },
+  ]
 
 export const topics = tracks
 export const trackByKey = Object.fromEntries(tracks.map((t) => [t.key, t])) as Record<
@@ -238,7 +238,48 @@ export type Speaker = {
 }
 
 /** Empty on purpose: nobody is publicly confirmed yet. */
-export const speakers: Speaker[] = []
+export const speakers: Speaker[] = [
+  {
+    name: 'Harikrishnan Muthukrishnan',
+    role: 'Low-Code by Design: Architecting Governed Enterprise Platforms in Regulated Healthcare',
+    org: 'Forbes Technology Council Member / ESPOL',
+    photo: '/speakers/Harikrishnan.png',
+    track: 'software',
+    category: 'profesional',
+  },
+  {
+    name: 'Diego H. Peluffo-Ordóñez',
+    role: '…from ‘What If?’ to ‘Why Not?’: The journey of SDAS Research Group',
+    org: 'YACHAY TECH',
+    photo: '/speakers/diego.png',
+    track: 'investigacion',
+    category: 'profesional',
+  },
+  {
+    name: 'Gustavo Justicia',
+    role: '¿Quién Está Comprando en tu Nombre? Comercio agéntico: oportunidad, riesgo y el futuro del consumo',
+    org: 'YACHAY TECH',
+    photo: '/speakers/gustavo.png',
+    track: 'ia',
+    category: 'profesional',
+  },
+  {
+    name: 'Carlos Daniel Puentestar',
+    role: 'El uso de señales cerebrales como forma de control para tus dispositivos',
+    org: 'UTN',
+    photo: '/speakers/carlos.jpeg',
+    track: 'iot',
+    category: 'profesional',
+  },
+  {
+    name: 'Derek Guevara',
+    role: 'IA y Seguridad con AWS',
+    org: 'ESPOL / AWS',
+    photo: '/speakers/dereck.jpeg',
+    track: 'seguridad',
+    category: 'estudiante',
+  },
+]
 
 /** How many slots to show while no speakers are confirmed. */
 export const speakerSlots = 4
