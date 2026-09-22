@@ -264,6 +264,14 @@ export const speakers: Speaker[] = [
     category: 'profesional',
   },
   {
+    name: 'Diego Garcia',
+    role: 'Desarrollo de Software Guiado por Especificaciones (SDD) mediante Agentes de IA',
+    org: 'ESPOCH',
+    photo: '/speakers/diego_garcia.png',
+    track: 'software',
+    category: 'profesional',
+  },
+  {
     name: 'Carlos Daniel Puentestar',
     role: 'El uso de señales cerebrales como forma de control para tus dispositivos',
     org: 'UTN',
