@@ -272,6 +272,14 @@ export const speakers: Speaker[] = [
     category: 'profesional',
   },
   {
+    name: 'Edwin Hernando Salazar',
+    role: 'Del Modelo Matemático a la Imagen Sintética: generación de venas de la palma para el reconocimiento biométrico',
+    org: 'ESPOCH',
+    photo: '/speakers/edwin.jpeg',
+    track: 'investigacion',
+    category: 'profesional',
+  },
+  {
     name: 'Carlos Daniel Puentestar',
     role: 'El uso de señales cerebrales como forma de control para tus dispositivos',
     org: 'UTN',
