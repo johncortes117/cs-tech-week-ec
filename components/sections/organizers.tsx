@@ -108,13 +108,29 @@ export function Organizers() {
                         title={`${ch.fullName} en Instagram`}
                         className="block w-fit opacity-80 transition-opacity duration-300 hover:opacity-100"
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={ch.logo}
-                          alt={ch.fullName}
-                          loading="lazy"
-                          className="h-10 w-auto max-w-[260px] object-contain object-left"
-                        />
+                        {ch.logo ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
+                            src={ch.logo}
+                            alt={ch.fullName}
+                            loading="lazy"
+                            className="h-10 w-auto max-w-[260px] object-contain object-left"
+                          />
+                        ) : (
+                          <span className="flex items-center gap-4">
+                            <span className="font-display text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] text-fg">
+                              {ch.short}
+                            </span>
+                            {ch.lead ? (
+                              <span className="flex flex-col gap-1 border-l border-line pl-4">
+                                <span className="font-display text-[15px] font-bold leading-tight text-fg">
+                                  {ch.lead.name}
+                                </span>
+                                <span className="meta">{ch.lead.role}</span>
+                              </span>
+                            ) : null}
+                          </span>
+                        )}
                       </a>
                     </li>
                   ))}
