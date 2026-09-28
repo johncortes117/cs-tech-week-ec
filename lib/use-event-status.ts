@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from 'react'
 import { event, week } from '@/lib/content'
-import { sessionAt, type Session } from '@/lib/schedule'
+import { joinableAt, sessionAt, toMinutes, type Session } from '@/lib/schedule'
 
 /* ============================================================
    EVENT STATUS
@@ -99,4 +99,28 @@ export const pad = (n: number) => String(n).padStart(2, '0')
 export function countdownLabel(s: Extract<EventStatus, { phase: 'soon' }>) {
   const clock = `${pad(s.hours)}:${pad(s.minutes)}:${pad(s.seconds)}`
   return s.days > 0 ? `${s.days}d ${clock}` : clock
+}
+
+/* ------------------------------------------------------------
+   THE ROOM TO JOIN
+   Independent of the phase: on Monday the first room opens at
+   16:45, while the countdown to 17:00 is still running.
+   ------------------------------------------------------------ */
+
+export type Joinable = { session: Session; live: boolean }
+
+export function joinableFor(t: number): Joinable | null {
+  if (t < FIRST_DAY || t >= END) return null
+  const day = Math.floor((t - FIRST_DAY) / DAY)
+  const clock = new Date(t + ECT_OFFSET)
+  const minutes = clock.getUTCHours() * 60 + clock.getUTCMinutes()
+  const session = joinableAt(day, minutes)
+  if (!session?.start) return null
+  return { session, live: minutes >= toMinutes(session.start) }
+}
+
+/** The talk whose Zoom room is open right now, if it has a link. */
+export function useJoinable(): Joinable | null {
+  const t = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  return t === null ? null : joinableFor(t)
 }

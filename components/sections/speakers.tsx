@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils'
 import { EASE, SPRING_SNAP } from '@/lib/motion'
 import { speakers, trackByKey, tracks, week, type Slot, type Speaker, type TrackKey } from '@/lib/content'
 import { MONTHS, TALKS, WEEKDAYS, isOnAir, namesOf, talkId, toMinutes, type Talk } from '@/lib/schedule'
-import { useEventStatus } from '@/lib/use-event-status'
-import { LiveDot, SectionTitle } from '@/components/ui/primitives'
+import { useEventStatus, useJoinable } from '@/lib/use-event-status'
+import { JoinLink, LiveDot, SectionTitle } from '@/components/ui/primitives'
 import { scrollToHash } from '@/components/ui/smooth-scroll'
 import { Timetable } from './timetable'
 
@@ -61,6 +61,7 @@ export function Speakers() {
   const status = useEventStatus()
   const today = status?.phase === 'live' ? status.day : -1
   const onAir = status?.phase === 'live' ? status.onAir : null
+  const room = useJoinable()
 
   const choose = (key: TrackKey | 'all') => {
     setFilter(key)
@@ -140,6 +141,7 @@ export function Speakers() {
                           talk={t}
                           index={i}
                           live={isOnAir(t, onAir)}
+                          open={!!room && room.session.day === t.slot?.day && room.session.start === t.slot?.start}
                           focused={focus === talkId(t)}
                           flipped={flipped === t.key}
                           onFlip={() => setFlipped((k) => (k === t.key ? null : t.key))}
@@ -150,7 +152,7 @@ export function Speakers() {
                 </div>
               ))
             ) : (
-              <Timetable filter={filter} today={today} onAir={onAir} onPick={pick} />
+              <Timetable filter={filter} today={today} onAir={onAir} room={room?.session} onPick={pick} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -242,6 +244,7 @@ function Card({
   talk,
   index,
   live,
+  open,
   focused,
   flipped,
   onFlip,
@@ -249,6 +252,8 @@ function Card({
   talk: Talk
   index: number
   live: boolean
+  /** Its Zoom room is open: live, or about to start. */
+  open: boolean
   focused: boolean
   flipped: boolean
   onFlip: () => void
@@ -295,8 +300,8 @@ function Card({
           animate={{ rotateY: flipped ? 180 : 0 }}
           transition={{ type: 'spring', stiffness: 120, damping: 17, mass: 0.9 }}
         >
-          <Front talk={talk} live={live} hidden={flipped} />
-          <Back talk={talk} hidden={!flipped} />
+          <Front talk={talk} live={live} hidden={flipped} chip={!(open && talk.zoom)} />
+          <Back talk={talk} hidden={!flipped} withJoin={!!talk.zoom} />
         </motion.div>
 
         {/* one control over the whole card, so it turns wherever it is touched */}
@@ -307,6 +312,31 @@ function Card({
           aria-label={flipped ? `Volver a la foto de ${namesOf(talk)}` : `Ver la charla de ${namesOf(talk)}`}
           className="absolute inset-0 z-10 rounded-[16px] md:rounded-[20px]"
         />
+
+        {/* Links sit outside the turning faces and above the card's own
+            button — inside a face they could never be clicked. */}
+        {open && talk.zoom && !flipped ? (
+          <JoinLink
+            href={talk.zoom}
+            live={live}
+            hot
+            label={live ? 'En vivo · Unirse' : `Unirse · ${talk.slot?.start}`}
+            className="absolute left-2.5 top-2.5 z-20 h-7 px-2.5 text-[10.5px] md:left-3 md:top-3"
+          />
+        ) : null}
+        <AnimatePresence>
+          {flipped && talk.zoom ? (
+            <motion.div
+              key="join"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE, delay: 0.3 } }}
+              exit={{ opacity: 0, transition: { duration: 0.1 } }}
+              className="tone-night absolute inset-x-4 bottom-4 z-20 md:inset-x-5 md:bottom-5"
+            >
+              <JoinLink href={talk.zoom} live={live} hot={open} label="Unirse por Zoom" className="h-9 w-full text-[12px]" />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </motion.div>
     </motion.li>
   )
@@ -340,7 +370,7 @@ function TimeChip({ slot, live }: { slot?: Slot; live: boolean }) {
      YACHAY TECH                       institution
    Lines that do not apply simply are not there. A shared card
    lists both names and the institutions only. */
-function Front({ talk, live, hidden }: { talk: Talk; live: boolean; hidden: boolean }) {
+function Front({ talk, live, hidden, chip }: { talk: Talk; live: boolean; hidden: boolean; chip: boolean }) {
   const solo: Speaker | undefined = talk.people.length === 1 ? talk.people[0] : undefined
   const orgs = Array.from(new Set(talk.people.map((p) => p.org))).join(' · ')
 
@@ -353,7 +383,8 @@ function Front({ talk, live, hidden }: { talk: Talk; live: boolean; hidden: bool
         className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-night via-night/70 to-transparent"
       />
 
-      <TimeChip slot={talk.slot} live={live} />
+      {/* the join link takes this corner while the room is open */}
+      {chip ? <TimeChip slot={talk.slot} live={live} /> : null}
 
       <div className="absolute inset-x-0 bottom-0 p-3 text-paper md:p-4">
         {solo?.degree ? (
@@ -374,7 +405,7 @@ function Front({ talk, live, hidden }: { talk: Talk; live: boolean; hidden: bool
 }
 
 /** The talk, set large; the topics beneath it. Nothing else. */
-function Back({ talk, hidden }: { talk: Talk; hidden: boolean }) {
+function Back({ talk, hidden, withJoin }: { talk: Talk; hidden: boolean; withJoin: boolean }) {
   /* the longer the title, the smaller the type, so every one fits whole */
   const size =
     talk.talk.length > 120
@@ -385,7 +416,12 @@ function Back({ talk, hidden }: { talk: Talk; hidden: boolean }) {
 
   return (
     <div
-      className={cn(FACE, 'tone-night flex flex-col bg-bg p-4 text-fg [transform:rotateY(180deg)] md:p-5')}
+      className={cn(
+        FACE,
+        'tone-night flex flex-col bg-bg p-4 text-fg [transform:rotateY(180deg)] md:p-5',
+        /* room for the join button, which sits over this face */
+        withJoin && 'pb-16 md:pb-[4.5rem]'
+      )}
       aria-hidden={hidden}
     >
       <span aria-hidden="true" className="block h-[2px] w-7 flex-none bg-orange" />

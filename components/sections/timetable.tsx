@@ -12,7 +12,7 @@ import {
   type Session,
   type Talk,
 } from '@/lib/schedule'
-import { LiveDot } from '@/components/ui/primitives'
+import { JoinLink, LiveDot } from '@/components/ui/primitives'
 
 /* ============================================================
    TIMETABLE — the programme read by the clock
@@ -40,11 +40,14 @@ export function Timetable({
   filter,
   today,
   onAir,
+  room,
   onPick,
 }: {
   filter: TrackKey | 'all'
   today: number
   onAir?: Session | null
+  /** The session whose Zoom room is open right now. */
+  room?: Session
   onPick: (t: Talk) => void
 }) {
   const rows = `1 / span ${HOURS.length + 1}`
@@ -104,6 +107,7 @@ export function Timetable({
                     key={t.key}
                     talk={t}
                     live={isOnAir(t, onAir)}
+                    open={!!room && room.day === t.slot?.day && room.start === t.slot?.start}
                     dim={filter !== 'all' && !t.tracks.includes(filter)}
                     onPick={() => onPick(t)}
                   />
@@ -120,15 +124,20 @@ export function Timetable({
 function Cell({
   talk,
   live,
+  open,
   dim,
   onPick,
 }: {
   talk: Talk
   live: boolean
+  open: boolean
   dim: boolean
   onPick: () => void
 }) {
   return (
+    /* the Zoom link is a sibling of the cell's button, not inside it:
+       a link inside a button is not valid, and would not be clickable */
+    <div className={cn('relative lg:h-full', dim && 'opacity-25')}>
     <button
       type="button"
       onClick={onPick}
@@ -138,7 +147,7 @@ function Cell({
         'lg:flex lg:h-full lg:flex-col lg:rounded-[14px] lg:border lg:bg-surface lg:p-3.5',
         'lg:transition-[border-color,box-shadow,opacity] lg:hover:border-line-strong lg:hover:shadow-[0_16px_32px_-22px_rgba(5,15,28,0.4)]',
         live && 'lg:border-orange',
-        dim && 'opacity-25'
+        talk.zoom && 'pb-12 lg:pb-12'
       )}
     >
       <span className="pt-0.5 font-mono text-[12px] font-medium tabular text-subtle lg:hidden">{talk.slot?.start}</span>
@@ -164,5 +173,15 @@ function Cell({
         </span>
       </span>
     </button>
+    {talk.zoom ? (
+      <JoinLink
+        href={talk.zoom}
+        live={live}
+        hot={open}
+        label="Zoom"
+        className="absolute bottom-4 left-[4rem] h-7 px-2.5 text-[11px] lg:bottom-3.5 lg:left-3.5"
+      />
+    ) : null}
+    </div>
   )
 }

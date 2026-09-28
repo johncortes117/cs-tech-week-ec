@@ -5,7 +5,8 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/
 import { cn } from '@/lib/utils'
 import { EASE } from '@/lib/motion'
 import { event, nav } from '@/lib/content'
-import { Btn } from '@/components/ui/primitives'
+import { Btn, JoinLink } from '@/components/ui/primitives'
+import { useJoinable } from '@/lib/use-event-status'
 import { StatusLine } from '@/components/ui/event-status'
 import { Lockup } from '@/components/brand/logo'
 import { lockScroll, unlockScroll } from '@/components/ui/smooth-scroll'
@@ -65,6 +66,7 @@ function useSectionUnderHeader() {
 
 export function SiteHeader() {
   const { tone, id } = useSectionUnderHeader()
+  const room = useJoinable()
   const [scrolled, setScrolled] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const { scrollY } = useScroll()
@@ -148,7 +150,24 @@ export function SiteHeader() {
               ) : null}
             </AnimatePresence>
 
-            <Btn href={event.registerUrl} target="_blank" rel="noopener noreferrer" className="h-10 px-4 sm:px-5">
+            {/* while a talk's room is open, joining it is what most people came for */}
+            {room?.session.zoom ? (
+              <JoinLink
+                href={room.session.zoom}
+                live={room.live}
+                hot
+                label={room.live ? 'Unirse' : 'Sala abierta'}
+                className="h-10 px-4 text-[13px] sm:px-5"
+              />
+            ) : null}
+
+            <Btn
+              href={event.registerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant={room?.session.zoom ? 'ghost' : 'primary'}
+              className={cn('h-10 px-4 sm:px-5', room?.session.zoom && 'hidden sm:inline-flex')}
+            >
               Inscríbete
             </Btn>
 

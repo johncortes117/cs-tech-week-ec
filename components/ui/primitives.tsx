@@ -143,3 +143,50 @@ export function LiveDot({ className }: { className?: string }) {
     </span>
   )
 }
+
+/* ============================================================
+   JOIN — the way into a talk's Zoom room. Orange while the talk
+   is on or about to start; quiet otherwise. Always a new tab, so
+   the programme stays open behind it.
+   ============================================================ */
+
+export function JoinLink({
+  href,
+  live = false,
+  hot = false,
+  label = 'Unirse',
+  className,
+  onClick,
+}: {
+  href: string
+  /** The talk has started: shows the pulsing dot. */
+  live?: boolean
+  /** Its room is open (live or about to start): orange. */
+  hot?: boolean
+  label?: string
+  className?: string
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={onClick}
+      className={cn(
+        'group inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full font-display font-bold transition-[background-color,border-color,color,transform] duration-300 ease-cs active:scale-[0.97]',
+        hot
+          ? 'bg-orange text-night hover:bg-[#FFB733]'
+          : 'border border-line-strong bg-transparent text-fg hover:border-orange hover:text-orange',
+        className
+      )}
+    >
+      {live ? <LiveDot className="[&>span]:bg-night" /> : null}
+      {label}
+      <ArrowUpRight
+        aria-hidden="true"
+        className="h-3.5 w-3.5 transition-transform duration-300 ease-cs group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+      />
+    </a>
+  )
+}

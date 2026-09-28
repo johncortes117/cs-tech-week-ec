@@ -15,6 +15,8 @@ export type Talk = {
   tracks: TrackKey[]
   people: Speaker[]
   slot?: Slot
+  /** Zoom link, from whichever speaker has one. */
+  zoom?: string
 }
 
 /** Speakers that share a talk title become one talk; their topics are merged. */
@@ -25,8 +27,16 @@ function groupTalks(list: Speaker[]): Talk[] {
     if (found) {
       found.people.push(s)
       s.tracks.forEach((t) => found.tracks.includes(t) || found.tracks.push(t))
+      found.zoom ||= s.zoom || undefined
     } else {
-      byTitle.set(s.talk, { key: s.name, talk: s.talk, tracks: [...s.tracks], people: [s], slot: s.slot })
+      byTitle.set(s.talk, {
+        key: s.name,
+        talk: s.talk,
+        tracks: [...s.tracks],
+        people: [s],
+        slot: s.slot,
+        zoom: s.zoom || undefined,
+      })
     }
   }
   return Array.from(byTitle.values())
@@ -53,6 +63,7 @@ export type Session = {
   block: 'charlas' | 'concursos'
   /** Who or what is on, for "En vivo · …". */
   label: string
+  zoom?: string
 }
 
 export const toMinutes = (t: string) => {
@@ -61,7 +72,12 @@ export const toMinutes = (t: string) => {
 }
 
 export const SESSIONS: Session[] = [
-  ...TALKS.filter((t) => t.slot).map((t) => ({ ...t.slot!, block: 'charlas' as const, label: namesOf(t) })),
+  ...TALKS.filter((t) => t.slot).map((t) => ({
+    ...t.slot!,
+    block: 'charlas' as const,
+    label: namesOf(t),
+    zoom: t.zoom,
+  })),
   ...contests.map((c) => ({ ...c.slot, block: 'concursos' as const, label: c.name })),
 ]
 
@@ -75,6 +91,27 @@ export function sessionAt(day: number, minutes: number) {
       toMinutes(s.start) <= minutes &&
       minutes < toMinutes(s.end)
   )
+}
+
+/** Minutes before a talk starts that its Zoom link is pushed forward. */
+export const JOIN_EARLY = 15
+
+/** The talk whose room is open at `minutes` on `day`: from JOIN_EARLY
+ *  minutes before it starts until it ends — and only if it has a link. */
+export function joinableAt(day: number, minutes: number) {
+  const open = SESSIONS.filter(
+    (s) =>
+      s.block === 'charlas' &&
+      s.zoom &&
+      s.day === day &&
+      s.start !== undefined &&
+      s.end !== undefined &&
+      toMinutes(s.start) - JOIN_EARLY <= minutes &&
+      minutes < toMinutes(s.end)
+  )
+  /* in the last minutes of a talk the next room is open too: the one
+     already running wins until it ends */
+  return open.find((s) => toMinutes(s.start!) <= minutes) ?? open[0]
 }
 
 /** Is this talk the session on air? */

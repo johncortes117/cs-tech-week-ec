@@ -130,6 +130,9 @@ export type Speaker = {
   category?: 'profesional' | 'estudiante'
   /** When the talk happens. `day`: 0 = Monday 28. Hours in Ecuador time. */
   slot?: Slot
+  /** Zoom link for the talk. Empty until it is published; a shared talk
+   *  needs it on one of its speakers only. */
+  zoom?: string
 }
 
 export type Slot = { day: number; start: string; end: string }
@@ -143,6 +146,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/diego.webp',
     tracks: ['investigacion', 'ia'],
     slot: { day: 3, start: '18:00', end: '19:00' },
+    zoom: 'https://cedia.zoom.us/j/85154930362',
     category: 'profesional',
   },
   {
@@ -154,6 +158,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/gustavo.webp',
     tracks: ['ia', 'seguridad'],
     slot: { day: 0, start: '18:00', end: '19:00' },
+    zoom: 'https://cedia.zoom.us/j/83415501349',
     category: 'profesional',
   },
   {
@@ -164,6 +169,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/Harikrishnan.webp',
     tracks: ['software'],
     slot: { day: 1, start: '19:00', end: '20:00' },
+    zoom: 'https://cedia.zoom.us/j/85424704295',
     category: 'profesional',
   },
   {
@@ -174,6 +180,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/diego_garcia.webp',
     tracks: ['software', 'ia'],
     slot: { day: 0, start: '20:00', end: '21:00' },
+    zoom: 'https://cedia.zoom.us/j/88057627373',
     category: 'profesional',
   },
   {
@@ -184,6 +191,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/edwin.webp',
     tracks: ['investigacion', 'ia', 'seguridad'],
     slot: { day: 2, start: '21:00', end: '22:00' },
+    zoom: 'https://cedia.zoom.us/j/89337203053',
     category: 'profesional',
   },
   {
@@ -193,6 +201,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/carlos.webp',
     tracks: ['iot', 'investigacion'],
     slot: { day: 2, start: '20:00', end: '21:00' },
+    zoom: 'https://cedia.zoom.us/j/87075045103',
     category: 'profesional',
   },
   {
@@ -203,6 +212,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/dereck.webp',
     tracks: ['seguridad', 'ia'],
     slot: { day: 2, start: '18:00', end: '19:00' },
+    zoom: 'https://cedia.zoom.us/j/81741875354',
     category: 'estudiante',
   },
   {
@@ -213,6 +223,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/pablo.webp',
     tracks: ['investigacion'],
     slot: { day: 4, start: '18:00', end: '19:00' },
+    zoom: 'https://cedia.zoom.us/j/85720130009',
     category: 'profesional',
   },
   {
@@ -223,6 +234,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/kevin_perez.webp',
     tracks: ['ia', 'software'],
     slot: { day: 2, start: '17:00', end: '18:00' },
+    zoom: 'https://cedia.zoom.us/j/84564933852',
     category: 'estudiante',
   },
   {
@@ -233,6 +245,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/kevin_morales.webp',
     tracks: ['ia', 'software'],
     slot: { day: 3, start: '17:00', end: '18:00' },
+    zoom: 'https://cedia.zoom.us/j/88413157823',
     category: 'profesional',
   },
   {
@@ -243,6 +256,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/andres.webp',
     tracks: ['software', 'ia'],
     slot: { day: 5, start: '18:00', end: '19:00' },
+    zoom: 'https://cedia.zoom.us/j/82313524954',
     category: 'profesional',
   },
   {
@@ -253,6 +267,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/pablo_herrera.webp',
     tracks: ['software', 'ia'],
     slot: { day: 5, start: '17:00', end: '18:00' },
+    zoom: 'https://cedia.zoom.us/j/89943795352',
     category: 'profesional',
   },
   {
@@ -262,6 +277,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/felipe.webp',
     tracks: ['software', 'ia'],
     slot: { day: 5, start: '19:00', end: '20:00' },
+    zoom: 'https://cedia.zoom.us/j/86525720640',
     category: 'profesional',
   },
   {
@@ -272,6 +288,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/david.webp',
     tracks: ['software'],
     slot: { day: 2, start: '19:00', end: '20:00' },
+    zoom: 'https://cedia.zoom.us/j/86383675348',
     category: 'profesional',
   },
   {
@@ -283,6 +300,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/samuel.webp',
     tracks: ['iot', 'ia'],
     slot: { day: 1, start: '17:00', end: '18:00' },
+    zoom: 'https://cedia.zoom.us/j/82300977473',
     category: 'profesional',
   },
   {
@@ -294,6 +312,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/geovanny.webp',
     tracks: ['iot', 'software'],
     slot: { day: 0, start: '17:00', end: '18:00' },
+    zoom: 'https://cedia.zoom.us/j/88600129619',
     category: 'profesional',
   },
   {
@@ -303,6 +322,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/johan.webp',
     tracks: ['software'],
     slot: { day: 3, start: '20:00', end: '21:00' },
+    zoom: 'https://cedia.zoom.us/j/87207246271',
     category: 'estudiante',
   },
   {
@@ -313,6 +333,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/lesly.webp',
     tracks: ['ia', 'investigacion'],
     slot: { day: 1, start: '20:00', end: '21:00' },
+    zoom: 'https://cedia.zoom.us/j/86733237256',
     category: 'estudiante',
   },
   {
@@ -323,6 +344,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/meybili.webp',
     tracks: ['ia', 'investigacion'],
     slot: { day: 1, start: '20:00', end: '21:00' },
+    zoom: 'https://cedia.zoom.us/j/86733237256',
     category: 'estudiante',
   },
   {
@@ -333,6 +355,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/christian.webp',
     tracks: ['seguridad'],
     slot: { day: 4, start: '17:00', end: '18:00' },
+    zoom: 'https://cedia.zoom.us/j/86170622702',
     category: 'profesional',
   },
   {
@@ -344,6 +367,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/jonathan.webp',
     tracks: ['ia', 'seguridad'],
     slot: { day: 3, start: '21:00', end: '22:00' },
+    zoom: 'https://cedia.zoom.us/j/81459108705',
     category: 'profesional',
   },
   {
@@ -353,6 +377,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/thelman.webp',
     tracks: ['seguridad'],
     slot: { day: 0, start: '19:00', end: '20:00' },
+    zoom: 'https://cedia.zoom.us/j/83927500504',
   },
   {
     name: 'Pavel Alba',
@@ -361,6 +386,7 @@ export const speakers: Speaker[] = [
     photo: '/speakers/web/pavel.webp',
     tracks: ['ia'],
     slot: { day: 1, start: '18:00', end: '19:00' },
+    zoom: 'https://cedia.zoom.us/j/84073234539',
   },
 ]
 

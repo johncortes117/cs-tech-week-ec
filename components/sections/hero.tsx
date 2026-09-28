@@ -6,7 +6,8 @@ import { CalendarDays } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EASE, lineMask } from '@/lib/motion'
 import { event } from '@/lib/content'
-import { Btn } from '@/components/ui/primitives'
+import { Btn, JoinLink } from '@/components/ui/primitives'
+import { useJoinable } from '@/lib/use-event-status'
 import { StatusLine } from '@/components/ui/event-status'
 import { Mark } from '@/components/brand/logo'
 import { Logo3D } from '@/components/brand/logo-3d'
@@ -32,6 +33,7 @@ export function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const textY = useTransform(scrollYProgress, [0, 1], [0, 110])
   const textFade = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  const room = useJoinable()
 
   return (
     <section
@@ -102,12 +104,30 @@ export function Hero() {
             transition={{ duration: 0.8, ease: EASE, delay: 0.65 }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <Btn href={event.registerUrl} target="_blank" rel="noopener noreferrer" size="lg" arrow="next">
-              Inscríbete
-            </Btn>
-            <Btn href="#programa" size="lg" variant="ghost">
-              Ver programa
-            </Btn>
+            {/* while a talk's room is open, the first button takes you into it */}
+            {room?.session.zoom ? (
+              <>
+                <JoinLink
+                  href={room.session.zoom}
+                  live={room.live}
+                  hot
+                  label={room.live ? 'Unirse a la charla' : `Unirse · empieza ${room.session.start}`}
+                  className="h-14 px-7 text-[15px]"
+                />
+                <Btn href={event.registerUrl} target="_blank" rel="noopener noreferrer" size="lg" variant="ghost">
+                  Inscríbete
+                </Btn>
+              </>
+            ) : (
+              <>
+                <Btn href={event.registerUrl} target="_blank" rel="noopener noreferrer" size="lg" arrow="next">
+                  Inscríbete
+                </Btn>
+                <Btn href="#programa" size="lg" variant="ghost">
+                  Ver programa
+                </Btn>
+              </>
+            )}
           </motion.div>
         </motion.div>
       </div>
