@@ -1,51 +1,39 @@
 import type { Config } from 'tailwindcss'
 
+/* Colours resolve through CSS variables so a whole section can switch
+   between night and day by changing its class (see globals.css). The
+   `<alpha-value>` placeholder keeps opacity modifiers like `bg-fg/10`
+   working on top of that. */
+const v = (name: string) => `hsl(var(--${name}) / <alpha-value>)`
+
 const config: Config = {
-  darkMode: ['class'],
-  content: [
-    './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './lib/**/*.{ts,tsx}',
-  ],
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        /* Background ramp: blacks skewed towards CS blue (PMS 295), never pure #000 */
-        ink: {
-          DEFAULT: 'hsl(var(--ink))',
-          raise: 'hsl(var(--ink-raise))',
-          plate: 'hsl(var(--ink-plate))',
-        },
-        background: 'hsl(var(--ink))',
-        foreground: 'hsl(var(--paper))',
-        border: 'hsl(var(--line))',
-        line: {
-          DEFAULT: 'hsl(var(--line))',
-          strong: 'hsl(var(--line-strong))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--ink-plate))',
-          foreground: 'hsl(var(--paper-2))',
-        },
-        subtle: 'hsl(var(--paper-3))',
+        /* Tone-aware: these change with .tone-night / .tone-day */
+        bg: v('bg'),
+        surface: v('surface'),
+        fg: v('fg'),
+        muted: v('fg-2'),
+        subtle: v('fg-3'),
+        line: { DEFAULT: v('line'), strong: v('line-strong') },
 
-        /* Official IEEE Computer Society accents */
-        primary: {
-          DEFAULT: 'hsl(var(--orange))',
-          foreground: 'hsl(var(--ink))',
-        },
-        cyan: 'hsl(var(--cyan))',
-        deep: 'hsl(var(--deep))',
-        abyss: 'hsl(var(--abyss))',
+        /* Fixed brand colours — the same in every tone */
+        cyan: v('cyan'),
+        orange: v('orange'),
+        slate: v('slate'),
+        navy: v('navy'),
+        night: v('night'),
+        paper: v('paper'),
 
-        /* Tracks — all from the official bright palette in the brand guide */
+        /* Tracks — the official IEEE CS bright palette */
         track: {
-          ia: 'hsl(var(--track-ia))',
-          cloud: 'hsl(var(--track-cloud))',
-          sec: 'hsl(var(--track-sec))',
-          data: 'hsl(var(--track-data))',
-          dev: 'hsl(var(--track-dev))',
-          quantum: 'hsl(var(--track-quantum))',
+          investigacion: v('track-investigacion'),
+          iot: v('track-iot'),
+          software: v('track-software'),
+          ia: v('track-ia'),
+          seguridad: v('track-seguridad'),
         },
       },
       fontFamily: {
@@ -56,49 +44,23 @@ const config: Config = {
         pixel: ['var(--font-pixel)', 'ui-monospace', 'monospace'],
       },
       letterSpacing: {
-        display: '-0.04em',
+        tightest: '-0.055em',
+        display: '-0.045em',
         head: '-0.03em',
-        label: '0.16em',
+        label: '0.14em',
       },
-      borderRadius: {
-        card: '14px',
-        pill: '999px',
+      transitionTimingFunction: {
+        /* The site's single curve: leaves fast, settles long */
+        cs: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-        'orbit-spin': {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
-        },
-        'pulse-ring': {
-          '0%': { opacity: '0.55', transform: 'scale(1)' },
-          '70%': { opacity: '0', transform: 'scale(1.9)' },
-          '100%': { opacity: '0', transform: 'scale(1.9)' },
-        },
-        /* transform, not backgroundPosition: the GPU composites the
-           displacement without repainting the layer */
-        aurora: {
-          '0%,100%': { transform: 'translate3d(-3%, -2%, 0) scale(1.06)' },
-          '50%': { transform: 'translate3d(4%, 3%, 0) scale(1.16)' },
-        },
-        drift: {
-          '0%,100%': { transform: 'translate3d(0,0,0)' },
-          '50%': { transform: 'translate3d(0,-14px,0)' },
+        'live-pulse': {
+          '0%': { transform: 'scale(1)', opacity: '0.7' },
+          '80%, 100%': { transform: 'scale(2.6)', opacity: '0' },
         },
       },
       animation: {
-        marquee: 'marquee 38s linear infinite',
-        'orbit-spin': 'orbit-spin 90s linear infinite',
-        'pulse-ring': 'pulse-ring 3.2s cubic-bezier(0.22,1,0.36,1) infinite',
-        drift: 'drift 7s ease-in-out infinite',
-        aurora: 'aurora 26s ease-in-out infinite',
-      },
-      transitionTimingFunction: {
-        /* The site's single curve: fast out, long settle */
-        cs: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'live-pulse': 'live-pulse 1.8s cubic-bezier(0.22,1,0.36,1) infinite',
       },
     },
   },

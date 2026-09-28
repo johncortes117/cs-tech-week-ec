@@ -3,35 +3,31 @@ import { Montserrat, Open_Sans, IBM_Plex_Mono, Press_Start_2P } from 'next/font/
 import './globals.css'
 import { MotionProvider } from '@/components/ui/motion-provider'
 import { SmoothScroll } from '@/components/ui/smooth-scroll'
-import { TargetCursor } from '@/components/ui/target-cursor'
-import { ClickSpark } from '@/components/ui/click-spark'
 
 /* Montserrat and Open Sans are the families required by the IEEE
    Computer Society brand guide. IBM Plex Mono joins only for
-   micro-data (coordinates, countdown, schedules).
+   micro-data (coordinates, countdown, times).
 
    Press Start 2P is loaded for exactly one thing: the Minecraft
-   tournament card, whose poster is set in a pixel face. It is a
-   single weight over a latin subset, and nothing else on the site
-   is allowed to use it. */
+   card title. One weight, latin subset, nothing else may use it. */
 
 const montserrat = Montserrat({
   subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  weight: ['600', '700', '800', '900'],
   variable: '--font-montserrat',
   display: 'swap',
 })
 
 const openSans = Open_Sans({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '600'],
   variable: '--font-open-sans',
   display: 'swap',
 })
 
 const plexMono = IBM_Plex_Mono({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600'],
+  subsets: ['latin'],
+  weight: ['400', '500'],
   variable: '--font-plex-mono',
   display: 'swap',
 })
@@ -47,44 +43,31 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://cstechweek.ec'),
   title: 'CS Tech Week Ecuador 2026',
   description:
-    'Una semana dedicada a la tecnología, innovación, talento y comunidad, organizada por los capítulos IEEE Computer Society del Ecuador en el 80.º aniversario de IEEE CS. Charlas, hackathon y torneo, en formato virtual.',
-  keywords: [
-    'IEEE Computer Society',
-    'Ecuador',
-    'CS Tech Week',
-    'evento tech',
-    'inteligencia artificial',
-    'ciberseguridad',
-  ],
+    'Una semana de charlas gratuitas, un hackathon de CSS y un torneo de Minecraft, organizada por los capítulos IEEE Computer Society del Ecuador. Del 28 de septiembre al 4 de octubre de 2026, virtual.',
+  keywords: ['IEEE Computer Society', 'Ecuador', 'CS Tech Week', 'evento tech', 'CSS Battle', 'Minecraft'],
   openGraph: {
     title: 'CS Tech Week Ecuador 2026',
-    description: 'Latitud cero. Ochenta años. Una semana.',
+    description: 'Charlas, un hackathon de CSS y un torneo de Minecraft. Del 28 de septiembre al 4 de octubre, virtual.',
     locale: 'es_EC',
     type: 'website',
   },
-  icons: { icon: '/logo/ieee-cs-80th-color.svg' },
+  icons: { icon: '/logo/cs-tech-week-ec.svg' },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#05070B',
+  themeColor: '#050F1C',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es">
       <body
         className={`${montserrat.variable} ${openSans.variable} ${plexMono.variable} ${pressStart.variable} font-sans antialiased`}
       >
-        {/* MotionProvider is what honours prefers-reduced-motion across
-            the site: it disables transform and layout and lets
-            opacity through. Components never branch on it. */}
+        {/* MotionProvider honours prefers-reduced-motion across the site;
+            SmoothScroll switches itself off with it. */}
         <MotionProvider>
-          {/* Experience layer. All three pieces switch themselves off with
-              the motion preference, and the cursor additionally
-              requires a fine pointer: on mobile none of them mount. */}
           <SmoothScroll />
-          <TargetCursor />
-          <ClickSpark />
           {children}
         </MotionProvider>
       </body>

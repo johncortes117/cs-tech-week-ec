@@ -1,19 +1,13 @@
 /* ============================================================
    SINGLE SOURCE OF CONTENT
    Everything editable on the site lives here. Components carry
-   no hard-coded copy: changing the event = changing this file.
+   no copy of their own: changing the event = changing this file.
 
-   Anything marked  TBD:  is data still to be confirmed. It is
-   rendered on screen as a dotted orange placeholder so nobody
-   mistakes it for real information.
+   One rule governs the copy: every fact is said once. Dates and
+   hours live in the week strip, prices in the passes, the tracks
+   in the speaker filter. If a sentence repeats something another
+   section already shows, it goes.
    ============================================================ */
-
-export const TBD = '__TBD__' as const
-
-/** Wraps a pending value so the UI renders it as a placeholder. */
-export const tbd = (hint: string) => `${TBD}${hint}`
-export const isTbd = (v: string) => v.startsWith(TBD)
-export const tbdText = (v: string) => v.slice(TBD.length)
 
 /* ---------------------------------------------------------- */
 /* EVENT                                                        */
@@ -21,655 +15,630 @@ export const tbdText = (v: string) => v.slice(TBD.length)
 
 export const event = {
   name: 'CS Tech Week',
-  region: 'Ecuador',
+  fullName: 'CS Tech Week Ecuador 2026',
   year: 2026,
-  /** Hero headline. The <em> is painted orange. */
-  headline: ['CS Tech', 'Week', 'Ecuador'],
-  tagline: 'Latitud cero. Ochenta años. Una semana.',
-  taglineEn: 'Latitude zero. Eighty years. One week.',
-  intro:
-    'Una semana dedicada a la tecnología, innovación, talento y comunidad, celebrando el 80.º aniversario de IEEE Computer Society, reuniendo a estudiantes, profesionales y entusiastas de la computación a través de charlas, hackathons, concursos y espacios de conexión 100% virtual.',
 
-  /** Confirmed event dates. */
-  dates: 'Del 28 de septiembre al 4 de octubre de 2026',
-  datesShort: '28 SEP – 04 OCT 2026',
-  scheduleHours: 'Semana Académica: 17:00 a 21:00 ECT · Fin de Semana: Concursos',
-
-  /** The whole week runs online, so it is stated once, here. */
+  /** Hero: the name, what it is, when. Plain on purpose. */
+  headline: ['CS Tech Week', 'Ecuador 2026'],
+  summary:
+    'Una semana de charlas gratuitas, un hackathon de CSS y un torneo de Minecraft, organizada por los capítulos IEEE Computer Society del país.',
+  when: 'Del 28 de septiembre al 4 de octubre',
   format: 'Virtual',
 
-  /** Countdown target date (ISO, Ecuador time UTC−5, starts 17:00 ECT on Sep 28). */
+  /** Ecuador is UTC−5 all year round. The talks open Monday 28 at 17:00. */
   startsAt: '2026-09-28T17:00:00-05:00',
-
-  coords: '0°00′00″ · −78°27′',
-  anniversary: 'IEEE CS · 80 años construyendo comunidad',
+  endsAt: '2026-10-05T00:00:00-05:00',
 
   registerUrl: 'https://forms.gle/3aLwMJjCubUX7NXJ7',
-  sponsorUrl: '#sponsors',
-  agendaUrl: '#agenda',
 
   social: {
     instagram: 'https://www.instagram.com/ecu.cs.week.2026/',
-    linkedin: 'https://www.linkedin.com/company/ieee-computer-society',
+    instagramHandle: '@ecu.cs.week.2026',
     email: 'cstechweek@ieee.ec',
-    cssBattle: 'https://cssbattle.dev',
-    csWeekPeru: 'https://www.instagram.com/csweekperu',
   },
+
+  closing: 'Nos vemos en la mitad del mundo',
+} as const
+
+export const nav = [
+  { label: 'Programa', href: '#programa' },
+  { label: 'Speakers', href: '#speakers' },
+  { label: 'Concursos', href: '#concursos' },
+  { label: 'Entradas', href: '#entradas' },
+  { label: 'Organizan', href: '#organizan' },
+  { label: 'FAQ', href: '#faq' },
+] as const
+
+/* ---------------------------------------------------------- */
+/* THE WEEK                                                     */
+/* Blocks span day indexes (0 = Monday 28). `hours` is in        */
+/* Ecuador time and drives the "on air" state in the header.     */
+/* ---------------------------------------------------------- */
+
+export const week = {
+  firstDay: '2026-09-28T00:00:00-05:00',
+  days: [
+    { weekday: 'Lun', day: '28', month: 'Sep' },
+    { weekday: 'Mar', day: '29' },
+    { weekday: 'Mié', day: '30' },
+    { weekday: 'Jue', day: '01', month: 'Oct' },
+    { weekday: 'Vie', day: '02' },
+    { weekday: 'Sáb', day: '03' },
+    { weekday: 'Dom', day: '04' },
+  ],
+  blocks: [
+    {
+      key: 'charlas',
+      name: 'Charlas',
+      detail: 'Desde las 17:00 ECT',
+      from: 0,
+      to: 5,
+    },
+    {
+      key: 'concursos',
+      name: 'Concursos',
+      detail: 'CSS Battle · Minecraft',
+      from: 5,
+      to: 6,
+    },
+  ],
 } as const
 
 /* ---------------------------------------------------------- */
-/* PHASES & SCHEDULE STRUCTURE                                  */
+/* TRACKS — the official IEEE CS bright palette                 */
+/* `ink` is the text colour that reads on top of the swatch.    */
 /* ---------------------------------------------------------- */
 
-export const phases = [
-  {
-    phase: 'Fase 1 · Semana Académica',
-    dates: '28 Sep – 3 Oct (Lun a Sáb)',
-    hours: '17:00 a 21:00 ECT (5:00 PM – 9:00 PM)',
-    desc: 'Ponencias magistrales y conferencias virtuales de frontera dictadas por referentes de la industria y talento universitario.',
-    tag: 'Conferencias Magistrales',
-    badge: '6 Días',
-  },
-  {
-    phase: 'Fase 2 · Fin de Semana Competitivo',
-    dates: '3 y 4 de Octubre (Sáb y Dom)',
-    hours: 'Horarios de duelos y torneos',
-    desc: 'Mini Hackathon Frontend auspiciada por CSSBattle y Torneo de Construcción en servidor dedicado de Minecraft.',
-    tag: 'Hackathons & Torneos',
-    badge: 'Fin de Semana',
-  },
-] as const
+export type TrackKey = 'investigacion' | 'iot' | 'software' | 'ia' | 'seguridad'
 
-/* ---------------------------------------------------------- */
-/* NAVIGATION                                                   */
-/* ---------------------------------------------------------- */
+export const tracks: { key: TrackKey; name: string; hex: string; ink: 'dark' | 'light' }[] = [
+  { key: 'investigacion', name: 'Investigación', hex: '#00B5E2', ink: 'dark' },
+  { key: 'iot', name: 'IoT', hex: '#FFD100', ink: 'dark' },
+  { key: 'software', name: 'Software', hex: '#78BE20', ink: 'dark' },
+  { key: 'ia', name: 'IA', hex: '#981D97', ink: 'light' },
+  { key: 'seguridad', name: 'Seguridad', hex: '#BA0C2F', ink: 'light' },
+]
 
-export const navLinks = [
-  { label: 'El evento', href: '#evento' },
-  { label: 'Actividades', href: '#actividades' },
-  { label: 'Agenda', href: '#agenda' },
-  { label: 'Speakers', href: '#speakers' },
-  { label: 'Inscripciones', href: '#precios' },
-  { label: 'Merch', href: '#merch' },
-  { label: 'Sponsors', href: '#sponsors' },
-  { label: 'Capítulos', href: '#capitulos' },
-] as const
-
-/* ---------------------------------------------------------- */
-/* TEMÁTICAS — every hex comes from the official IEEE CS bright palette */
-/* ---------------------------------------------------------- */
-
-export type TopicKey = 'investigacion' | 'iot' | 'software' | 'ia' | 'seguridad'
-export type TrackKey = TopicKey
-
-export const tracks: {
-  key: TopicKey
-  name: string
-  pms: string
-  hex: string
-  blurb: string
-}[] = [
-    {
-      key: 'investigacion',
-      name: 'Investigación Científica',
-      pms: 'PMS Process Cyan',
-      hex: '#00B5E2',
-      blurb: 'Avances académicos, papers y proyectos de innovación científica.',
-    },
-    {
-      key: 'iot',
-      name: 'IoT (Internet de las Cosas)',
-      pms: 'PMS 109 C',
-      hex: '#FFD100',
-      blurb: 'Hardware libre, sensores, sistemas embebidos y conectividad.',
-    },
-    {
-      key: 'software',
-      name: 'Software',
-      pms: 'PMS 368 C',
-      hex: '#78BE20',
-      blurb: 'Ingeniería de software, Frontend, Backend, arquitectura y DevOps.',
-    },
-    {
-      key: 'ia',
-      name: 'Inteligencia Artificial',
-      pms: 'PMS 254 C',
-      hex: '#981D97',
-      blurb: 'Machine learning, visión computacional, agentes autónomos y LLMs.',
-    },
-    {
-      key: 'seguridad',
-      name: 'Seguridad',
-      pms: 'PMS 200 C',
-      hex: '#BA0C2F',
-      blurb: 'Ciberseguridad defensiva, hacking ético y protección de sistemas.',
-    },
-  ]
-
-export const topics = tracks
 export const trackByKey = Object.fromEntries(tracks.map((t) => [t.key, t])) as Record<
-  TopicKey,
+  TrackKey,
   (typeof tracks)[number]
 >
-export const topicByKey = trackByKey
-
-/* ---------------------------------------------------------- */
-/* FIGURES                                                      */
-/* ---------------------------------------------------------- */
-
-export const stats = [
-  { value: '7', label: 'Días', detail: '28 Sep – 04 Oct 2026' },
-  { value: '2', label: 'Fases', detail: 'Charlas + Concursos' },
-  { value: '5', label: 'Temáticas', detail: 'Áreas de vanguardia' },
-  { value: '11', label: 'Organizaciones', detail: 'Organizan en conjunto' },
-] as const
-
-/* ---------------------------------------------------------- */
-/* TECHNOLOGY CONSTELLATION (§ orbit)                           */
-/* Technology labels, not sponsor logos.                        */
-/* edge: true = falls outside the usable width on mobile, hidden. */
-/* ---------------------------------------------------------- */
-
-export const orbitNodes = [
-  // ring 0 (r=240)
-  { label: 'Python', ring: 0, angle: 210 },
-  { label: 'React', ring: 0, angle: 270 },
-  { label: 'Docker', ring: 0, angle: 330 },
-  // ring 1 (r=370)
-  { label: 'Kubernetes', ring: 1, angle: 198 },
-  { label: 'PyTorch', ring: 1, angle: 235 },
-  { label: 'Rust', ring: 1, angle: 305 },
-  { label: 'Go', ring: 1, angle: 342 },
-  // ring 2 (r=495)
-  { label: 'Linux', ring: 2, angle: 192, edge: true },
-  { label: 'Postgres', ring: 2, angle: 216 },
-  { label: 'LLMs', ring: 2, angle: 270 },
-  { label: 'Qiskit', ring: 2, angle: 324 },
-  { label: 'Wireshark', ring: 2, angle: 348, edge: true },
-] as const
-
-/* ---------------------------------------------------------- */
-/* AGENDA                                                       */
-/* Rendered exactly as it stands: if days is empty, the section  */
-/* switches to "under construction" mode with email capture.    */
-/* ---------------------------------------------------------- */
-
-export type SessionType = 'ponencia' | 'panel' | 'workshop' | 'reto'
-
-export type Session = {
-  start: string
-  end: string
-  title: string
-  speaker?: string
-  track: TrackKey
-  type: SessionType
-}
-
-export type Day = {
-  key: string
-  label: string
-  date: string
-  sessions: Session[]
-}
-
-/** Empty on purpose: the programme is not defined yet. */
-export const days: Day[] = []
-
-export const typeLabels: Record<SessionType, string> = {
-  ponencia: 'Ponencia',
-  panel: 'Panel',
-  workshop: 'Workshop',
-  reto: 'Reto',
-}
 
 /* ---------------------------------------------------------- */
 /* SPEAKERS                                                     */
+/* Photos: drop the original in /public/speakers, run           */
+/* `pnpm images`, and point `photo` at the WebP it prints.      */
+/* `tracks` lists every topic a talk covers; it shows up under  */
+/* each of them in the filter. `slot` places the card on the    */
+/* wall. Two entries with the same `talk` share a card. A       */
+/* speaker only appears once added here — there are no          */
+/* placeholder cards.                                           */
 /* ---------------------------------------------------------- */
-
-export type SpeakerCategory = 'profesional' | 'estudiante'
 
 export type Speaker = {
   name: string
-  role: string
+  talk: string
+  /** Institution or company. */
   org: string
+  /** Academic degree, set small before the name: 'PhD.', 'MSc.', 'Mg.', 'Ing.' */
+  degree?: string
+  /** Professional position, shown before the institution: 'AI Engineer', 'Docente investigador' */
+  role?: string
   photo?: string
-  track?: TrackKey
-  category?: SpeakerCategory
+  /** Every topic the talk covers. */
+  tracks: TrackKey[]
+  category?: 'profesional' | 'estudiante'
+  /** When the talk happens. `day`: 0 = Monday 28. Hours in Ecuador time. */
+  slot?: Slot
 }
 
-/** Empty on purpose: nobody is publicly confirmed yet. */
+export type Slot = { day: number; start: string; end: string }
+
 export const speakers: Speaker[] = [
   {
-    name: 'Harikrishnan Muthukrishnan',
-    role: 'Low-Code by Design: Architecting Governed Enterprise Platforms in Regulated Healthcare',
-    org: 'Forbes Technology Council Member / ESPOL',
-    photo: '/speakers/Harikrishnan.png',
-    track: 'software',
-    category: 'profesional',
-  },
-  {
     name: 'Diego H. Peluffo-Ordóñez',
-    role: '…from ‘What If?’ to ‘Why Not?’: The journey of SDAS Research Group',
+    degree: 'PhD.',
+    talk: '…from ‘What If?’ to ‘Why Not?’: The journey of SDAS Research Group',
     org: 'YACHAY TECH',
-    photo: '/speakers/diego.png',
-    track: 'investigacion',
+    photo: '/speakers/web/diego.webp',
+    tracks: ['investigacion', 'ia'],
+    slot: { day: 3, start: '18:00', end: '19:00' },
     category: 'profesional',
   },
   {
     name: 'Gustavo Justicia',
-    role: '¿Quién Está Comprando en tu Nombre? Comercio agéntico: oportunidad, riesgo y el futuro del consumo',
+    talk: '¿Quién Está Comprando en tu Nombre? Comercio agéntico: oportunidad, riesgo y el futuro del consumo',
+    degree: 'MSc.',
+    role: 'CEO @StrategIA',
     org: 'YACHAY TECH',
-    photo: '/speakers/gustavo.png',
-    track: 'ia',
+    photo: '/speakers/web/gustavo.webp',
+    tracks: ['ia', 'seguridad'],
+    slot: { day: 0, start: '18:00', end: '19:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Harikrishnan Muthukrishnan',
+    talk: 'Low-Code by Design: Architecting Governed Enterprise Platforms in Regulated Healthcare',
+    org: 'ESPOL',
+    role: 'Forbes Technology Council Member',
+    photo: '/speakers/web/Harikrishnan.webp',
+    tracks: ['software'],
+    slot: { day: 1, start: '19:00', end: '20:00' },
     category: 'profesional',
   },
   {
     name: 'Diego Garcia',
-    role: 'Desarrollo de Software Guiado por Especificaciones (SDD) mediante Agentes de IA',
+    talk: 'Desarrollo de Software Guiado por Especificaciones (SDD) mediante Agentes de IA',
+    degree: 'MSc.',
     org: 'ESPOCH',
-    photo: '/speakers/diego_garcia.png',
-    track: 'software',
+    photo: '/speakers/web/diego_garcia.webp',
+    tracks: ['software', 'ia'],
+    slot: { day: 0, start: '20:00', end: '21:00' },
     category: 'profesional',
   },
   {
     name: 'Edwin Hernando Salazar',
-    role: 'Del Modelo Matemático a la Imagen Sintética: generación de venas de la palma para el reconocimiento biométrico',
+    talk: 'Del Modelo Matemático a la Imagen Sintética: generación de venas de la palma para el reconocimiento biométrico',
+    role: 'Research Professor',
     org: 'ESPOCH',
-    photo: '/speakers/edwin.jpeg',
-    track: 'investigacion',
+    photo: '/speakers/web/edwin.webp',
+    tracks: ['investigacion', 'ia', 'seguridad'],
+    slot: { day: 2, start: '21:00', end: '22:00' },
     category: 'profesional',
   },
   {
     name: 'Carlos Daniel Puentestar',
-    role: 'El uso de señales cerebrales como forma de control para tus dispositivos',
+    talk: 'El uso de señales cerebrales como forma de control para tus dispositivos',
     org: 'UTN',
-    photo: '/speakers/carlos.jpeg',
-    track: 'iot',
+    photo: '/speakers/web/carlos.webp',
+    tracks: ['iot', 'investigacion'],
+    slot: { day: 2, start: '20:00', end: '21:00' },
     category: 'profesional',
   },
   {
     name: 'Derek Guevara',
-    role: 'IA y Seguridad con AWS',
-    org: 'ESPOL / AWS',
-    photo: '/speakers/dereck.jpeg',
-    track: 'seguridad',
+    talk: 'IA y Seguridad con AWS',
+    role: 'AWS Student Builder Campus Leader',
+    org: 'ESPOL',
+    photo: '/speakers/web/dereck.webp',
+    tracks: ['seguridad', 'ia'],
+    slot: { day: 2, start: '18:00', end: '19:00' },
     category: 'estudiante',
+  },
+  {
+    name: 'Pablo Robalino',
+    talk: 'Micro Mentoring y Actividades para Sudamérica',
+    role: 'Global South America Liaison, IEEE CS MGA',
+    org: 'UTN',
+    photo: '/speakers/web/pablo.webp',
+    tracks: ['investigacion'],
+    slot: { day: 4, start: '18:00', end: '19:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Kevin Pérez',
+    talk: 'Vibecoding con propósito: de la idea a una aplicación funcional',
+    role: 'SupaSquad Member & GDG Volunteer',
+    org: 'UTN',
+    photo: '/speakers/web/kevin_perez.webp',
+    tracks: ['ia', 'software'],
+    slot: { day: 2, start: '17:00', end: '18:00' },
+    category: 'estudiante',
+  },
+  {
+    name: 'Kevin Morales',
+    talk: 'De la AI al equipo: construyendo agentes con Grok Bot para resolver problemas reales',
+    role: 'CEO & Co-Founder @Meniuz - Senior Mobile Engineer',
+    org: 'UTN',
+    photo: '/speakers/web/kevin_morales.webp',
+    tracks: ['ia', 'software'],
+    slot: { day: 3, start: '17:00', end: '18:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Andrés Alba',
+    talk: 'Técnicas avanzadas de optimización y paralelismo para soportar sistemas de IA de alta concurrencia en producción',
+    degree: 'Ing.',
+    org: 'UCACUE',
+    photo: '/speakers/web/andres.webp',
+    tracks: ['software', 'ia'],
+    slot: { day: 5, start: '18:00', end: '19:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Pablo Herrera',
+    talk: 'Spec-Driven Development con IA: Arquitectura y desarrollo guiado de aplicaciones web',
+    degree: 'MSc.',
+    org: 'UCACUE',
+    photo: '/speakers/web/pablo_herrera.webp',
+    tracks: ['software', 'ia'],
+    slot: { day: 5, start: '17:00', end: '18:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Felipe Mendieta',
+    talk: 'Primero los datos, luego la IA - Arquitectura y calidad antes de construir agentes',
+    org: 'UCACUE',
+    photo: '/speakers/web/felipe.webp',
+    tracks: ['software', 'ia'],
+    slot: { day: 5, start: '19:00', end: '20:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'David Castro',
+    talk: 'Cómo escala una aplicación en el mundo real: La brecha entre los proyectos universitarios/personales y los sistemas que atienden a millones de usuarios',
+    degree: 'Ing.',
+    org: 'EPN',
+    photo: '/speakers/web/david.webp',
+    tracks: ['software'],
+    slot: { day: 2, start: '19:00', end: '20:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Samuel Lascano Rivera',
+    talk: 'De los datos a la inteligencia: IA, sensores y sistemas inteligentes para resolver problemas reales',
+    degree: 'PhD.',
+    role: 'Research Professor',
+    org: 'UPEC',
+    photo: '/speakers/web/samuel.webp',
+    tracks: ['iot', 'ia'],
+    slot: { day: 1, start: '17:00', end: '18:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Geovanny Basantes',
+    talk: 'De Python al PLC: Integrando Sistemas Industriales con Modbus',
+    degree: 'Ing.',
+    role: 'CEO & Founder @DevIAlabs',
+    org: 'UPEC',
+    photo: '/speakers/web/geovanny.webp',
+    tracks: ['iot', 'software'],
+    slot: { day: 0, start: '17:00', end: '18:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Johan Sáenz',
+    talk: 'Java con Spring boot - Comandas en vivo',
+    org: 'UCE',
+    photo: '/speakers/web/johan.webp',
+    tracks: ['software'],
+    slot: { day: 3, start: '20:00', end: '21:00' },
+    category: 'estudiante',
+  },
+  {
+    name: 'Lesly Salas Cueva',
+    talk: 'De la Hoja de Vida a la Decisión: IA aplicada al Reclutamiento, Diseño y Evaluación Experimental',
+    role: 'Development Intern @UMCO',
+    org: 'UCE',
+    photo: '/speakers/web/lesly.webp',
+    tracks: ['ia', 'investigacion'],
+    slot: { day: 1, start: '20:00', end: '21:00' },
+    category: 'estudiante',
+  },
+  {
+    name: 'Meybili T. Olivares',
+    talk: 'De la Hoja de Vida a la Decisión: IA aplicada al Reclutamiento, Diseño y Evaluación Experimental',
+    role: 'Development Intern @NATONAR S.A.S.',
+    org: 'UCE',
+    photo: '/speakers/web/meybili.webp',
+    tracks: ['ia', 'investigacion'],
+    slot: { day: 1, start: '20:00', end: '21:00' },
+    category: 'estudiante',
+  },
+  {
+    name: 'Christian Andrés Tapia',
+    talk: 'Espionaje físico moderno: Cuando el peligro no viene por internet, sino por el cable de la pared',
+    degree: 'MSc.',
+    org: 'UCE',
+    photo: '/speakers/web/christian.webp',
+    tracks: ['seguridad'],
+    slot: { day: 4, start: '17:00', end: '18:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Jonathan Tito',
+    talk: 'IA: privacidad y soberanía digital',
+    degree: 'MSc.',
+    role: 'Professor',
+    org: 'UIDE',
+    photo: '/speakers/web/jonathan.webp',
+    tracks: ['ia', 'seguridad'],
+    slot: { day: 3, start: '21:00', end: '22:00' },
+    category: 'profesional',
+  },
+  {
+    name: 'Thelman Pabón',
+    talk: 'Ciberseguridad: la respuesta al desempleo juvenil en Ecuador',
+    org: 'USFQ',
+    photo: '/speakers/web/thelman.webp',
+    tracks: ['seguridad'],
+    slot: { day: 0, start: '19:00', end: '20:00' },
+  },
+  {
+    name: 'Pavel Alba',
+    talk: 'Cómo navegar el panorama de la IA: modelos, agentes y niveles de razonamiento',
+    org: 'USFQ',
+    photo: '/speakers/web/pavel.webp',
+    tracks: ['ia'],
+    slot: { day: 1, start: '18:00', end: '19:00' },
   },
 ]
 
-/** How many slots to show while no speakers are confirmed. */
-export const speakerSlots = 4
+/* ---------------------------------------------------------- */
+/* CONTESTS — the competitive weekend                           */
+/* ---------------------------------------------------------- */
 
-export const speakerCategories = [
+export type Contest = {
+  key: 'cssbattle' | 'minecraft'
+  name: string
+  kind: string
+  blurb: string
+  partner?: { name: string; url: string }
+  video?: string
+  image?: string
+  /** Day always; hours once they are confirmed. */
+  slot: { day: number; start?: string; end?: string }
+}
+
+export const contests: Contest[] = [
   {
-    title: 'Profesionales de la Industria',
-    desc: 'Expertos que aportarán su visión técnica, experiencia laboral e investigaciones aplicadas.',
+    key: 'cssbattle',
+    name: 'CSS Battle',
+    kind: 'Hackathon de CSS',
+    blurb: 'Recrea un objetivo visual con la mayor precisión y el menor código posible.',
+    partner: { name: 'cssbattle.dev', url: 'https://cssbattle.dev' },
+    video: '/teaser/css-battle.mp4',
+    image: '/images/web/cssbattle-preview.webp',
+    slot: { day: 6 },
   },
   {
-    title: 'Estudiantes Destacados',
-    desc: 'Jóvenes universitarios con dominio sobresaliente en tecnologías de vanguardia y proyectos reales.',
+    key: 'minecraft',
+    name: 'Minecraft',
+    kind: 'Torneo de construcción',
+    blurb: 'Construcción individual en un servidor exclusivo del evento.',
+    image: '/images/web/minecraft-server.webp',
+    slot: { day: 5, start: '14:30', end: '16:30' },
   },
+]
+
+export const prizes = 'Premios económicos y virtuales para quienes ganen.'
+
+/* ---------------------------------------------------------- */
+/* PASSES                                                       */
+/* ---------------------------------------------------------- */
+
+export type Pass = {
+  key: string
+  name: string
+  /** USD. `member` applies with a current IEEE / Computer Society membership. */
+  price: { member: number; general: number }
+  includes: string[]
+}
+
+export const passes: Pass[] = [
+  {
+    key: 'charlas',
+    name: 'Charlas',
+    price: { member: 0, general: 0 },
+    includes: ['Las seis jornadas de charlas', 'Preguntas en vivo a cada speaker'],
+  },
+  {
+    key: 'un-concurso',
+    name: '1 concurso',
+    price: { member: 3, general: 5 },
+    includes: ['CSS Battle o Minecraft', 'Charlas incluidas'],
+  },
+  {
+    key: 'dos-concursos',
+    name: '2 concursos',
+    price: { member: 5, general: 7 },
+    includes: ['CSS Battle y Minecraft', 'Charlas incluidas'],
+  },
+]
+
+export const passesNote =
+  'Todas incluyen certificado digital. La tarifa IEEE requiere membresía vigente de IEEE o Computer Society.'
+
+/* ---------------------------------------------------------- */
+/* ORGANISERS                                                   */
+/* Cities are placed on the map by their coordinates; the list  */
+/* is sorted north to south, so latitude zero falls between      */
+/* them on its own.                                             */
+/* ---------------------------------------------------------- */
+
+export const cities = [
+  { name: 'Tulcán', lat: 0.8114, lon: -77.7178 },
+  { name: 'Urcuquí', lat: 0.4183, lon: -78.1975 },
+  { name: 'Ibarra', lat: 0.35, lon: -78.1167 },
+  { name: 'Quito', lat: -0.22, lon: -78.5125 },
+  { name: 'Riobamba', lat: -1.6667, lon: -78.65 },
+  { name: 'Guayaquil', lat: -2.1833, lon: -79.8833 },
+  { name: 'Cuenca', lat: -2.8972, lon: -79.0042 },
 ] as const
 
-/* ---------------------------------------------------------- */
-/* ORGANISING CHAPTERS                                          */
-/* The brand guide requires the full name, no acronyms.         */
-/* ---------------------------------------------------------- */
+export type CityName = (typeof cities)[number]['name']
 
 export type Chapter = {
-  name: string
+  /** Short name, as students say it. */
+  short: string
+  /** The brand guide asks for the full name, no acronyms. */
   fullName: string
   university: string
-  city: string
+  city: CityName
   logo: string
   instagram: string
-  handle?: string
 }
 
 export const chapters: Chapter[] = [
   {
-    name: 'IEEE CS ESPOL',
+    short: 'ESPOL',
     fullName: 'IEEE Computer Society ESPOL',
     university: 'Escuela Superior Politécnica del Litoral',
     city: 'Guayaquil',
-    logo: '/chapters/CS_ESPOL.png',
+    logo: '/chapters/web/CS_ESPOL.webp',
     instagram: 'https://www.instagram.com/ieee.espol.computer',
-    handle: '@ieee.espol.computer',
   },
   {
-    name: 'IEEE CS UTN',
+    short: 'UTN',
     fullName: 'IEEE Computer Society UTN',
     university: 'Universidad Técnica del Norte',
     city: 'Ibarra',
-    logo: '/chapters/CS_UTN.png',
+    logo: '/chapters/web/CS_UTN.webp',
     instagram: 'https://www.instagram.com/ieee_utncs',
-    handle: '@ieee_utncs',
   },
   {
-    name: 'IEEE CS USFQ',
+    short: 'USFQ',
     fullName: 'IEEE Computer Society USFQ',
     university: 'Universidad San Francisco de Quito',
     city: 'Quito',
-    logo: '/chapters/CS_USFQ.png',
+    logo: '/chapters/web/CS_USFQ.webp',
     instagram: 'https://www.instagram.com/ieee_usfq_cs',
-    handle: '@ieee_usfq_cs',
   },
   {
-    name: 'IEEE CS UPS Cuenca',
+    short: 'UPS',
     fullName: 'IEEE Computer Society UPS Cuenca',
     university: 'Universidad Politécnica Salesiana',
     city: 'Cuenca',
-    logo: '/chapters/CS_UPS_CUENCA.png',
+    logo: '/chapters/web/CS_UPS_CUENCA.webp',
     instagram: 'https://www.instagram.com/cs.ieee.ups.cuenca',
-    handle: '@cs.ieee.ups.cuenca',
   },
   {
-    name: 'IEEE CS UIDE',
+    short: 'UIDE',
     fullName: 'IEEE Computer Society UIDE',
     university: 'Universidad Internacional del Ecuador',
     city: 'Quito',
-    logo: '/chapters/CS_UIDE.png',
+    logo: '/chapters/web/CS_UIDE.webp',
     instagram: 'https://www.instagram.com/ieee_uide',
-    handle: '@ieee_uide',
   },
   {
-    name: 'IEEE CS UCACUE',
+    short: 'UCACUE',
     fullName: 'IEEE Computer Society UCACUE',
     university: 'Universidad Católica de Cuenca',
     city: 'Cuenca',
-    logo: '/chapters/CS_UCACUE.png',
+    logo: '/chapters/web/CS_UCACUE.webp',
     instagram: 'https://www.instagram.com/ieee.uc',
-    handle: '@ieee.uc',
   },
   {
-    name: 'IEEE CS EPN',
+    short: 'EPN',
     fullName: 'IEEE Computer Society EPN',
     university: 'Escuela Politécnica Nacional',
     city: 'Quito',
-    logo: '/chapters/CS_EPN.png',
+    logo: '/chapters/web/CS_EPN.webp',
     instagram: 'https://www.instagram.com/computer_society.epn',
-    handle: '@computer_society.epn',
   },
   {
-    name: 'IEEE CS UPEC',
+    short: 'UPEC',
     fullName: 'IEEE Computer Society UPEC',
     university: 'Universidad Politécnica Estatal del Carchi',
     city: 'Tulcán',
-    logo: '/chapters/CS_UPEC.png',
+    logo: '/chapters/web/CS_UPEC.webp',
     instagram: 'https://www.instagram.com/ieee.upec',
-    handle: '@ieee.upec',
   },
   {
-    name: 'IEEE CS Yachay Tech',
+    short: 'Yachay Tech',
     fullName: 'IEEE Computer Society Yachay Tech',
     university: 'Universidad Yachay Tech',
     city: 'Urcuquí',
-    logo: '/chapters/CS_YACHAY.png',
+    logo: '/chapters/web/CS_YACHAY.webp',
     instagram: 'https://www.instagram.com/ramaieeeyt',
-    handle: '@ramaieeeyt',
   },
   {
-    name: 'IEEE CS ESPOCH',
+    short: 'ESPOCH',
     fullName: 'IEEE Computer Society ESPOCH',
     university: 'Escuela Superior Politécnica de Chimborazo',
     city: 'Riobamba',
-    logo: '/chapters/CS_ESPOCH.png',
+    logo: '/chapters/web/CS_ESPOCH.webp',
     instagram: 'https://www.instagram.com/ieee_espoch_cs',
-    handle: '@ieee_espoch_cs',
   },
   {
-    name: 'IEEE UCE SB',
+    short: 'UCE',
     fullName: 'Rama Estudiantil IEEE UCE',
     university: 'Universidad Central del Ecuador',
     city: 'Quito',
-    logo: '/chapters/IEEE_UCE_SB.png',
+    logo: '/chapters/web/IEEE_UCE_SB.webp',
     instagram: 'https://www.instagram.com/ieee.uce.sb',
-    handle: '@ieee.uce.sb',
   },
 ]
 
-/* Slots to show while the list is being confirmed. */
-export const chapterSlots = 11
+/* ---------------------------------------------------------- */
+/* MERCH                                                        */
+/* ---------------------------------------------------------- */
+
+export const merch = {
+  blurb: 'Stickers conmemorativos, con punto de entrega en cada universidad organizadora.',
+  sheets: [
+    {
+      src: '/images/web/merch-stickers.webp',
+      alt: 'Stickers de IEEE CS ESPOL y CS Tech Week con la tortuga graduada',
+      width: 652,
+      height: 247,
+    },
+    {
+      src: '/images/web/merch_usfq.webp',
+      alt: 'Stickers de IEEE CS USFQ con el dragón',
+      width: 1400,
+      height: 850,
+    },
+  ],
+} as const
 
 /* ---------------------------------------------------------- */
-/* SPONSORS & FINANCING                                         */
+/* SPONSORS                                                     */
+/* Empty tiers are not drawn.                                   */
 /* ---------------------------------------------------------- */
 
 export type SponsorTier = {
   key: string
   name: string
   sponsors: { name: string; logo?: string }[]
-  featured?: boolean
 }
 
 export const sponsorTiers: SponsorTier[] = [
   {
-    key: 'silver',
-    name: 'Silver',
+    key: 'platinum',
+    name: 'Platinum',
     sponsors: [],
   },
   {
     key: 'gold',
     name: 'Gold',
     sponsors: [
-      { name: 'Maxxnet', logo: '/sponsors/maxxnet_logo.png' },
+      { name: 'Maxxnet', logo: '/sponsors/web/maxxnet_logo.webp' },
       { name: 'Capia' },
-      { name: 'Google Developer Groups (GDG) Cuenca', logo: '/sponsors/gdg_cuenca_logo.png' },
+      { name: 'Google Developer Groups Cuenca', logo: '/sponsors/web/gdg_cuenca_logo.webp' },
     ],
-    featured: true,
   },
   {
-    key: 'platinum',
-    name: 'Platinum',
+    key: 'silver',
+    name: 'Silver',
     sponsors: [],
   },
 ]
 
 /* ---------------------------------------------------------- */
-/* COMMUNITY REWARDS & MERCHANDISING                            */
-/* ---------------------------------------------------------- */
-
-export const communityRewards = {
-  title: 'Gestión Transparente y Merchandising Físico',
-  subtitle: 'Premios para ganadores y recuerdos en cada universidad',
-  description:
-    'Todos los ingresos de entradas y auspicios son evaluados y gestionados en conjunto por los presidentes de capítulo con los más altos estándares de transparencia. Los fondos se destinan íntegramente a:',
-  items: [
-    {
-      title: 'Premios Económicos y Virtuales',
-      desc: 'Reconocimientos en efectivo y cheques virtuales para los ganadores de la Mini Hackathon de CSS y el Concurso de Minecraft.',
-    },
-    {
-      title: 'Merchandising Físico Conmemorativo',
-      desc: 'Stickers coleccionables de la mascota tortuga IEEE CS ESPOL y recuerdos oficiales del CS TECH WEEK.',
-    },
-    {
-      title: 'Puntos de Entrega en Cada Universidad',
-      desc: 'Distribución física coordinada por los Chairs de capítulos técnicos en cada universidad participante.',
-    },
-  ],
-  image: '/images/merch-stickers.png',
-}
-
-/* ---------------------------------------------------------- */
-/* PRICING & REGISTRATION                                        */
-/* ---------------------------------------------------------- */
-
-export type Price = {
-  /** USD for IEEE Computer Society members. */
-  member: number
-  /** USD for everyone else. */
-  general: number
-}
-
-export type PricingCombo = {
-  key: string
-  name: string
-  tagline: string
-  price: Price
-  features: string[]
-  badge?: string
-  popular?: boolean
-  cta: string
-}
-
-export const pricingCombos: PricingCombo[] = [
-  {
-    key: 'charlas-gratuitas',
-    name: 'Charlas gratuitas',
-    tagline: 'Acceso libre a toda la semana académica.',
-    price: { member: 0, general: 0 },
-    features: [
-      'Acceso a todas las charlas (28 Sep – 3 Oct)',
-      'Horario de 17:00 a 21:00 ECT',
-      'Acceso a las 5 temáticas oficiales',
-      'Certificado digital con horas avaladas',
-      'Acceso a sesiones de preguntas y respuestas',
-    ],
-    badge: 'Gratis',
-    popular: true,
-    cta: 'Registrarme gratis',
-  },
-  {
-    key: 'un-concurso',
-    name: '1 concurso',
-    tagline: 'Elige CSS Battle o el torneo individual de Minecraft.',
-    price: { member: 3, general: 5 },
-    features: [
-      'Inscripción a 1 concurso: CSS Battle o Minecraft',
-      'Charlas gratuitas incluidas',
-      'Certificado oficial de asistencia y competencia',
-      'Opción a premios económicos del concurso elegido',
-      'Acceso a comunidad y canales en Discord',
-    ],
-    cta: 'Inscribirme a 1 concurso',
-  },
-  {
-    key: 'dos-concursos',
-    name: '2 concursos',
-    tagline: 'Fin de semana 100% competitivo.',
-    price: { member: 5, general: 7 },
-    features: [
-      'Inscripción a Mini Hackathon de CSS (CSSBattle)',
-      'Inscripción a Torneo de Minecraft (Servidor dedicado)',
-      'Charlas gratuitas incluidas',
-      'Competencias el fin de semana (3 y 4 de Octubre)',
-      'Premios económicos y virtuales para ganadores',
-      'Certificado oficial de participación en competencias',
-    ],
-    cta: 'Inscribirme a 2 concursos',
-  },
-]
-
-/* ---------------------------------------------------------- */
-/* ACTIVITIES                                                   */
-/* ---------------------------------------------------------- */
-
-export type Activity = {
-  key: string
-  kind: string
-  name: string
-  tagline?: string
-  blurb: string
-  price: Price
-  meta?: { label: string; value: string }[]
-  revealed: boolean
-  pending?: string[]
-  video?: string
-  image?: string
-  sponsorLogo?: string
-  sponsorUrl?: string
-  revealAt?: string
-}
-
-export const activities: Activity[] = [
-  {
-    key: 'charlas',
-    kind: 'Semana Académica (28 Sep – 3 Oct)',
-    name: 'Charlas y Conferencias',
-    tagline: '17:00 a 21:00 ECT · 6 días de ponencias magistrales',
-    blurb:
-      'Ponencias virtuales de alto nivel dictadas por profesionales líderes de la industria y estudiantes universitarios destacados con dominio en tecnologías de frontera.',
-    price: { member: 0, general: 0 },
-    meta: [
-      { label: 'Horario', value: '17:00 a 21:00 ECT' },
-      { label: 'Fechas', value: '28 Sep – 03 Oct' },
-      { label: 'Certificación', value: 'Horas avaladas' },
-    ],
-    revealed: true,
-  },
-  {
-    key: 'hackathon',
-    kind: 'Mini Hackathon (3 y 4 Oct)',
-    name: 'CSS Battle',
-    tagline: 'Auspiciado por CSSBattle.dev',
-    blurb:
-      'Retos intensivos de diseño, maquetación y desarrollo Frontend en vivo. Duelos donde gana quien recree el objetivo visual con la mayor precisión y la menor cantidad de código posible.',
-    price: { member: 3, general: 5 },
-    meta: [
-      { label: 'Auspiciador', value: 'CSSBattle.dev' },
-      { label: 'Plataforma', value: 'CSSBattle & Discord' },
-      { label: 'Fechas', value: '3 y 4 de Octubre' },
-    ],
-    revealed: true,
-    video: '/teaser/css-battle.mp4',
-    image: '/images/cssbattle-preview.png',
-    sponsorUrl: 'https://cssbattle.dev',
-  },
-  {
-    key: 'minecraft',
-    kind: 'Torneo de Construcción (3 y 4 Oct)',
-    name: 'Minecraft',
-    tagline: 'Servidor dedicado · Competencia individual',
-    blurb:
-      'Competencia individual dentro de un servidor dedicado exclusivo del evento. Desafíos de creatividad y construcción voxel para dar vida a proyectos temáticos.',
-    price: { member: 3, general: 5 },
-    meta: [
-      { label: 'Modalidad', value: 'Individual' },
-      { label: 'Servidor', value: 'Dedicado oficial' },
-      { label: 'Fechas', value: '3 y 4 de Octubre' },
-    ],
-    revealed: true,
-    image: '/images/minecraft-server.jpg',
-  },
-]
-
-/** Free talks and reduced competition rates are stated once. */
-export const priceNote =
-  'Todas las charlas son gratuitas. La tarifa reducida para miembros aplica presentando tu membresía vigente de IEEE / Computer Society al inscribirse en los concursos.'
-
-/* ---------------------------------------------------------- */
-/* FAQ                                                          */
+/* FAQ — only what no section already answers                   */
 /* ---------------------------------------------------------- */
 
 export const faq = [
   {
-    q: '¿Cuánto cuestan las charlas y los concursos?',
-    a: 'Todas las charlas y conferencias son gratuitas. Para participar en los concursos puedes inscribirte a 1 concurso ($3 IEEE / $5 General) o a los 2 concursos ($5 IEEE / $7 General).',
+    q: '¿Necesito ser miembro de IEEE?',
+    a: 'No. El evento está abierto a estudiantes de cualquier institución, profesionales y curiosos. La membresía solo reduce el precio de los concursos.',
   },
   {
-    q: '¿Necesito ser miembro de IEEE para participar?',
-    a: 'No, el evento está 100% abierto a todo público: estudiantes universitarios de cualquier institución, colegiales, profesionales y entusiastas tech. Las charlas son gratuitas; ser miembro IEEE otorga un descuento preferencial en los concursos.',
+    q: '¿Cómo me conecto a las charlas?',
+    a: 'Todo ocurre en línea. Al inscribirte recibirás en tu correo los enlaces a las salas de las charlas y a los canales de Discord de los concursos.',
   },
   {
-    q: '¿En qué horarios se desarrollarán las charlas y los concursos?',
-    a: 'La Semana Académica (Charlas) se realiza del lunes 28 de septiembre al sábado 3 de octubre, de 17:00 a 21:00 ECT (5:00 PM a 9:00 PM hora Ecuador). Los concursos (CSS Battle y Minecraft) se desarrollarán durante el fin de semana del 3 y 4 de octubre.',
+    q: '¿Qué aval tiene el certificado?',
+    a: 'Es un certificado digital por tus horas de asistencia y participación, emitido por el comité organizador con el respaldo de IEEE Computer Society Ecuador.',
   },
   {
-    q: '¿Cómo se entregará el certificado y qué aval tiene?',
-    a: 'Se emitirá un certificado digital oficial que acredita las horas de asistencia y participación, gestionado por el comité organizador estudiantil con el respaldo y firma virtual de IEEE Computer Society Ecuador.',
+    q: '¿Cómo recibo los stickers?',
+    a: 'En persona: cada capítulo organizador tiene un punto de entrega en su campus.',
   },
   {
-    q: '¿Dónde y cómo se entrega el merchandising físico (stickers)?',
-    a: 'Los stickers y recuerdos conmemorativos de la iniciativa (como los de la tortuga IEEE CS ESPOL) se distribuirán a través de "puntos de entrega" físicos en los campus de cada universidad organizadora mediante sus Chairs de capítulo.',
-  },
-  {
-    q: '¿Dónde se realiza y cómo accedo a las sesiones virtuales?',
-    a: 'Todo el evento es virtual a través de plataformas de streaming y Discord. Los enlaces de acceso a las salas de conferencias y canales de concurso se envían al correo con el que te registras.',
-  },
-  {
-    q: '¿Cómo puedo postular como ponente o auspiciante?',
-    a: 'Escríbenos directamente a cstechweek@ieee.ec. Hay espacios abiertos tanto para keynotes de empresas como para ponencias de estudiantes y profesionales.',
+    q: '¿Quiero auspiciar o dar una charla?',
+    a: 'Escríbenos a cstechweek@ieee.ec y te contamos qué espacios siguen abiertos.',
   },
 ]
 
@@ -678,20 +647,4 @@ export const faq = [
 /* ---------------------------------------------------------- */
 
 export const footerNote =
-  'CS Tech Week Ecuador es una iniciativa conjunta de 10 capítulos IEEE Computer Society y la Rama Estudiantil IEEE UCE. IEEE, el logo de IEEE y el logo de IEEE Computer Society son marcas registradas de sus respectivos titulares. CSSBattle es una marca de sus creadores. Minecraft es una marca de Mojang Studios y Microsoft; este torneo comunitario no está afiliado a Mojang ni a Microsoft.'
-
-/* ---------------------------------------------------------- */
-/* TICKER — text band between the hero and the rest              */
-/* ---------------------------------------------------------- */
-
-export const ticker = [
-  'Latitud cero',
-  'Ochenta años',
-  'Una semana',
-  'Diez universidades',
-  '5 temáticas',
-  'Mini Hackathon CSS',
-  'Torneo Minecraft',
-  'IEEE Computer Society Ecuador',
-  '2026',
-] as const
+  'Una iniciativa de diez capítulos IEEE Computer Society y la Rama Estudiantil IEEE UCE. IEEE y IEEE Computer Society son marcas de sus titulares. Minecraft es una marca de Mojang Studios; este torneo comunitario no está afiliado a Mojang ni a Microsoft.'

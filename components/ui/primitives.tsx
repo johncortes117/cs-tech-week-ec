@@ -1,330 +1,145 @@
 'use client'
 
 import * as React from 'react'
-import { motion, type Variants } from 'motion/react'
+import { motion } from 'motion/react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { EASE, VIEWPORT, fadeUp, stagger } from '@/lib/motion'
-import { TBD, isTbd, tbdText } from '@/lib/content'
-import { SplitText } from '@/components/ui/text-fx'
+import { EASE, VIEWPORT, fadeUp } from '@/lib/motion'
 
 /* ============================================================
-   REVEAL — appearance on entering the viewport.
-   Honours prefers-reduced-motion: falls back to pure opacity.
+   REVEAL — fade up on entering the viewport, once.
+   `data-reveal` is the hook for the reduced-motion safety net
+   in globals.css: content never depends on an observer firing.
    ============================================================ */
 
 export function Reveal({
   children,
   className,
   delay = 0,
-  variants,
   as = 'div',
 }: {
   children: React.ReactNode
   className?: string
   delay?: number
-  variants?: Variants
-  as?: 'div' | 'section' | 'li' | 'span'
+  as?: 'div' | 'li' | 'p' | 'span'
 }) {
-  const MotionTag = motion[as] as typeof motion.div
-
+  const Tag = motion[as] as typeof motion.div
   return (
-    <MotionTag
+    <Tag
       className={className}
-      variants={variants ?? fadeUp}
+      variants={fadeUp}
       initial="hidden"
       whileInView="show"
-      data-reveal
       viewport={VIEWPORT}
       transition={{ delay }}
-    >
-      {children}
-    </MotionTag>
-  )
-}
-
-/** Container that staggers its `<Reveal>` or `motion.*` children. */
-export function RevealGroup({
-  children,
-  className,
-  step = 0.07,
-  delay = 0,
-  as = 'div',
-}: {
-  children: React.ReactNode
-  className?: string
-  step?: number
-  delay?: number
-  as?: 'div' | 'ul' | 'section'
-}) {
-  const MotionTag = motion[as] as typeof motion.div
-
-  return (
-    <MotionTag
-      className={className}
-      variants={stagger(step, delay)}
-      initial="hidden"
-      whileInView="show"
       data-reveal
-      viewport={VIEWPORT}
     >
       {children}
-    </MotionTag>
+    </Tag>
   )
 }
 
-/** Child of RevealGroup: inherits the parent's stagger. */
-export function RevealItem({
+/* ============================================================
+   SECTION TITLE
+   Heavy, tight, closed with an orange full stop — the only
+   heading style below the hero. Words rise from their own masks.
+   The full stop is added here so the copy in content.ts stays
+   plain text.
+   ============================================================ */
+
+export function SectionTitle({
   children,
   className,
-  variants,
+  as: Tag = 'h2',
 }: {
-  children: React.ReactNode
+  children: string
   className?: string
-  variants?: Variants
+  as?: 'h2' | 'h3'
 }) {
+  const words = children.split(' ')
+
   return (
-    /* `data-reveal` is never read by JavaScript: it is the hook for
-       the safety net in globals.css. This child has no whileInView
-       of its own —it inherits from the group— so it has to be
-       marked by hand. */
-    <motion.div data-reveal className={className} variants={variants ?? fadeUp}>
-      {children}
-    </motion.div>
+    <Tag className={cn('h-section', className)} aria-label={`${children}.`}>
+      {words.map((w, i) => (
+        <React.Fragment key={`${w}-${i}`}>
+          <span aria-hidden="true" className="inline-block overflow-hidden pb-[0.1em] align-bottom">
+            <motion.span
+              className="inline-block"
+              initial={{ y: '105%' }}
+              whileInView={{ y: '0%' }}
+              viewport={{ once: true, margin: '-60px 0px' }}
+              transition={{ duration: 0.85, ease: EASE, delay: i * 0.06 }}
+              data-reveal
+            >
+              {w}
+              {i === words.length - 1 ? <span className="text-orange">.</span> : null}
+            </motion.span>
+          </span>
+          {i < words.length - 1 ? ' ' : null}
+        </React.Fragment>
+      ))}
+    </Tag>
   )
 }
 
 /* ============================================================
-   EQUATORIAL RULE — the divider is the concept
-   ============================================================ */
-
-export function Equator({ label, className }: { label?: string; className?: string }) {
-  return (
-    <div className={cn('relative', className)} aria-hidden="true">
-      <motion.div
-        className="equator origin-left"
-        initial={{ scaleX: 0, opacity: 0 }}
-        whileInView={{ scaleX: 1, opacity: 1 }}
-        data-reveal
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 1, ease: EASE }}
-      />
-      {label ? (
-        <span className="absolute left-6 sm:left-[calc(34%+12px)] -top-2.5 bg-ink px-1.5 font-mono text-[10px] tracking-[0.14em] text-subtle">
-          {label}
-        </span>
-      ) : null}
-    </div>
-  )
-}
-
-/* ============================================================
-   SECTION HEADING
-   ============================================================ */
-
-export function SectionHead({
-  eyebrow,
-  title,
-  lede,
-  align = 'left',
-  className,
-}: {
-  eyebrow: string
-  title: React.ReactNode
-  lede?: React.ReactNode
-  align?: 'left' | 'center'
-  className?: string
-}) {
-  return (
-    <RevealGroup
-      className={cn(
-        'flex flex-col gap-5',
-        align === 'center' && 'items-center text-center',
-        className
-      )}
-      step={0.08}
-    >
-      <RevealItem>
-        <span className="inline-flex items-center gap-2.5">
-          <span className="h-px w-6 bg-primary" />
-          <span className="label text-primary">{eyebrow}</span>
-        </span>
-      </RevealItem>
-      {/* When the title is plain text it rises word by word from its
-          own mask (SplitText, React Bits): it is the section-level
-          version of the hero headline. If it carries markup —a
-          <span> with a gradient, for instance— it cannot be split
-          without breaking it, and falls back to the block reveal. */}
-      {typeof title === 'string' ? (
-        <SplitText
-          as="h2"
-          text={title}
-          className={cn(
-            'font-display text-[clamp(1.9rem,4.4vw,3.1rem)] font-extrabold leading-[1.05] tracking-head',
-            align === 'center' && 'mx-auto max-w-[20ch]'
-          )}
-        />
-      ) : (
-        <RevealItem>
-          <h2
-            className={cn(
-              'font-display text-[clamp(1.9rem,4.4vw,3.1rem)] font-extrabold leading-[1.05] tracking-head',
-              align === 'center' && 'mx-auto max-w-[20ch]'
-            )}
-          >
-            {title}
-          </h2>
-        </RevealItem>
-      )}
-      {lede ? (
-        <RevealItem>
-          <p
-            className={cn(
-              'max-w-[62ch] text-[1.0625rem] leading-relaxed text-muted-foreground',
-              align === 'center' && 'mx-auto'
-            )}
-          >
-            {lede}
-          </p>
-        </RevealItem>
-      ) : null}
-    </RevealGroup>
-  )
-}
-
-/* ============================================================
-   PENDING-DATA PLACEHOLDER
-   Dotted orange: impossible to mistake for real content.
-   ============================================================ */
-
-export function Tbd({ children, className }: { children: string; className?: string }) {
-  return (
-    <span
-      className={cn(
-        'font-mono text-[0.82em] uppercase tracking-[0.06em] text-primary',
-        'border-b border-dashed border-primary/50 pb-px',
-        className
-      )}
-      title="Dato pendiente de confirmar"
-    >
-      {children}
-    </span>
-  )
-}
-
-/** Renders a string that may or may not be a TBD placeholder. */
-export function Val({ value, className }: { value: string; className?: string }) {
-  if (isTbd(value)) return <Tbd className={className}>{tbdText(value)}</Tbd>
-  return <span className={className}>{value}</span>
-}
-
-export { TBD }
-
-/* ============================================================
-   BOTONES
+   BUTTON — a pill. Orange means "sign up" and nothing else.
    ============================================================ */
 
 type BtnProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-  variant?: 'primary' | 'ghost' | 'quiet'
+  variant?: 'primary' | 'ghost'
   size?: 'md' | 'lg'
+  /** 'next' for in-page, 'out' for another site. */
+  arrow?: 'next' | 'out'
 }
 
 export function Btn({
   variant = 'primary',
   size = 'md',
+  arrow,
   className,
   children,
   ...props
 }: BtnProps) {
+  const Arrow = arrow === 'out' ? ArrowUpRight : ArrowRight
   return (
     <a
       {...props}
       className={cn(
-        'group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-[6px]',
-        'font-display font-bold tracking-[0.01em] transition-all duration-300 hover:z-10',
-        size === 'lg' ? 'px-7 py-4 text-[0.9375rem]' : 'px-5 py-3 text-[0.8125rem]',
-        variant === 'primary' &&
-          'bg-primary text-primary-foreground shadow-[0_2px_14px_rgba(255,163,0,0.22)] hover:bg-[#FFB733] hover:shadow-[0_4px_22px_rgba(255,163,0,0.35)]',
-        variant === 'ghost' &&
-          'border border-line-strong bg-ink-raise/40 text-foreground hover:border-primary/60 hover:bg-ink-raise hover:text-primary',
-        variant === 'quiet' && 'text-muted-foreground hover:text-foreground',
+        'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-display font-bold tracking-[-0.01em]',
+        'transition-[background-color,border-color,color,transform] duration-300 ease-cs active:scale-[0.97]',
+        size === 'lg' ? 'h-14 px-7 text-[15px]' : 'h-11 px-5 text-[13px]',
+        variant === 'primary' && 'bg-orange text-night hover:bg-[#FFB733]',
+        variant === 'ghost' && 'border border-line-strong text-fg hover:border-fg/50',
         className
       )}
     >
-      {/* Shine sweep on hover */}
-      {variant === 'primary' ? (
-        <span
+      {children}
+      {arrow ? (
+        <Arrow
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/35 to-transparent transition-transform duration-700 ease-cs group-hover:translate-x-full motion-reduce:hidden"
+          className={cn(
+            'h-4 w-4 transition-transform duration-300 ease-cs',
+            arrow === 'out'
+              ? 'group-hover:-translate-y-0.5 group-hover:translate-x-0.5'
+              : 'group-hover:translate-x-1'
+          )}
         />
       ) : null}
-      <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
     </a>
   )
 }
 
 /* ============================================================
-   BASE CARD — hairline border + top shine on hover
+   LIVE DOT — the one pulsing thing on the page, and only when
+   something is actually on air.
    ============================================================ */
 
-export function Card({
-  children,
-  className,
-  interactive = true,
-  ...rest
-}: React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean }) {
+export function LiveDot({ className }: { className?: string }) {
   return (
-    <div
-      {...rest}
-      className={cn(
-        'relative overflow-hidden rounded-card border border-line bg-ink-raise',
-        interactive &&
-          'shine-top transition-colors duration-500 ease-cs hover:border-line-strong',
-        className
-      )}
-    >
-      {children}
-    </div>
-  )
-}
-
-/* ============================================================
-   LABEL PILL (tracks, modality, type)
-   ============================================================ */
-
-export function Pill({
-  children,
-  hex,
-  className,
-}: {
-  children: React.ReactNode
-  hex?: string
-  className?: string
-}) {
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1.5 rounded-pill border px-2.5 py-1',
-        'font-display text-[11px] font-semibold leading-none',
-        className
-      )}
-      style={
-        hex
-          ? {
-              color: hex,
-              borderColor: `${hex}44`,
-              backgroundColor: `${hex}14`,
-            }
-          : undefined
-      }
-    >
-      {hex ? (
-        <span
-          aria-hidden="true"
-          className="h-1.5 w-1.5 rounded-full"
-          style={{ backgroundColor: hex }}
-        />
-      ) : null}
-      {children}
+    <span className={cn('relative inline-flex h-2 w-2 flex-none', className)} aria-hidden="true">
+      <span className="absolute inset-0 rounded-full bg-orange animate-live-pulse" />
+      <span className="relative h-2 w-2 rounded-full bg-orange" />
     </span>
   )
 }

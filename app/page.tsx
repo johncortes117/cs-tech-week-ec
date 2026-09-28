@@ -1,39 +1,38 @@
 import { SiteHeader } from '@/components/sections/site-header'
-import { ScrollProgress } from '@/components/ui/scroll-progress'
 import { Hero } from '@/components/sections/hero'
-import { About } from '@/components/sections/about'
-import { Activities } from '@/components/sections/activities'
-import { Agenda } from '@/components/sections/agenda'
+import { Tapes } from '@/components/sections/tapes'
+import { Week } from '@/components/sections/week'
 import { Speakers } from '@/components/sections/speakers'
-import { Pricing } from '@/components/sections/pricing'
-import { Merchandising } from '@/components/sections/merchandising'
-import { Chapters } from '@/components/sections/chapters'
+import { Contests } from '@/components/sections/contests'
+import { Tickets } from '@/components/sections/tickets'
+import { Organizers } from '@/components/sections/organizers'
+import { Merch } from '@/components/sections/merch'
 import { Sponsors } from '@/components/sections/sponsors'
-import { Faq, FinalCta, Footer } from '@/components/sections/faq-cta'
-import { Ticker } from '@/components/ui/ticker'
+import { Faq } from '@/components/sections/faq'
+import { Closing } from '@/components/sections/closing'
+
+/* Night and day alternate by content, not by habit: sections whose
+   assets are white (chapter logos, the Minecraft screenshot) sit at
+   night; sections with white-backed assets (sponsor logos, sticker
+   sheets) and long reading (speakers, passes, FAQ) sit by day. */
 
 export default function Page() {
   return (
     <>
       <SiteHeader />
-      <ScrollProgress />
       <main>
         <Hero />
-        {/* Break between the hero and the body: the band scrolls on its
-            own and speeds up with the page (ScrollVelocity, React Bits). */}
-        <Ticker />
-        <About />
-        <Activities />
-        <Agenda />
+        <Tapes />
+        <Week />
         <Speakers />
-        <Pricing />
-        <Merchandising />
-        <Chapters />
+        <Contests />
+        <Tickets />
+        <Organizers />
+        <Merch />
         <Sponsors />
         <Faq />
-        <FinalCta />
       </main>
-      <Footer />
+      <Closing />
     </>
   )
 }

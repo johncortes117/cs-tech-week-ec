@@ -10,10 +10,8 @@ import { cn } from '@/lib/utils'
    A band of text that scrolls on its own and changes speed —
    even direction — depending on how fast you scroll. It is the
    detail that makes the page feel "connected" to the gesture
-   rather than merely reacting to it.
-
-   Here it also does an editorial job: it separates the hero from
-   the rest and repeats the tagline like a ticker tape.
+   rather than merely reacting to it. It drives the ribbon that
+   crosses the page under the hero (sections/tapes.tsx).
    ============================================================ */
 
 function wrap(min: number, max: number, v: number) {

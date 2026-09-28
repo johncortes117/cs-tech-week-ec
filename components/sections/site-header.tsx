@@ -2,173 +2,230 @@
 
 import * as React from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { Menu, X, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { EASE, collapse } from '@/lib/motion'
-import { event, navLinks } from '@/lib/content'
-import { useCountdown } from '@/lib/use-countdown'
+import { EASE } from '@/lib/motion'
+import { event, nav } from '@/lib/content'
 import { Btn } from '@/components/ui/primitives'
+import { StatusLine } from '@/components/ui/event-status'
+import { Lockup } from '@/components/brand/logo'
 import { lockScroll, unlockScroll } from '@/components/ui/smooth-scroll'
 
 /* ============================================================
-   ANNOUNCEMENT BAR — countdown always visible
+   HEADER
+
+   It reads the tone of whatever section is passing underneath
+   and takes it on — navy text over day, light text over night —
+   so it never needs a heavy background of its own to stay
+   legible. The same observer tells the nav which section you
+   are in.
+
+   The status (countdown / "Día 3 de 7" / "En vivo") appears
+   here only once the hero, which states it in full, has gone.
    ============================================================ */
 
-function CountUnit({ value, unit }: { value: string; unit: string }) {
-  return (
-    <span className="inline-flex items-baseline gap-0.5">
-      <span className="inline-block min-w-[1.35rem] rounded-[4px] bg-ink/85 px-1 py-0.5 text-center font-mono text-[11px] font-semibold tabular text-primary">
-        {value}
-      </span>
-      <span className="font-mono text-[9px] uppercase text-ink/70">{unit}</span>
-    </span>
-  )
+type Tone = 'night' | 'day'
+
+function useSectionUnderHeader() {
+  const [state, setState] = React.useState<{ tone: Tone; id: string }>({ tone: 'night', id: 'top' })
+
+  React.useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-tone]'))
+    let io: IntersectionObserver | undefined
+
+    /* A one-pixel band across the middle of the header: whichever
+       section crosses it is the one underneath. */
+    const observe = () => {
+      io?.disconnect()
+      const line = Math.round(
+        parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) / 2 || 32
+      )
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue
+            const el = e.target as HTMLElement
+            setState({ tone: el.dataset.tone === 'day' ? 'day' : 'night', id: el.id })
+          }
+        },
+        { rootMargin: `-${line}px 0px -${window.innerHeight - line - 1}px 0px` }
+      )
+      sections.forEach((s) => io!.observe(s))
+    }
+
+    observe()
+    window.addEventListener('resize', observe)
+    return () => {
+      io?.disconnect()
+      window.removeEventListener('resize', observe)
+    }
+  }, [])
+
+  return state
 }
-
-function AnnouncementBar() {
-  const c = useCountdown(event.startsAt)
-
-  return (
-    <div className="relative z-50 overflow-hidden bg-primary text-primary-foreground">
-      <div className="shell flex items-center justify-center gap-x-2.5 gap-y-1 py-1.5 text-center sm:gap-x-3">
-        <span className="font-display text-[11px] font-bold tracking-[0.01em] sm:text-[12px]">
-          {c.done ? (
-            'CS Tech Week Ecuador ya empezó'
-          ) : (
-            <>
-              <span className="sm:hidden">Faltan</span>
-              <span className="hidden sm:inline">Faltan para CS Tech Week Ecuador</span>
-            </>
-          )}
-        </span>
-        {!c.done ? (
-          <span className="inline-flex items-center gap-1.5">
-            <CountUnit value={c.days} unit="d" />
-            <CountUnit value={c.hours} unit="h" />
-            <CountUnit value={c.minutes} unit="m" />
-            {/* seconds are redundant on narrow screens */}
-            <span className="hidden sm:inline-flex">
-              <CountUnit value={c.seconds} unit="s" />
-            </span>
-          </span>
-        ) : null}
-      </div>
-    </div>
-  )
-}
-
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
 
 export function SiteHeader() {
+  const { tone, id } = useSectionUnderHeader()
   const [scrolled, setScrolled] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const { scrollY } = useScroll()
 
-  useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 24))
+  useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 12))
 
-  /* Locks background scrolling while the mobile menu is open.
-     With Lenis running, plain `overflow: hidden` is no longer
-     enough: its loop has to be stopped too, or the wheel keeps
-     scrolling the document underneath the menu. */
+  /* With Lenis running, overflow: hidden alone does not stop the
+     wheel: its loop has to be paused too. */
   React.useEffect(() => {
     if (open) lockScroll()
     else unlockScroll()
     return () => unlockScroll()
   }, [open])
 
-  return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <AnnouncementBar />
+  React.useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
 
-      <motion.div
+  const headerTone: Tone = open ? 'night' : tone
+  const pastHero = id !== 'top'
+
+  return (
+    <>
+      <header
         className={cn(
-          'relative border-b transition-colors duration-500 ease-cs',
-          scrolled
-            ? 'border-line bg-ink/80 backdrop-blur-xl'
+          `tone-${headerTone}`,
+          'fixed inset-x-0 top-0 z-50 border-b text-fg transition-[background-color,border-color] duration-500 ease-cs',
+          scrolled && !open
+            ? 'border-line/70 bg-bg/75 backdrop-blur-xl backdrop-saturate-150'
             : 'border-transparent bg-transparent'
         )}
       >
-        <nav className="shell flex h-[var(--nav-h)] items-center justify-between gap-6">
-          <a href="#top" className="flex-none" aria-label="CS Tech Week Ecuador — inicio">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo/ieee-cs-80th-white.svg"
-              alt="IEEE Computer Society 80.º aniversario"
-              className="h-auto w-[168px] md:w-[196px]"
-            />
+        <nav className="shell flex h-[var(--nav-h)] items-center justify-between gap-4" aria-label="Principal">
+          <a href="#top" className="flex-none" aria-label="CS Tech Week Ecuador 2026, inicio" onClick={() => setOpen(false)}>
+            <Lockup />
           </a>
 
-          <ul className="hidden items-center gap-7 lg:flex">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  className="group relative font-display text-[13px] font-semibold text-muted-foreground transition-colors duration-300 hover:text-foreground"
-                >
-                  {l.label}
-                  <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-primary transition-[width] duration-300 ease-cs group-hover:w-full" />
-                </a>
-              </li>
-            ))}
+          <ul className="hidden items-center lg:flex">
+            {nav.map((l) => {
+              const current = `#${id}` === l.href
+              return (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    aria-current={current ? 'location' : undefined}
+                    className={cn(
+                      'relative block px-3.5 py-2 font-display text-[13px] font-semibold transition-colors duration-300',
+                      current ? 'text-fg' : 'text-muted hover:text-fg'
+                    )}
+                  >
+                    {l.label}
+                    {current ? (
+                      <motion.span
+                        layoutId="nav-current"
+                        className="absolute bottom-0 left-[calc(50%-2px)] h-1 w-1 rounded-full bg-orange"
+                        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                      />
+                    ) : null}
+                  </a>
+                </li>
+              )
+            })}
           </ul>
 
-          <div className="flex items-center gap-2">
-            <Btn href={event.registerUrl} className="px-3.5 py-2.5 text-[12px] sm:px-5 sm:py-3 sm:text-[13px]">
-              Registrarme
+          <div className="flex items-center gap-2 sm:gap-4">
+            <AnimatePresence>
+              {pastHero && !open ? (
+                <motion.span
+                  key="status"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.35, ease: EASE }}
+                  className="hidden xl:inline-flex"
+                >
+                  <StatusLine compact className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted" />
+                </motion.span>
+              ) : null}
+            </AnimatePresence>
+
+            <Btn href={event.registerUrl} target="_blank" rel="noopener noreferrer" className="h-10 px-4 sm:px-5">
+              Inscríbete
             </Btn>
+
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={open}
-              className="grid h-10 w-10 place-items-center rounded-[6px] border border-line text-foreground transition-colors hover:border-line-strong lg:hidden"
+              aria-controls="mobile-menu"
+              className="relative grid h-10 w-10 place-items-center rounded-full border border-line-strong lg:hidden"
             >
-              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              <span className="sr-only">Menú</span>
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'absolute h-[1.5px] w-4 rounded-full bg-fg transition-transform duration-300 ease-cs',
+                  open ? 'rotate-45' : '-translate-y-[3.5px]'
+                )}
+              />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'absolute h-[1.5px] w-4 rounded-full bg-fg transition-transform duration-300 ease-cs',
+                  open ? '-rotate-45' : 'translate-y-[3.5px]'
+                )}
+              />
             </button>
           </div>
         </nav>
+      </header>
 
-        {/* Mobile menu */}
-        <AnimatePresence initial={false}>
-          {open ? (
-            <motion.div
-              key="mobile"
-              variants={collapse}
-              initial="hidden"
-              animate="show"
-              exit="exit"
-              className="overflow-hidden border-t border-line bg-ink/95 backdrop-blur-xl lg:hidden"
-            >
-              <ul className="shell flex flex-col py-3">
-                {navLinks.map((l, i) => (
-                  <motion.li
-                    key={l.href}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.04 * i, duration: 0.35, ease: EASE }}
+      {/* ---------- mobile menu ---------- */}
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="mobile-menu"
+            key="menu"
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="tone-night fixed inset-0 z-40 flex flex-col bg-bg text-fg lg:hidden"
+            data-lenis-prevent
+          >
+            <ul className="shell flex flex-1 flex-col justify-center gap-1 pt-[var(--nav-h)]">
+              {nav.map((l, i) => (
+                <li key={l.href} className="overflow-hidden">
+                  <motion.a
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    initial={{ y: '110%' }}
+                    animate={{ y: '0%' }}
+                    transition={{ duration: 0.6, ease: EASE, delay: 0.12 + i * 0.05 }}
+                    className="flex items-baseline justify-between py-1.5 font-display text-[clamp(2.1rem,10vw,3.2rem)] font-black leading-none tracking-display"
                   >
-                    <a
-                      href={l.href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center justify-between border-b border-line py-3.5 font-display text-[15px] font-semibold text-foreground"
-                    >
-                      {l.label}
-                      <ArrowUpRight className="h-4 w-4 text-subtle" />
-                    </a>
-                  </motion.li>
-                ))}
-                <li className="pt-4">
-                  <Btn href={event.registerUrl} size="lg" className="w-full">
-                    Quiero inscribirme
-                  </Btn>
+                    {l.label}
+                    <span className="font-mono text-[11px] font-medium tracking-[0.1em] text-subtle">
+                      0{i + 1}
+                    </span>
+                  </motion.a>
                 </li>
-              </ul>
+              ))}
+            </ul>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+              className="shell flex items-center justify-between border-t border-line py-6"
+            >
+              <StatusLine className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted" />
+              <a href={event.social.instagram} target="_blank" rel="noopener noreferrer" className="meta text-muted">
+                Instagram
+              </a>
             </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </motion.div>
-    </header>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </>
   )
 }

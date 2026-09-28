@@ -3,41 +3,73 @@
 @tailwind utilities;
 
 /* ============================================================
-   CS TECH WEEK ECUADOR — the "Latitude Zero" system
-   Committed dark theme. The hex values come from the IEEE CS
-   Brand Identity & Graphic Style Guide; the blacks are derived
-   from PMS 295 (#002855) so they belong to the brand.
+   CS TECH WEEK ECUADOR — "Latitud Cero"
+
+   The event logo is a bulb with a ribbon wrapped around it: an
+   equator around a sphere. Ecuador is the country named after
+   that line. Everything visual on the site comes from there:
+
+   · La cinta   the ribbon, cyan with an arrow tip. It labels,
+                marks time and carries the name. (.ribbon)
+   · La línea   latitude zero: one hairline, used as the page's
+                horizon, never as decoration.
+   · Día/noche  at the equator day and night last twelve hours
+                each, all year. The page alternates between the
+                two tones — and which one a section takes is
+                decided by its assets: white chapter logos live at
+                night, sponsor logos and sticker sheets by day.
+
+   Colours are the IEEE CS brand guide's hex values; the logo
+   keeps its own (#00AEEF / #FAA41A / #2D5F7E) inside the mark.
    ============================================================ */
 
 @layer base {
   :root {
-    /* Backgrounds — hue ≈213°, never a neutral grey */
-    --ink:        216 38% 3%;    /* #05070B  base            */
-    --ink-raise:  216 41% 7%;    /* #0B111A  surface         */
-    --ink-plate:  212 32% 9%;    /* #10171F  raised          */
-    --line:       214 28% 15%;   /* #1B2430  hairline        */
-    --line-strong:214 24% 22%;   /* #2A3746  strong border   */
+    /* Brand — fixed in every tone */
+    --cyan: 192 100% 44%;      /* #00B5E2  PMS Process Cyan  — la cinta */
+    --orange: 38 100% 50%;     /* #FFA300  PMS 137 C         — la luz   */
+    --slate: 203 47% 34%;      /* #2D5F7E  the logo's own blue */
+    --navy: 212 100% 17%;      /* #002855  PMS 295 */
+    --night: 216 64% 6%;       /* #050F1C  PMS 295 taken down to night */
+    --paper: 210 25% 97%;      /* #F5F7F9 */
 
-    /* Text */
-    --paper:      210 30% 95%;   /* #EEF2F6 */
-    --paper-2:    212 18% 64%;   /* #94A3B4 */
-    --paper-3:    213 15% 42%;   /* #5A6779 */
+    /* Tracks — official bright palette, one per topic */
+    --track-investigacion: 192 100% 44%; /* #00B5E2 */
+    --track-iot: 49 100% 50%;            /* #FFD100 */
+    --track-software: 86 71% 44%;        /* #78BE20 */
+    --track-ia: 301 68% 35%;             /* #981D97 */
+    --track-seguridad: 348 88% 39%;      /* #BA0C2F */
 
-    /* IEEE CS accents */
-    --orange:      38 100% 50%;  /* #FFA300  PMS 137 C       */
-    --cyan:       192 100% 44%;  /* #00B5E2  PMS Process Cyan*/
-    --deep:       202 100% 30%;  /* #00629B  PMS 3015        */
-    --abyss:      212 100% 17%;  /* #002855  PMS 295         */
+    --nav-h: 64px;
+    --ease-cs: cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-    /* Tracks — official bright palette, one hex per topic */
-    --track-ia:      301 68% 35%;  /* #981D97  PMS 254 C */
-    --track-cloud:   192 100% 44%; /* #00B5E2  PMS Process Cyan */
-    --track-sec:     347 88% 39%;  /* #BA0C2F  PMS 200 C */
-    --track-data:    184 100% 33%; /* #009CA6  PMS 320 C */
-    --track-dev:      86 71% 44%;  /* #78BE20  PMS 368 C */
-    --track-quantum:  49 100% 50%; /* #FFD100  PMS 109 C */
+  /* Night is the default: it is what shows on overscroll and
+     behind the header before any section is under it. */
+  :root,
+  .tone-night {
+    --bg: 216 64% 6%;
+    --surface: 215 48% 10%;
+    --line: 214 34% 17%;
+    --line-strong: 214 26% 27%;
+    --fg: 210 40% 96%;
+    --fg-2: 213 20% 70%;
+    --fg-3: 214 14% 50%;
+    /* The mark's dark blue has to turn light to be seen at night */
+    --logo-ink: #e7eef5;
+    color-scheme: dark;
+  }
 
-    --nav-h: 68px;
+  .tone-day {
+    --bg: 210 25% 97%;
+    --surface: 0 0% 100%;
+    --line: 214 24% 88%;
+    --line-strong: 214 18% 76%;
+    --fg: 214 64% 10%;
+    --fg-2: 214 20% 34%;
+    --fg-3: 214 12% 50%;
+    --logo-ink: #2d5f7e;
+    color-scheme: light;
   }
 
   * {
@@ -45,7 +77,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: calc(var(--nav-h) + 24px);
     -webkit-text-size-adjust: 100%;
   }
@@ -53,181 +84,114 @@
   html,
   body {
     max-width: 100vw;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {
-    background-color: hsl(var(--ink));
-    color: hsl(var(--paper));
+    background-color: hsl(var(--night));
+    color: hsl(var(--fg));
     @apply font-sans antialiased;
-    font-size: 17px;
-    line-height: 1.72;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply font-display;
     text-wrap: balance;
   }
 
+  p {
+    text-wrap: pretty;
+  }
+
   ::selection {
-    background: hsl(var(--orange) / 0.25);
-    color: hsl(var(--paper));
+    background: hsl(var(--cyan) / 0.3);
   }
 
   :focus-visible {
     outline: 2px solid hsl(var(--orange));
     outline-offset: 3px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
 
-  /* Scrollbar, themed to match */
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: hsl(var(--ink)); }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--line-strong));
-    border-radius: 99px;
-    border: 3px solid hsl(var(--ink));
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
   }
-  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--paper-3)); }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--night));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(214 26% 27%);
+    border-radius: 99px;
+    border: 3px solid hsl(var(--night));
+  }
 }
 
 @layer components {
   /* The site's single container */
   .shell {
-    width: min(100% - 40px, 1240px);
+    width: min(100% - 32px, 1280px);
     margin-inline: auto;
   }
   @media (min-width: 768px) {
-    .shell { width: min(100% - 72px, 1240px); }
+    .shell {
+      width: min(100% - 80px, 1280px);
+    }
   }
 
-  /* Micro monospaced label — the "spec sheet" register */
-  .label {
+  /* Section titles: heavy, tight, closed with an orange full stop.
+     One size for every section — hierarchy comes from the hero, not
+     from sections competing with each other. */
+  .h-section {
+    @apply font-display font-black tracking-display;
+    font-size: clamp(2.5rem, 6.4vw, 5.25rem);
+    line-height: 0.92;
+  }
+
+  /* Micro data — times, coordinates, counts. Mono, never for copy. */
+  .meta {
     @apply font-mono text-[11px] uppercase tracking-label text-subtle;
+    line-height: 1.4;
   }
 
-  /* Equatorial rule: the divider IS the concept */
-  .equator {
-    position: relative;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      hsl(var(--line)) 12%,
-      hsl(var(--line)) 88%,
-      transparent
+  /* ---------- La cinta ----------------------------------------
+     The ribbon from the logo: a flat band that ends in an arrow
+     tip. --tip is the depth of the point; the padding keeps text
+     clear of it whatever the band's height. */
+  .ribbon {
+    --tip: 0.7em;
+    clip-path: polygon(0 0, calc(100% - var(--tip)) 0, 100% 50%, calc(100% - var(--tip)) 100%, 0 100%);
+    padding-right: calc(var(--tip) + 0.55em);
+  }
+  /* Both ends cut: the swallow-tail the logo's ribbon starts with. */
+  .ribbon-tail {
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--tip)) 0,
+      100% 50%,
+      calc(100% - var(--tip)) 100%,
+      0 100%,
+      calc(var(--tip) * 0.8) 50%
     );
-  }
-  .equator::after {
-    content: '';
-    position: absolute;
-    left: 34%;
-    top: -3px;
-    width: 1px;
-    height: 7px;
-    background: hsl(var(--orange));
-  }
-
-  /* Top shine line on cards — inherited from DevIAthon */
-  .shine-top::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 24px;
-    right: 24px;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      hsl(var(--orange) / 0.35),
-      transparent
-    );
-    opacity: 0;
-    transition: opacity 0.45s var(--ease-cs, cubic-bezier(0.22, 1, 0.36, 1));
-  }
-  .shine-top:hover::before { opacity: 1; }
-
-  /* Technical grid, faded out by a mask */
-  .tech-grid {
-    background-image:
-      linear-gradient(hsl(var(--paper) / 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--paper) / 0.045) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-
-  /* Text gradient for figures and key words */
-  .grad-text {
-    background: linear-gradient(
-      92deg,
-      hsl(var(--paper)) 0%,
-      hsl(var(--paper)) 42%,
-      hsl(var(--orange)) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* Gradient border (double-background trick, no pseudo-element) */
-  .grad-border {
-    border: 1px solid transparent;
-    background:
-      linear-gradient(hsl(var(--ink-raise)), hsl(var(--ink-raise))) padding-box,
-      linear-gradient(
-          135deg,
-          hsl(var(--orange) / 0.5),
-          hsl(var(--deep) / 0.35) 45%,
-          hsl(var(--line)) 80%
-        )
-        border-box;
+    padding-left: calc(var(--tip) * 0.8 + 0.55em);
   }
 }
 
 @layer utilities {
-  .mask-fade-y {
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
   .mask-fade-x {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   }
-  .mask-radial {
-    -webkit-mask-image: radial-gradient(65% 65% at 50% 50%, #000, transparent);
-    mask-image: radial-gradient(65% 65% at 50% 50%, #000, transparent);
-  }
-  .tabular { font-variant-numeric: tabular-nums; }
-  .transform-3d { transform-style: preserve-3d; }
-}
-
-/* Absolute respect for reduced-motion: Motion handles it through
-   a hook, this covers the purely CSS animations. */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
-
-/* ============================================================
-   INTERACTION LAYER
-   Everything the components borrowed from Aceternity UI and
-   React Bits need, rewritten for the "Latitude Zero" system.
-   It lives outside Tailwind's @layer because these are concrete
-   pieces, not utilities: none of it should ever be purged.
-   ============================================================ */
-
-:root {
-  --ease-cs: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ---------- Lenis (smooth scroll) -------------------------- */
-/* Lenis takes over scrolling: native smooth scroll has to be
-   turned off or the two fight and the page stutters. */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -241,148 +205,28 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
 
-/* ---------- Light ring (GlowingEffect) --------------------- */
-/* Gradient-border recipe: two identical masks, one clipped to
-   the content-box, and `exclude` between them. What stays
-   visible is exactly the padding — that is, the border. */
-.glow-ring {
-  position: absolute;
-  inset: 0;
-  padding: var(--glow-border-width, 1px);
-  background: var(--glow-gradient);
-  opacity: var(--active, 0);
-  transition: opacity 0.35s var(--ease-cs);
-  pointer-events: none;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* ---------- ShinyText -------------------------------------- */
-.shiny-text {
-  --shine-base: hsl(var(--orange));
-  --shine-hi: hsl(38 100% 86%);
-  background-image: linear-gradient(
-    110deg,
-    var(--shine-base) 0%,
-    var(--shine-base) 42%,
-    var(--shine-hi) 50%,
-    var(--shine-base) 58%,
-    var(--shine-base) 100%
-  );
-  background-size: 260% 100%;
-  background-position: 160% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shine var(--shine-duration, 5s) linear infinite;
-}
-@keyframes shine {
-  to {
-    background-position: -160% 0;
-  }
-}
-
-/* ---------- Split-flap (countdown) ------------------------- */
-.flap-cell {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 7px;
-  border: 1px solid hsl(var(--line-strong));
-  background: linear-gradient(180deg, hsl(var(--ink-plate)), hsl(var(--ink)) 52%, hsl(var(--ink-raise)));
-  box-shadow:
-    inset 0 1px 0 hsl(var(--paper) / 0.06),
-    0 8px 18px -12px rgb(0 0 0 / 0.9);
-  transform-style: preserve-3d;
-}
-
-/* ---------- GlareHover ------------------------------------- */
-.glare-sheen {
-  transform: rotate(var(--glare-angle, -22deg)) translateX(-340%);
-  transition: transform var(--glare-duration, 850ms) var(--ease-cs);
-  will-change: transform;
-}
-.glare:hover .glare-sheen,
-.glare:focus-within .glare-sheen {
-  transform: rotate(var(--glare-angle, -22deg)) translateX(420%);
-}
-
-/* ---------- TargetCursor ----------------------------------- */
-/* Only enabled once the component confirms a fine pointer; text
-   fields keep the native cursor because nobody types comfortably
-   without a caret. */
-html.has-target-cursor,
-html.has-target-cursor * {
-  cursor: none !important;
-}
-html.has-target-cursor input,
-html.has-target-cursor textarea,
-html.has-target-cursor select,
-html.has-target-cursor [contenteditable='true'] {
-  cursor: auto !important;
-}
-
-/* ---------- Scroll cue ------------------------------------- */
-.scroll-cue > span:first-child {
-  animation: cue 2.2s var(--ease-cs) infinite;
-}
-@keyframes cue {
-  0% {
-    transform: translateY(-60%);
-    opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(180%);
-    opacity: 0;
-  }
-}
-
+/* ---------- Motion preference -------------------------------
+   Motion's MotionConfig handles JS animations; this covers CSS.
+   And content never depends on an observer to become visible:
+   with reduced motion an anchor jump is instantaneous and a
+   whileInView reveal may never fire. */
 @media (prefers-reduced-motion: reduce) {
-  .shiny-text {
-    color: var(--shine-base);
-    background: none;
-    -webkit-background-clip: initial;
-    background-clip: initial;
+  html {
+    scroll-behavior: auto;
   }
-  .glare-sheen,
-  .scroll-cue {
-    display: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
-}
-
-/* ---------- Reveal safety net ------------------------------ */
-/* Scroll-triggered reveals depend on an IntersectionObserver.
-   When the motion preference is on, jumping to an anchor is
-   instantaneous, and in that case Motion's observer may never
-   fire: the target section would stay in its initial state
-   —invisible— until the user moves the wheel.
-
-   For someone asking for less motion the right answer is not to
-   animate better, it is not to animate: the content is simply
-   there. These two lines guarantee that in CSS, which does not
-   depend on any observer working. */
-@media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
   }
-  /* The orbital rings are drawn by animating pathLength, which
-     Motion translates into stroke-dashoffset. With no animation
-     the stroke would stay hidden, so it is shown all at once. */
+  /* Lines drawn with pathLength become stroke-dashoffset: shown whole. */
   svg [data-reveal] {
     stroke-dasharray: none !important;
     stroke-dashoffset: 0 !important;
