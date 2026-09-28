@@ -491,7 +491,10 @@ export type Chapter = {
   fullName: string
   university: string
   city: CityName
-  logo: string
+  /** Omitted when a chapter can't show its logo yet: the panel falls back to text. */
+  logo?: string
+  /** Shown in place of the logo, e.g. who leads the chapter. */
+  lead?: { name: string; role: string }
   instagram: string
 }
 
@@ -509,7 +512,8 @@ export const chapters: Chapter[] = [
     fullName: 'IEEE Computer Society UTN',
     university: 'Universidad Técnica del Norte',
     city: 'Ibarra',
-    logo: '/chapters/web/CS_UTN.webp',
+    /* No logo for now: the university hasn't approved its brand on the event yet. */
+    lead: { name: 'Adrián Urresta', role: 'Líder UTN' },
     instagram: 'https://www.instagram.com/ieee_utncs',
   },
   {
