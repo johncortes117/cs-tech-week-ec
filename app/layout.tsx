@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Montserrat, Open_Sans, IBM_Plex_Mono, Press_Start_2P } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { MotionProvider } from '@/components/ui/motion-provider'
 import { SmoothScroll } from '@/components/ui/smooth-scroll'
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SmoothScroll />
           {children}
         </MotionProvider>
+        <Analytics />
       </body>
     </html>
   )
