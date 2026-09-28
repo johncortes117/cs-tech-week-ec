@@ -76,6 +76,7 @@ export function Sponsors() {
                         src={s.logo}
                         alt={s.name}
                         loading="lazy"
+                        style={s.scale ? { scale: String(s.scale) } : undefined}
                         className={cn(
                           'w-auto max-w-full object-contain transition-transform duration-500 ease-cs group-hover:scale-[1.04]',
                           size.logo

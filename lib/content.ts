@@ -620,7 +620,8 @@ export const merch = {
 export type SponsorTier = {
   key: string
   name: string
-  sponsors: { name: string; logo?: string }[]
+  /** `scale` enlarges a logo whose proportions make it look small next to the rest. */
+  sponsors: { name: string; logo?: string; scale?: number }[]
 }
 
 export const sponsorTiers: SponsorTier[] = [
@@ -634,8 +635,8 @@ export const sponsorTiers: SponsorTier[] = [
     name: 'Gold',
     sponsors: [
       { name: 'CAPIA, Cámara de la Pequeña Industria del Azuay', logo: '/sponsors/web/capia.webp' },
-      { name: 'Maxxnet', logo: '/sponsors/web/maxxnet_logo.webp' },
-      { name: 'Google Developer Groups Cuenca', logo: '/sponsors/web/gdg_cuenca_logo.webp' },
+      { name: 'Maxxnet', logo: '/sponsors/web/maxxnet_logo.webp', scale: 1.3 },
+      { name: 'Google Developer Groups Cuenca', logo: '/sponsors/web/gdg_cuenca_logo.webp', scale: 1.35 },
     ],
   },
   {
@@ -643,7 +644,7 @@ export const sponsorTiers: SponsorTier[] = [
     name: 'Silver',
     sponsors: [
       { name: 'CSSBattle', logo: '/sponsors/web/css_battle.webp' },
-      { name: 'Grupo Sky', logo: '/sponsors/web/grupo_sky.webp' },
+      { name: 'Grupo Sky', logo: '/sponsors/web/grupo_sky.webp', scale: 1.45 },
       { name: 'xAI', logo: '/sponsors/web/spacexai.webp' },
       { name: 'Meniuz', logo: '/sponsors/web/meniuz.webp' },
     ],
