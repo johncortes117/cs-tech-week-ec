@@ -28,7 +28,15 @@ const JOBS = [
   { dir: 'public/speakers', resize: { width: 720, height: 720, fit: 'outside' }, quality: 80 },
   /* White logos on transparency, drawn at most ~260px wide. */
   { dir: 'public/chapters', resize: { width: 640, fit: 'inside' }, quality: 90, only: /^(CS_|IEEE_)/, skip: /^CS_TECH_WEEK/ },
-  { dir: 'public/sponsors', resize: { width: 560, fit: 'inside' }, quality: 90 },
+  /* Sponsor logos arrive with white margins of every size; trimming them
+     makes each logo fill its tile the same way. Only white is trimmed,
+     so a logo drawn on its own colour block (CSSBattle) keeps it. */
+  {
+    dir: 'public/sponsors',
+    resize: { width: 560, fit: 'inside' },
+    quality: 90,
+    trim: { background: '#ffffff', threshold: 16 },
+  },
   /* the planning document's screenshots are not on the site */
   { dir: 'public/images', resize: { width: 1400, fit: 'inside', withoutEnlargement: true }, quality: 82, skip: /^(pricing-table|instagram-csweekperu)\./ },
 ]
@@ -46,8 +54,9 @@ for (const job of JOBS) {
 
     if (fs.existsSync(dest) && fs.statSync(dest).mtimeMs >= fs.statSync(src).mtimeMs) continue
 
-    await sharp(src)
-      .rotate() // honour EXIF orientation from phone cameras
+    let image = sharp(src).rotate() // honour EXIF orientation from phone cameras
+    if (job.trim) image = image.trim(job.trim)
+    await image
       .resize({ withoutEnlargement: true, ...job.resize })
       .webp({ quality: job.quality, alphaQuality: 100, effort: 5 })
       .toFile(dest)

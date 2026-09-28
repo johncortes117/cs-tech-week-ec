@@ -633,15 +633,20 @@ export const sponsorTiers: SponsorTier[] = [
     key: 'gold',
     name: 'Gold',
     sponsors: [
+      { name: 'CAPIA, Cámara de la Pequeña Industria del Azuay', logo: '/sponsors/web/capia.webp' },
       { name: 'Maxxnet', logo: '/sponsors/web/maxxnet_logo.webp' },
-      { name: 'Capia' },
       { name: 'Google Developer Groups Cuenca', logo: '/sponsors/web/gdg_cuenca_logo.webp' },
     ],
   },
   {
     key: 'silver',
     name: 'Silver',
-    sponsors: [],
+    sponsors: [
+      { name: 'CSSBattle', logo: '/sponsors/web/css_battle.webp' },
+      { name: 'Grupo Sky', logo: '/sponsors/web/grupo_sky.webp' },
+      { name: 'xAI', logo: '/sponsors/web/spacexai.webp' },
+      { name: 'Meniuz', logo: '/sponsors/web/meniuz.webp' },
+    ],
   },
 ]
 
