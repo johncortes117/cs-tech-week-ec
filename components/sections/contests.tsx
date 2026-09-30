@@ -2,32 +2,38 @@
 
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { EASE, VIEWPORT } from '@/lib/motion'
-import { contests, prizes, type Contest } from '@/lib/content'
-import { dayLabel, hoursLabel } from '@/lib/schedule'
+import { chapters, contests, prizes, type Contest } from '@/lib/content'
+import { dayLabel, hoursLabel, toMinutes } from '@/lib/schedule'
 import { Btn, SectionTitle } from '@/components/ui/primitives'
 import { LoopVideo } from '@/components/ui/loop-video'
 
 /* ============================================================
    CONTESTS
 
-   Two cards cut from the same frame, each allowed one accent of
-   its own world: CSS Battle speaks in code comments, Minecraft in
-   its pixel face and the green of its chat prompt. Everything
-   else — type, radius, rhythm — is the site's.
+   Cards cut from the same frame, in the order they happen, each
+   allowed one accent of its own world: Cloud Explorers speaks in
+   shell prompts, CSS Battle in code comments, Minecraft in its
+   pixel face and the green of its chat prompt. Everything else —
+   type, radius, rhythm — is the site's.
 
-   Each card carries its own day and hours; prices stay with the
-   passes.
+   Each card carries its own day and hours. Prices stay with the
+   passes, except where a contest has its own (Cloud Explorers).
    ============================================================ */
+
+const ORDERED = [...contests].sort(
+  (a, b) => a.slot.day - b.slot.day || toMinutes(a.slot.start ?? '00:00') - toMinutes(b.slot.start ?? '00:00')
+)
 
 export function Contests() {
   return (
     <section id="concursos" data-tone="night" className="tone-night relative bg-bg py-24 text-fg md:py-32">
       <div className="shell">
-        <SectionTitle className="max-w-[15ch]">El fin de semana, se compite</SectionTitle>
+        <SectionTitle>Tres retos</SectionTitle>
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-2 lg:gap-6">
-          {contests.map((c, i) => (
+        <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {ORDERED.map((c, i) => (
             <ContestCard key={c.key} contest={c} index={i} />
           ))}
         </div>
@@ -50,8 +56,17 @@ export function Contests() {
   )
 }
 
+/** The small line above each title — one accent per contest. */
+const KIND: Record<Contest['key'], { className: string; format: (kind: string) => string }> = {
+  cloud: { className: 'text-orange', format: (k) => `$ ${k}` },
+  cssbattle: { className: 'text-cyan', format: (k) => `/* ${k} */` },
+  minecraft: { className: 'text-[#78BE20]', format: (k) => `> ${k}` },
+}
+
 function ContestCard({ contest, index }: { contest: Contest; index: number }) {
   const minecraft = contest.key === 'minecraft'
+  const host = contest.host ? chapters.find((c) => c.short === contest.host) : undefined
+  const kind = KIND[contest.key]
 
   return (
     <motion.article
@@ -59,7 +74,7 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT}
       transition={{ duration: 0.9, ease: EASE, delay: index * 0.12 }}
-      className="group relative flex flex-col overflow-hidden rounded-[26px] border border-line bg-surface md:rounded-[32px]"
+      className="group relative flex flex-col overflow-hidden rounded-[26px] border border-line bg-surface md:rounded-[30px]"
       data-reveal
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-night">
@@ -78,6 +93,8 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-[1.4s] ease-cs group-hover:scale-[1.04]"
           />
+        ) : contest.key === 'cloud' ? (
+          <DeployLog logo={host?.logo} hostName={host?.fullName} />
         ) : null}
 
         {minecraft ? (
@@ -92,13 +109,10 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col p-7 md:p-10">
-        <div className="flex items-baseline justify-between gap-4">
-          {minecraft ? (
-            <p className="font-mono text-[12px] text-[#78BE20]">&gt; {contest.kind.toLowerCase()}</p>
-          ) : (
-            <p className="font-mono text-[12px] text-cyan">/* {contest.kind.toLowerCase()} */</p>
-          )}
+      <div className="flex flex-1 flex-col p-6 md:p-8">
+        {/* in a narrow card the date drops to its own line instead of both wrapping */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <p className={cn('whitespace-nowrap font-mono text-[12px]', kind.className)}>{kind.format(contest.kind.toLowerCase())}</p>
           <p className="meta flex-none text-fg">
             {dayLabel(contest.slot.day)}
             {hoursLabel(contest.slot) ? <span className="text-subtle"> · {hoursLabel(contest.slot)}</span> : null}
@@ -108,14 +122,25 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
         <h3
           className={
             minecraft
-              ? 'mt-4 font-pixel text-[clamp(1.5rem,2.9vw,2.3rem)] leading-[1.15]'
-              : 'mt-3 font-display text-[clamp(2.4rem,4.4vw,3.6rem)] font-black leading-[0.9] tracking-display'
+              ? 'mt-4 font-pixel text-[clamp(1.35rem,2.2vw,1.9rem)] leading-[1.15]'
+              : 'mt-3 font-display text-[clamp(2.1rem,3.2vw,2.9rem)] font-black leading-[0.92] tracking-display'
           }
         >
           {contest.name}
         </h3>
 
-        <p className="mt-5 max-w-[40ch] text-[1rem] leading-relaxed text-muted">{contest.blurb}</p>
+        <p className="mt-5 text-[1rem] leading-relaxed text-muted">{contest.blurb}</p>
+
+        {contest.facts?.length ? (
+          <ul className="mt-5 space-y-1.5 text-[0.9375rem] text-fg/85">
+            {contest.facts.map((f) => (
+              <li key={f} className="flex gap-3">
+                <span className="mt-[0.65em] h-px w-3 flex-none bg-orange" aria-hidden="true" />
+                {f}
+              </li>
+            ))}
+          </ul>
+        ) : null}
 
         {contest.partner ? (
           <a
@@ -127,8 +152,68 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
             con {contest.partner.name}
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
+        ) : host ? (
+          <a
+            href={host.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-auto inline-flex w-fit items-center gap-1.5 pt-8 font-mono text-[12px] text-subtle transition-colors hover:text-fg"
+          >
+            organiza {host.fullName}
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
         ) : null}
       </div>
     </motion.article>
+  )
+}
+
+/* ============================================================
+   DEPLOY LOG — Cloud Explorers has no screenshot to show, so its
+   picture is the thing it is about: a container going live. It
+   says nothing about the challenge itself, which stays secret
+   until the day.
+   ============================================================ */
+
+const LOG = [
+  { prompt: true, text: 'docker build -t reto .' },
+  { prompt: false, text: '✓ imagen lista' },
+  { prompt: true, text: 'deploy --solo-puertos 443' },
+  { prompt: false, text: '● en línea' },
+]
+
+function DeployLog({ logo, hostName }: { logo?: string; hostName?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 flex flex-col justify-between p-5 md:p-6"
+      style={{
+        background:
+          'radial-gradient(90% 80% at 85% 10%, hsl(var(--orange) / 0.16), transparent 60%), radial-gradient(80% 90% at 0% 100%, hsl(var(--cyan) / 0.14), transparent 65%), hsl(var(--night))',
+      }}
+    >
+      <div className="rounded-[14px] border border-paper/10 bg-paper/[0.03] p-4 font-mono text-[11.5px] leading-[1.9] md:text-[12.5px]">
+        {LOG.map((l, i) => (
+          <motion.p
+            key={l.text}
+            initial={{ opacity: 0, x: -6 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={VIEWPORT}
+            transition={{ duration: 0.4, ease: EASE, delay: 0.3 + i * 0.35 }}
+            className={l.prompt ? 'text-paper/85' : i === LOG.length - 1 ? 'text-orange' : 'text-cyan'}
+            data-reveal
+          >
+            {l.prompt ? <span className="text-paper/40">$ </span> : null}
+            {l.text}
+          </motion.p>
+        ))}
+        <span className="mt-1 inline-block h-[1.1em] w-[0.55em] animate-pulse bg-paper/70 align-middle" />
+      </div>
+
+      {logo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={logo} alt={hostName ?? ''} className="h-9 w-auto max-w-[70%] self-start object-contain opacity-80 md:h-10" />
+      ) : null}
+    </div>
   )
 }

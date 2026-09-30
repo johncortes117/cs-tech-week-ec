@@ -21,7 +21,7 @@ export const event = {
   /** Hero: the name, what it is, when. Plain on purpose. */
   headline: ['CS Tech Week', 'Ecuador 2026'],
   summary:
-    'Una semana de charlas gratuitas, un hackathon de CSS y un torneo de Minecraft, organizada por los capítulos IEEE Computer Society del país.',
+    'Una semana de charlas gratuitas, dos hackathons y un torneo de Minecraft, organizada por los capítulos IEEE Computer Society del país.',
   when: 'Del 28 de septiembre al 4 de octubre',
   format: 'Virtual',
 
@@ -73,6 +73,13 @@ export const week = {
       detail: 'Desde las 17:00 ECT',
       from: 0,
       to: 5,
+    },
+    {
+      key: 'cloud',
+      name: 'Cloud',
+      detail: '14:00–17:00',
+      from: 3,
+      to: 3,
     },
     {
       key: 'concursos',
@@ -284,7 +291,7 @@ export const speakers: Speaker[] = [
     name: 'David Castro',
     talk: 'Cómo escala una aplicación en el mundo real: La brecha entre los proyectos universitarios/personales y los sistemas que atienden a millones de usuarios',
     degree: 'Ing.',
-    org: 'EPN',
+    org: 'UCE',
     photo: '/speakers/web/david.webp',
     tracks: ['software'],
     slot: { day: 2, start: '19:00', end: '20:00' },
@@ -388,25 +395,64 @@ export const speakers: Speaker[] = [
     slot: { day: 1, start: '18:00', end: '19:00' },
     zoom: 'https://cedia.zoom.us/j/84073234539',
   },
+  {
+    name: 'Gino Zea',
+    talk: 'Una práctica construida entre diseño y tecnología',
+    degree: 'MSc.',
+    org: 'EPN',
+    photo: '/speakers/web/gino.webp',
+    tracks: ['software'],
+    slot: { day: 3, start: '19:00', end: '20:00' },
+    zoom: 'https://cedia.zoom.us/j/82758150001',
+  },
+  {
+    name: 'Juan Quezada',
+    talk: 'Los errores que se esconden en los papers de deep learning y hacen que la IA acierte por las razones equivocadas',
+    org: 'ESPOCH',
+    photo: '/speakers/web/juan.webp',
+    tracks: ['ia', 'investigacion'],
+    slot: { day: 5, start: '20:00', end: '21:00' },
+    zoom: 'https://cedia.zoom.us/j/86751941097',
+  },
 ]
 
 /* ---------------------------------------------------------- */
-/* CONTESTS — the competitive weekend                           */
+/* CONTESTS                                                     */
+/* Drawn in the order they happen. `facts` are the few lines a  */
+/* contest needs that the others do not (venue, teams, its own  */
+/* price when it is not part of the passes).                    */
 /* ---------------------------------------------------------- */
 
 export type Contest = {
-  key: 'cssbattle' | 'minecraft'
+  key: 'cssbattle' | 'minecraft' | 'cloud'
   name: string
   kind: string
   blurb: string
   partner?: { name: string; url: string }
+  /** Chapter that runs it, as in `chapters` — its logo goes on the card. */
+  host?: string
   video?: string
   image?: string
+  facts?: string[]
   /** Day always; hours once they are confirmed. */
   slot: { day: number; start?: string; end?: string }
 }
 
 export const contests: Contest[] = [
+  {
+    key: 'cloud',
+    name: 'Cloud Explorers',
+    kind: 'Hackathon de cloud',
+    blurb:
+      'Contenerizar, asegurar y desplegar un microservicio en la nube en tres horas. El reto se revela al empezar.',
+    host: 'UPS',
+    facts: [
+      'Híbrido: en la UPS Cuenca o virtual',
+      'Equipos de hasta 3, o por tu cuenta',
+      'Presencial gratis · virtual $3',
+    ],
+    slot: { day: 3, start: '14:00', end: '17:00' },
+  },
   {
     key: 'cssbattle',
     name: 'CSS Battle',
@@ -451,13 +497,13 @@ export const passes: Pass[] = [
   {
     key: 'un-concurso',
     name: '1 concurso',
-    price: { member: 3, general: 5 },
+    price: { member: 2, general: 4 },
     includes: ['CSS Battle o Minecraft', 'Charlas incluidas'],
   },
   {
     key: 'dos-concursos',
     name: '2 concursos',
-    price: { member: 5, general: 7 },
+    price: { member: 4, general: 6 },
     includes: ['CSS Battle y Minecraft', 'Charlas incluidas'],
   },
 ]

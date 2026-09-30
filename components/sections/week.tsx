@@ -24,6 +24,8 @@ import { Ribbon } from '@/components/brand/ribbon'
 
 const BLOCK_STYLE: Record<string, { bg: string; ink: string }> = {
   charlas: { bg: 'hsl(var(--cyan))', ink: 'hsl(var(--night))' },
+  /* every contest is orange; the hackathon and the weekend share a row */
+  cloud: { bg: 'hsl(var(--orange))', ink: 'hsl(var(--night))' },
   concursos: { bg: 'hsl(var(--orange))', ink: 'hsl(var(--night))' },
 }
 
@@ -89,7 +91,13 @@ export function Week() {
           <div className="mt-6 grid grid-cols-7 gap-y-3">
             {week.blocks.map((b, i) => {
               const style = BLOCK_STYLE[b.key]
-              const live = onAir?.block === b.key
+              /* a contest session lights the ribbon laid over its own day */
+              const live =
+                !!onAir &&
+                (b.key === 'charlas'
+                  ? onAir.block === 'charlas'
+                  : onAir.block === 'concursos' && onAir.day >= b.from && onAir.day <= b.to)
+              const narrow = b.from === b.to
               return (
                 <motion.div
                   key={b.key}
@@ -111,7 +119,13 @@ export function Week() {
                       {b.name}
                       {live ? <span className="font-mono text-[11px] font-medium tracking-[0.1em]">En vivo</span> : null}
                     </span>
-                    <span className="font-mono text-[11px] font-medium normal-case tracking-[0.06em] opacity-80 lg:text-[12px]">
+                    {/* a one-day ribbon only has room for its hours on wide screens */}
+                    <span
+                      className={cn(
+                        'font-mono text-[11px] font-medium normal-case tracking-[0.06em] opacity-80 lg:text-[12px]',
+                        narrow && 'hidden xl:inline'
+                      )}
+                    >
                       {b.detail}
                     </span>
                   </Ribbon>
@@ -134,8 +148,11 @@ export function Week() {
           </ul>
 
           <ol
-            className="mt-8 grid grid-cols-[1fr_18px_18px] gap-x-2 border-t border-line"
-            style={{ gridTemplateRows: `repeat(${week.days.length}, auto)` }}
+            className="mt-8 grid gap-x-2 border-t border-line"
+            style={{
+              gridTemplateColumns: `1fr repeat(${week.blocks.length}, 18px)`,
+              gridTemplateRows: `repeat(${week.days.length}, auto)`,
+            }}
           >
             {week.days.map((d, i) => (
               <li

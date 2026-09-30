@@ -44,11 +44,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://cstechweek.ec'),
   title: 'CS Tech Week Ecuador 2026',
   description:
-    'Una semana de charlas gratuitas, un hackathon de CSS y un torneo de Minecraft, organizada por los capítulos IEEE Computer Society del Ecuador. Del 28 de septiembre al 4 de octubre de 2026, virtual.',
+    'Una semana de charlas gratuitas, dos hackathons (CSS y cloud) y un torneo de Minecraft, organizada por los capítulos IEEE Computer Society del Ecuador. Del 28 de septiembre al 4 de octubre de 2026, virtual.',
   keywords: ['IEEE Computer Society', 'Ecuador', 'CS Tech Week', 'evento tech', 'CSS Battle', 'Minecraft'],
   openGraph: {
     title: 'CS Tech Week Ecuador 2026',
-    description: 'Charlas, un hackathon de CSS y un torneo de Minecraft. Del 28 de septiembre al 4 de octubre, virtual.',
+    description: 'Charlas, dos hackathons y un torneo de Minecraft. Del 28 de septiembre al 4 de octubre, virtual.',
     locale: 'es_EC',
     type: 'website',
   },
