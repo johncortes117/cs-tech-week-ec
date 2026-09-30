@@ -12,7 +12,8 @@ import { LoopVideo } from '@/components/ui/loop-video'
 /* ============================================================
    CONTESTS
 
-   Cards cut from the same frame, in the order they happen, each
+   Large panels cut from the same frame, in the order they happen —
+   the first, which has no screenshot, across the full width. Each
    allowed one accent of its own world: Cloud Explorers speaks in
    shell prompts, CSS Battle in code comments, Minecraft in its
    pixel face and the green of its chat prompt. Everything else —
@@ -32,7 +33,7 @@ export function Contests() {
       <div className="shell">
         <SectionTitle>Tres retos</SectionTitle>
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        <div className="mt-16 grid gap-5 lg:grid-cols-2 lg:gap-6">
           {ORDERED.map((c, i) => (
             <ContestCard key={c.key} contest={c} index={i} />
           ))}
@@ -65,6 +66,8 @@ const KIND: Record<Contest['key'], { className: string; format: (kind: string) =
 
 function ContestCard({ contest, index }: { contest: Contest; index: number }) {
   const minecraft = contest.key === 'minecraft'
+  /* the one without a screenshot takes a full row: picture beside the words */
+  const wide = contest.key === 'cloud'
   const host = contest.host ? chapters.find((c) => c.short === contest.host) : undefined
   const kind = KIND[contest.key]
 
@@ -74,10 +77,13 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT}
       transition={{ duration: 0.9, ease: EASE, delay: index * 0.12 }}
-      className="group relative flex flex-col overflow-hidden rounded-[26px] border border-line bg-surface md:rounded-[30px]"
+      className={cn(
+        'group relative flex flex-col overflow-hidden rounded-[26px] border border-line bg-surface md:rounded-[32px]',
+        wide && 'lg:col-span-2 lg:grid lg:grid-cols-[1.1fr_1fr]'
+      )}
       data-reveal
     >
-      <div className="relative aspect-[16/10] overflow-hidden bg-night">
+      <div className={cn('relative aspect-[16/10] overflow-hidden bg-night', wide && 'lg:aspect-auto lg:h-full lg:min-h-[420px]')}>
         {contest.video ? (
           <LoopVideo
             src={contest.video}
@@ -109,7 +115,7 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col p-6 md:p-8">
+      <div className={cn('flex flex-1 flex-col p-7 md:p-10', wide && 'lg:justify-center lg:p-12')}>
         {/* in a narrow card the date drops to its own line instead of both wrapping */}
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <p className={cn('whitespace-nowrap font-mono text-[12px]', kind.className)}>{kind.format(contest.kind.toLowerCase())}</p>
@@ -122,14 +128,14 @@ function ContestCard({ contest, index }: { contest: Contest; index: number }) {
         <h3
           className={
             minecraft
-              ? 'mt-4 font-pixel text-[clamp(1.35rem,2.2vw,1.9rem)] leading-[1.15]'
-              : 'mt-3 font-display text-[clamp(2.1rem,3.2vw,2.9rem)] font-black leading-[0.92] tracking-display'
+              ? 'mt-4 font-pixel text-[clamp(1.5rem,2.9vw,2.3rem)] leading-[1.15]'
+              : 'mt-3 font-display text-[clamp(2.4rem,4.4vw,3.6rem)] font-black leading-[0.9] tracking-display'
           }
         >
           {contest.name}
         </h3>
 
-        <p className="mt-5 text-[1rem] leading-relaxed text-muted">{contest.blurb}</p>
+        <p className="mt-5 max-w-[42ch] text-[1rem] leading-relaxed text-muted">{contest.blurb}</p>
 
         {contest.facts?.length ? (
           <ul className="mt-5 space-y-1.5 text-[0.9375rem] text-fg/85">
